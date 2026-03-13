@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <img src="profile.jpg" alt="Vedant Garud" class="profile-image">
+        <h1>Vedant Garud</h1>
+        <blockquote>"Somehow I Manage."</blockquote>
+    </div>
+</header>
+
+<nav>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#journey">Journey</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<main>
+    <section id="about">
+        <h2>Meet Your Navigator</h2>
+        <p><b>Greetings, Earthlings!</b><br>
+            I’m Vedant, your cosmic developer charting the stars of technology. With a passion for all things digital, I craft everything from powerful backend systems to immersive user experiences, constantly expanding my galactic toolkit. Join me as we explore the infinite possibilities of innovation together!</p>
+    </section>
+                             
+    <section id="journey">
+        <h2>My Galactic Journey</h2>
+        <div class="journey-container">
+            <div class="star glow-effect journey-item">
+                <model-viewer src="models/sun.glb" alt="Sun" style="width: 150px; height: 150px;" auto-rotate camera-controls environment-image="neutral" exposure="1.5"></model-viewer>
+                <div class="star-info">
+                    <h3>St. John the Baptist High School</h3>
+                    <p><strong>2008 - 2021</strong></p>
+                    <p>Completed primary and secondary education, igniting my passion for technology.</p>
+                </div>
+            </div>
+    
+            <div class="star journey-item">
+                <model-viewer src="models/earth.glb" alt="Earth" style="width: 120px; height: 120px;" auto-rotate camera-controls environment-image="neutral" exposure="1.2"></model-viewer>
+                <div class="star-info">
+                    <h3>VPM Polytechnic, Thane</h3>
+                    <p><strong>2022 - 2025</strong></p>
+                    <p>Pursuing a diploma in Information & Technology.</p>
+                </div>
+            </div>
+    
+            <div class="star moon-glow-effect journey-item">
+                <model-viewer src="models/moon.glb" alt="Moon" style="width: 90px; height: 90px;" auto-rotate camera-controls environment-image="neutral" exposure="1"></model-viewer>
+                <div class="star-info">
+                    <h3>Interned at VFS Global</h3>
+                    <p><strong>Mumbai</strong></p>
+                    <p>Gained valuable experience focusing on backend and user-design in real-world projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="projects">
+        <h2>Quantum Creations</h2>
+        <ul class="timeline">
+            <li class="timeline-item" style="--item-index: 1;">
+                <h3>The Office Chatbot:</h3>
+                <p>A fun and interactive chatbot that allows fans to engage in conversations with their favorite characters from "The Office."</p>
+            </li>
+            <li class="timeline-item" style="--item-index: 2;">
+                <h3>Automated Repository Management System:</h3>
+                <p>This system streamlines the process of managing proposals by allowing users to search for documents using specific keywords.</p>
+            </li>
+            <li class="timeline-item" style="--item-index: 3;">
+                <h3>Stock Predictor:</h3>
+                <p>A data-driven tool designed to analyze market trends and provide predictions for stock performance. Utilizing machine learning algorithms.</p>
+            </li>
+            <li class="timeline-item" style="--item-index: 4;">
+                <h3>Online Complaint Registration Portal:</h3>
+                <p>An easy-to-use online platform that enables users to register complaints quickly and efficiently.</p>
+            </li>
+        </ul>
+    </section>
+
+    <section id="contact">
+        <h2>Send Me a Signal</h2>
+        <p>Feel free to reach out for collaborations, inquiries, or cosmic discussions about technology!</p>
+        <form id="contact-form" onsubmit="return false;">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" required></textarea>
+            <button type="button" onclick="validateForm(event); WriteCookie();">Send Message</button>
+            <div id="error-message" class="error"></div>
+        </form>
+    </section>
+          
+    <div class="social-media">
+        <h3>Join My Cosmic Network</h3>
+        <a href="https://www.linkedin.com/in/" target="_blank" class="social-icon">
+            <img src="https://openvisualfx.com/wp-content/uploads/2019/10/linkedin-icon-logo-png-transparent.png" alt="LinkedIn">
+        </a>
+        <a href="https://github.com/" target="_blank" class="social-icon">
+            <img src="https://pngimg.com/uploads/github/github_PNG84.png" alt="GitHub">
+        </a>
+        <a href="https://twitter.com/iamvedantgrd" target="_blank" class="social-icon">
+            <img src="https://static.vecteezy.com/system/resources/previews/027/395/710/non_2x/twitter-brand-new-logo-3-d-with-new-x-shaped-graphic-of-the-world-s-most-popular-social-media-free-png.png" alt="Twitter">
+        </a>
+        <a href="https://www.instagram.com/vedantgrd" target="_blank" class="social-icon">
+            <img src="https://static.vecteezy.com/system/resources/previews/017/743/717/large_2x/instagram-icon-logo-free-png.png" alt="Instagram">
+        </a>
+    </div>
+    
+</main>
+
+<footer>
+    <p>&copy; 2024 Vedant Garud. All Rights Reserved.</p>
+</footer>
+
+ <script>
+
+ </script> 
+
+</body>
+</html>
