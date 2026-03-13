@@ -22,14 +22,14 @@ The portfolio includes:
 
 ## ✨ Features
 
-- ✔ Interactive Portfolio UI  
-- ✔ 3D Models integration using `<model-viewer>`  
-- ✔ JavaScript form validation using **Regular Expressions**  
-- ✔ Cookie handling using **JavaScript**  
-- ✔ Responsive layout  
-- ✔ Animated project timeline  
-- ✔ Hover button effects  
-- ✔ Navigation menu with smooth section access  
+- Interactive Portfolio UI  
+- 3D Models integration using `<model-viewer>`  
+- JavaScript form validation using **Regular Expressions**  
+- Cookie handling using **JavaScript**  
+- Responsive layout  
+- Animated project timeline  
+- Hover button effects  
+- Navigation menu with smooth section access  
 
 ---
 
