@@ -1,128 +1,168 @@
-# Personal Portfolio Website
+# 🚀 Personal Portfolio Website
 
-A modern **Personal Portfolio Website** built using **Next.js, React, Tailwind CSS, and Three.js** to showcase projects, skills, and professional journey.
+A modern, interactive **3D developer portfolio** built using **Next.js, React, Tailwind CSS, and Three.js** to showcase projects, skills, and professional journey.
 
-The website provides an **interactive and visually engaging 3D platform** for recruiters and collaborators to explore my work.
+🌐 **Live Demo:** https://garudvedantportfolio.vercel.app
 
 ---
 
-## 🌐 Live Concept
+## 🌟 Overview
 
-This project demonstrates how a developer can create a **digital identity on the web** using modern web development frameworks and 3D rendering techniques.
+This portfolio serves as a **digital identity on the web**, combining clean UI, smooth animations, and immersive 3D elements to create a strong impression for recruiters and collaborators.
 
-The portfolio includes:
-
-- Hero introduction section with immersive UI
-- Space-themed journey timeline using 3D rendering
-- Featured projects showcase
-- Interactive contact form with validation
-- Dark/Light mode support
+It demonstrates how modern web technologies can be used to build visually engaging and high-performance applications.
 
 ---
 
 ## ✨ Features
 
-- Interactive 3D Portfolio UI  
-- 3D Models integration using **React Three Fiber & Drei**
-- Smooth animations and transitions using **Framer Motion**
-- Responsive and modern styling using **Tailwind CSS & Radix UI**
-- Static typing and error catching using **TypeScript**
-- Optimized routing and server components using **Next.js 16**
-- Animated project timeline
-- Navigation menu with smooth section access
+* Interactive 3D portfolio experience
+* Space-themed animated journey timeline
+* Featured projects showcase
+* Smooth animations using Framer Motion
+* Fully responsive design
+* Dark / Light mode support
+* Contact form with validation
+* Smooth navigation across sections
 
 ---
 
-## 🛠 Tech Stack
+## 🧰 Tech Stack
 
-| Technology | Usage |
-|-----------|------|
-| **Next.js 16** | React Framework and Routing |
-| **React 19** | UI Component Library |
-| **TypeScript** | Type-safe development |
-| **Tailwind CSS 4** | Styling and layout |
-| **Framer Motion** | Complex UI animations |
-| **Three.js & R3F** | 3D rendering and models |
-| **Zod & React Hook Form** | Form validation |
+| Category            | Technology                           | Purpose                          |
+|---------------------|-------------------------------------|----------------------------------|
+| Framework           | Next.js 16                          | React framework & routing        |
+| UI Library          | React 19                            | Component-based UI development   |
+| Language            | TypeScript                          | Type-safe development            |
+| Styling             | Tailwind CSS 4 + Radix UI           | Styling and UI components        |
+| Animations          | Framer Motion                       | Smooth UI animations             |
+| 3D Rendering        | Three.js + React Three Fiber + Drei | 3D models and rendering          |
+| Forms & Validation  | React Hook Form + Zod               | Form handling and validation     |
 
 ---
 
-## 📁 Project Structure
+## 🏗 Project Structure
 
-```text
+```bash
 my-portfolio/
 │
-├── app/                  # Next.js App Router pages and layouts
-├── components/           # Reusable React components (UI, layout, 3D)
+├── app/                  # Pages & layouts (App Router)
+├── components/           # Reusable UI and 3D components
 ├── hooks/                # Custom React hooks
-├── lib/                  # Utility functions and configurations
-├── public/               # Static assets (3D models, images, etc.)
-├── styles/               # Global CSS styles
-├── screenshots/          # Images used in the README preview
-└── package.json          # Project dependencies and scripts
+├── lib/                  # Utilities & configs
+├── public/               # Static assets (models, images)
+├── styles/               # Global styles
+├── screenshots/          # README images
+└── package.json
 ```
 
 ---
 
-## 🚀 How to Run
+## ⚙️ Getting Started
 
-To run this project locally on your machine, follow these steps:
+Clone the repository:
 
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd <repository-directory>
-   ```
+```bash
+git clone <repository-url>
+cd <repository-directory>
+```
 
-2. **Install dependencies:**
-   This project uses `pnpm`, but you can also use `npm` or `yarn`.
-   ```bash
-   pnpm install
-   # or
-   npm install
-   ```
+Install dependencies:
 
-3. **Start the development server:**
-   ```bash
-   pnpm dev
-   # or
-   npm run dev
-   ```
+```bash
+pnpm install
+# or
+npm install
+# or
+yarn install
+```
 
-4. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+Run the development server:
+
+```bash
+pnpm dev
+# or
+npm run dev
+```
+
+Open in browser:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🌍 Deployment
+
+This project is deployed on **Vercel**. To deploy your own version:
+
+```bash
+pnpm build
+pnpm start
+```
+
+Or connect your GitHub repository directly to Vercel for automatic deployments.
+
+---
+
+## 🎨 Customization
+
+You can easily personalize the portfolio:
+
+* Update content inside `/app`
+* Replace assets in `/public`
+* Modify styles via Tailwind config
+* Update screenshots in `/screenshots`
+* Add your own projects and data
 
 ---
 
 ## 📸 Screenshots
 
-### Hero Section
-![Hero Section](screenshots/hero.png)
+### 🏠 Hero Section
 
-### Projects Section
-![Projects Section](screenshots/projects.png)
+![Hero](screenshots/hero.png)
 
-### About Section
-![About Section](screenshots/about.png)
+### 📂 Projects Section
 
-### Education Section
-![Education Section](screenshots/education.png)
+![Projects](screenshots/projects.png)
 
-### Internship Section
-![Internship Section](screenshots/internship.png)
+### 🎓 Education Section
 
-### Skills Section
-![Skills Section](screenshots/skills.png)
+![Education](screenshots/education.png)
 
-### Contact Section
-![Contact Section](screenshots/contact.png)
+### 💼 Internship Section
+
+![Internship](screenshots/internship.png)
+
+### 🧠 Skills Section
+
+![Skills](screenshots/skills.png)
+
+### 📬 Contact Section
+
+![Contact](screenshots/contact.png)
 
 ---
 
 ## 🧠 Skills Demonstrated
 
-- Modern Web Development (Next.js, React)
-- 3D Graphics and Rendering in the Browser
-- Complex UI Animations
-- Form validation schemas (Zod)
-- Responsive layout design
+* Modern web development with Next.js & React
+* 3D graphics rendering in the browser
+* Advanced UI animations
+* Type-safe development with TypeScript
+* Form validation with Zod
+* Responsive design systems
+
+---
+
+## 📈 Future Improvements
+
+* Blog integration (MDX)
+* Analytics integration
+* Multi-language support
+* Testing setup (unit & integration)
+* Admin panel for content updates
+
+---
