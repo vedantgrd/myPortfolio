@@ -122,27 +122,64 @@ You can easily personalize the portfolio:
 
 ### 🏠 Hero Section
 
-![Hero](screenshots/hero.png)
+<table>
+<tr>
+<td>
+<img src="screenshots/hero.png" alt="Hero" width="100%">
+</td>
+</tr>
+</table>
 
 ### 📂 Projects Section
 
-![Projects](screenshots/projects.png)
+<table>
+<tr>
+<td>
+<img src="screenshots/projects.png" alt="Projects" width="100%">
+</td>
+</tr>
+</table>
 
 ### 🎓 Education Section
 
-![Education](screenshots/education.png)
+<table>
+<tr>
+<td>
+<img src="screenshots/education.png" alt="Education" width="100%">
+</td>
+</tr>
+</table>
 
 ### 💼 Internship Section
 
-![Internship](screenshots/internship.png)
+<table>
+<tr>
+<td>
+<img src="screenshots/internship.png" alt="Internship" width="100%">
+</td>
+</tr>
+</table>
 
 ### 🧠 Skills Section
 
-![Skills](screenshots/skills.png)
+<table>
+<tr>
+<td>
+<img src="screenshots/skills.png" alt="Skills" width="100%">
+</td>
+</tr>
+</table>
 
 ### 📬 Contact Section
 
-![Contact](screenshots/contact.png)
+<table>
+<tr>
+<td>
+<img src="screenshots/contact.png" alt="Contact" width="100%">
+</td>
+</tr>
+</table>
+
 
 ---
 
