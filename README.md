@@ -143,4 +143,16 @@ Open `data/projects.ts` and append your project to `projects`. The case study, m
 
 ---
 
+## 🎨 Personalization & Architecture
+
+You can easily customize and expand this digital archive:
+
+* **Publish New Writing:** Add entries to `data/writing.ts` with your thoughts, cinema reflections, human stories, or technical notes.
+* **Add Projects:** Append structured case studies to `data/projects.ts` to automatically generate dedicated case study pages.
+* **Update Timeline:** Edit educational milestones and work experience in `data/timeline.ts`.
+* **Refine Skills Evidence:** Modify `data/skills.ts` to link tools to real project implementation notes (no arbitrary percentages).
+* **Replace Assets:** Update profile photographs in `public/images/`.
+
+---
+
 &copy; Vedant Garud. Unfinished by design.
