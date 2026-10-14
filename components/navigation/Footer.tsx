@@ -41,7 +41,7 @@ export function Footer() {
               VEDANT / UNFINISHED
             </h2>
             <p className="text-sm leading-relaxed text-[#cfd6e0] max-w-md font-light">
-              A life, in progress. The personal living archive of Vedant Garud — uniting engineering projects, cinema reflections, human memories, and ordinary days in one enduring digital home.
+              A life, in progress. The personal living archive of Vedant Garud — uniting engineering projects, cinema reflections, human memories, and working principles in one enduring digital home.
             </p>
             <div className="pt-2 flex items-center gap-3">
               <span className="flex h-2 w-2 relative">
@@ -57,60 +57,54 @@ export function Footer() {
           {/* Directory Navigation */}
           <div className="lg:col-span-3 space-y-4">
             <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#f2eee6]">
-              Archive Directory
+              Canonical Directory
             </span>
             <ul className="space-y-2 font-mono text-xs">
               <li>
                 <Link href="/" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
                   <span>01 // Home</span>
-                  <span className="text-[#3b4252]">Cover</span>
+                  <span className="text-[#3b4252]">Cover Trailer</span>
                 </Link>
               </li>
               <li>
                 <Link href="/work" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
                   <span>02 // Work</span>
-                  <span className="text-[#3b4252]">Exhibition</span>
+                  <span className="text-[#3b4252]">Case Studies</span>
                 </Link>
               </li>
               <li>
                 <Link href="/writing" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
                   <span>03 // Notebook</span>
-                  <span className="text-[#3b4252]">Journal</span>
+                  <span className="text-[#3b4252]">All Writing</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/taste" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
+                  <span>04 // Taste</span>
+                  <span className="text-[#3b4252]">Cinema, Music, Books</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
+                  <span>05 // About</span>
+                  <span className="text-[#3b4252]">The Narrative</span>
                 </Link>
               </li>
               <li>
                 <Link href="/archive" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>04 // Archive</span>
-                  <span className="text-[#3b4252]">Time Capsule</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/cinema" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>05 // Cinema</span>
-                  <span className="text-[#3b4252]">Stories &amp; Idols</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/ordinary-days" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>06 // Ordinary Days</span>
-                  <span className="text-[#3b4252]">Moments</span>
+                  <span>06 // Archive</span>
+                  <span className="text-[#3b4252]">Verified Chronology</span>
                 </Link>
               </li>
               <li>
                 <Link href="/now" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
                   <span>07 // Right Now</span>
-                  <span className="text-[#3b4252]">Current State</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>08 // About</span>
-                  <span className="text-[#3b4252]">The Person</span>
+                  <span className="text-[#3b4252]">Daily Snapshot</span>
                 </Link>
               </li>
               <li>
                 <Link href="/lab" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>09 // Lab</span>
+                  <span>08 // The Lab</span>
                   <span className="text-[#3b4252]">Simulators</span>
                 </Link>
               </li>
@@ -178,6 +172,10 @@ export function Footer() {
           <div className="flex items-center gap-4">
             <Link href="/archive" className="hover:text-[#a3abb6] transition-colors">
               THE ARCHIVE
+            </Link>
+            <span>•</span>
+            <Link href="/taste" className="hover:text-[#a3abb6] transition-colors">
+              TASTE
             </Link>
             <span>•</span>
             <Link href="/now" className="hover:text-[#a3abb6] transition-colors">

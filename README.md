@@ -1,5 +1,5 @@
 # 📖 VEDANT / UNFINISHED
-> **The personal digital publication, engineering notebook, and technical laboratory of Vedant Garud.**
+> **The personal digital publication, living archive, and technical laboratory of Vedant Garud.**
 
 🌐 **Live Website:** [garudvedantportfolio.vercel.app](https://garudvedantportfolio.vercel.app)  
 🏛 **Institution:** Pillai College of Engineering, New Panvel  
@@ -13,31 +13,33 @@
 
 Traditional portfolios say: *“Here are my skills, here are my projects, here is my résumé.”*  
 **VEDANT / UNFINISHED** is conceived as entering someone’s world:
-- **Personal, not corporate:** Real face, candid reflections, failures, and curiosity rather than buzzwords.
+- **A life, in progress:** Software engineering and personal humanity belong to the same person. Neither is a side quest.
+- **One Canonical Home per Piece of Content:** Every essay lives in Notebook; every project lives in Work; cultural works live in Taste; verified milestones live in Archive; the current chapter lives in Now. Other pages preview or reference canonical sources rather than duplicating them.
+- **Personal, not corporate:** Real face, candid reflections on mental health (*So, Suicide.*), social responsibility (*Orphanage community visit*), cinema idols, and engineering failures (*Agridrone motor harmonics*).
 - **Editorial, not monotonous:** High-contrast typography (Geist & Geist Mono), warm deep ink surfaces (`#0d0f12`), restrained vermilion accents (`#e1523d`), and tactile layout grids.
-- **Technical, not soulless:** Interactive multi-agent supply chain simulations, dynamic cryptanalysis tools, and deterministic evaluation diagrams.
-- **Authentic data only:** No arbitrary skill percentages (e.g. *“React: 95%”*). Every technology listed in the Lab connects directly to the project where it was actually implemented.
+- **Deterministic, not arbitrary:** Daily quotes rotate deterministically with the calendar day; every listed skill connects directly to real project implementation evidence.
 
 ---
 
-## 🗺 Information Architecture (Multi-Page)
+## 🗺 Information Architecture (Canonical Routes)
 
-The portfolio is structured as a multi-page publication with dedicated routes:
+The portfolio is structured with clear, non-overlapping responsibilities:
 
-| Route | Chapter / Purpose | Key Highlights |
+| Route | Chapter / Purpose | Canonical Content & Function |
 |---|---|---|
-| `/` | **01 // Cover & Overview** | Editorial cover headline, real portrait photo, selected works exhibition, candid introduction, interactive Project Constellation, What Makes Me section, and latest 2 AM fragment. |
-| `/work` | **02 // Work Exhibition** | Filterable project catalog (AI & Systems, Hardware & IoT, Security & Systems, Interactive & Games, Web Platforms) with exhibition cards & compact archive table. |
+| `/` | **01 // Cover Trailer** | Editorial trailer with selected works, notebook preview, taste highlights, daily quote, and clear pathways to explore deeper. |
+| `/work` | **02 // Work Exhibition** | Filterable project catalog (AI & Systems, Hardware & IoT, Security & Systems, Interactive & Games, Web Platforms). |
 | `/work/[slug]` | **Case Studies** | In-depth case studies with architectural diagrams, problems, key decisions, what broke & how it was fixed, verified outcomes, and actual tech stack. |
-| `/writing` | **03 // The Notebook** | Independent publication with long-form personal essays, cinema reflections, human stories, search filters, and reading time estimates. |
+| `/writing` | **03 // The Notebook** | Definitive destination for all published writing: personal essays (*So, Suicide.*, *Orphanage reflections*), cinema & culture, superheroes, and engineering postmortems. |
 | `/writing/[slug]` | **Reading View** | Long-form reading experience, formatted code snippets, quote callout boxes, and previous/next navigation. |
-| `/archive` | **04 // The Living Archive** | Unified chronological time capsule connecting essays, projects, photographic moments, cinema influences, and milestones across 2023–2026. |
-| `/cinema` | **05 // Cinema & Influences** | Personal cultural journal of films that altered perspective (*The Truman Show*, *Dead Poets Society*, *The Dark Knight*, *Spider-Man 2*), quotes, and reflections. |
-| `/ordinary-days` | **06 // Ordinary Days** | Intimate photographic journal capturing quiet moments (balancing drone props at 3 AM, orphanage visit, monsoon train rides, post-finals tea stalls). |
-| `/now` | **07 // Right Now** | Public living snapshot of what Vedant is building, learning, reading, watching, and thinking about right now. |
-| `/about` | **08 // About Vedant** | Personal narrative, authentic portrait, visual interactive timeline (Pillai College of Engineering, VFS Global, VPM's Polytechnic), engineering principles, and verified résumé access. |
-| `/lab` | **09 // The Living Laboratory** | **Bullwhip AI Simulator** (real-time demand oscillation chart & safety stock dampener), **CipherLab Cryptography Workbench** (Caesar, Vigenère, and Avalanche bit-flip tester), and **Project-Linked Skill Evidence Matrix**. |
-| `/contact` | **10 // Direct Transmission** | One-click email copy with instant feedback, verified social links (GitHub, LinkedIn, X), and prefilled mail dispatch form. |
+| `/taste` | **04 // Taste & Influences** | Cultural archive: Top 4 formative films (*The Truman Show*, *Dead Poets Society*, *The Dark Knight*, *Spider-Man 2*), music songwriters (The Beatles, The Smiths, One Direction, Michael Jackson), and books (*Steve Jobs* by Walter Isaacson). |
+| `/about` | **05 // Personal Narrative** | Narrative on why engineering, working principles, values, education timeline (PCE Panvel, VFS Global, VPM's Polytechnic), and verified résumé access. |
+| `/archive` | **06 // The Archive** | Strictly factual chronology (2022–2026) documenting education, internships, hackathons (internal SIH round), and verified milestones linking to canonical sources. |
+| `/now` | **07 // Right Now** | Public living snapshot of what Vedant is building, learning, consuming, and thinking about, featuring a **deterministic daily quotation** rotation. |
+| `/lab` | **08 // The Living Laboratory** | **Bullwhip AI Simulator** (real-time demand oscillation chart & safety stock dampener), **CipherLab Cryptography Workbench** (Caesar, Vigenère, and Avalanche bit-flip tester), and **Project-Linked Skill Evidence Matrix**. |
+| `/contact` | **09 // Direct Transmission** | One-click email copy with instant feedback, verified social links (GitHub, LinkedIn, X), and prefilled mail dispatch form. |
+
+*(Note: `/cinema` permanently redirects to `/taste`; `/ordinary-days` redirects to `/archive`.)*
 
 ---
 
@@ -108,55 +110,26 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 Build for production:
 ```bash
-pnpm build
-pnpm start
+npm run build
+npm run start
 ```
 
 ---
 
-## ✍️ How to Publish New Writing or Projects
+## ✍️ How to Publish New Writing, Taste, or Milestones
 
-### Adding a New Article
-Open `data/writing.ts` and add a new entry to the `articles` array with:
-```typescript
-{
-  slug: 'your-article-slug',
-  title: 'Your Article Title',
-  subtitle: 'An engaging subtitle or premise',
-  date: 'Month Year',
-  readTime: 'X min read',
-  category: 'AI & Systems' | 'Hardware & IoT' | 'Lessons & Reflections' | 'Engineering Craft',
-  tags: ['Tag1', 'Tag2'],
-  featured: false,
-  excerpt: 'A short summary...',
-  content: {
-    lead: 'Opening paragraph...',
-    sections: [
-      {
-        heading: '1. Section Heading',
-        paragraphs: ['Paragraph content...'],
-      }
-    ]
-  }
-}
-```
-The article will immediately appear in `/writing`, have its own shareable `/writing/your-article-slug` route, and be indexed by search!
+### 1. Adding a New Article
+Open `data/writing.ts` and add a new entry to the `articles` array. It will immediately appear in `/writing`, have its own shareable `/writing/[slug]` route, and be indexed automatically.
 
-### Adding a New Project
-Open `data/projects.ts` and append your project to `projects`. The case study, metrics, and exhibition entry will be automatically generated at `/work/your-project-slug`.
+### 2. Updating Taste (Cinema, Music, Books)
+Open `data/taste.ts` and append your favorite film, music artist, or book.
+
+### 3. Adding a Milestone to Archive
+Open `data/archive.ts` and append a factual milestone with date, summary, and canonical link to `/work/[slug]` or `/writing/[slug]`.
+
+### 4. Updating What You Are Doing Right Now
+Open `data/now.ts` and update `building`, `learning`, or `consuming`.
 
 ---
 
-## 🎨 Personalization & Architecture
-
-You can easily customize and expand this digital archive:
-
-* **Publish New Writing:** Add entries to `data/writing.ts` with your thoughts, cinema reflections, human stories, or technical notes.
-* **Add Projects:** Append structured case studies to `data/projects.ts` to automatically generate dedicated case study pages.
-* **Update Timeline:** Edit educational milestones and work experience in `data/timeline.ts`.
-* **Refine Skills Evidence:** Modify `data/skills.ts` to link tools to real project implementation notes (no arbitrary percentages).
-* **Replace Assets:** Update profile photographs in `public/images/`.
-
----
-
-&copy; Vedant Garud. Unfinished by design.
+&copy; Vedant Garud. A life, in progress.

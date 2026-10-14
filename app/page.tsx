@@ -4,12 +4,10 @@ import {
   ArrowRight,
   ArrowUpRight,
   BookOpen,
-  Camera,
   Code2,
   Cpu,
   Film,
   Layers,
-  Terminal,
   Sparkles,
   ExternalLink,
   Shield,
@@ -17,25 +15,28 @@ import {
   Quote,
   Clock,
   Heart,
+  Music,
+  Compass,
 } from 'lucide-react'
 import { projects } from '@/data/projects'
 import { articles } from '@/data/writing'
-import { culturalWorks } from '@/data/cinema'
-import { ordinaryDays } from '@/data/ordinaryDays'
-import { fragments } from '@/data/fragments'
+import { tasteData } from '@/data/taste'
 import { nowData } from '@/data/now'
 import { ProjectConstellation } from '@/components/visualizations/ProjectConstellation'
+import { DailyQuoteCard } from '@/components/now/DailyQuoteCard'
 
 export default function HomePage() {
-  const featuredProjects = projects.filter((p) => p.featured)
-  const recentArticles = articles.slice(0, 3)
-  const featuredCinema = culturalWorks.slice(0, 2)
-  const recentDays = ordinaryDays.slice(0, 2)
-  const latestFragment = fragments[0]
+  // Canonical derivations
+  const featuredProjects = projects.filter((p) => p.featured).slice(0, 4)
+  const featuredArticle = articles.find((a) => a.featured) || articles[0]
+  const recentArticles = articles.filter((a) => a.slug !== featuredArticle.slug).slice(0, 2)
+  const featuredFilm = tasteData.films[0] // The Truman Show
+  const featuredBook = tasteData.books[0] // Steve Jobs by Walter Isaacson
+  const featuredArtist = tasteData.artists[1] // The Beatles
 
   return (
-    <div className="relative min-h-screen bg-[#0d0f12]">
-      {/* Editorial Cover / Hero Section */}
+    <div className="relative min-h-screen bg-[#0d0f12] text-[#f2eee6]">
+      {/* SECTION 01: INTRODUCTION & EDITORIAL TRAILER */}
       <section className="relative border-b border-[#232832] pt-12 pb-20 lg:pt-20 lg:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Masthead Header Strip */}
@@ -71,16 +72,16 @@ export default function HomePage() {
               </h1>
 
               <p className="text-lg sm:text-xl text-[#cfd6e0] leading-relaxed max-w-2xl font-light">
-                I’m <strong className="text-[#f2eee6] font-semibold">Vedant Garud</strong>. On one side, I engineer things: multi-agent supply chain models, student-first scholarship engines, and quadcopter avionics. On the other side, I watch movies that stay with me for weeks, think about mental health, visit orphanages, and wonder about life. This is the living archive where both coexist.
+                I’m <strong className="text-[#f2eee6] font-semibold">Vedant Garud</strong>, a software engineering student at Pillai College of Engineering. On one side, I build software: multi-agent supply chain models, student aid discovery engines, and quadcopter avionics. On the other side, I think about cinema, mental health, and the things I haven&apos;t figured out yet.
               </p>
 
-              {/* Action Buttons */}
+              {/* Three Clear Next Steps */}
               <div className="pt-4 flex flex-wrap items-center gap-4">
                 <Link
                   href="/work"
-                  className="inline-flex items-center gap-2 rounded bg-[#e1523d] px-5 py-3 font-mono text-xs uppercase tracking-wider text-white font-medium hover:bg-[#ef634f] transition-colors"
+                  className="inline-flex items-center gap-2 rounded bg-[#e1523d] px-5 py-3 font-mono text-xs uppercase tracking-wider text-white font-medium hover:bg-[#ef634f] transition-colors shadow-sm"
                 >
-                  <span>Explore What I Make</span>
+                  <span>1. Explore My Work</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
@@ -88,13 +89,13 @@ export default function HomePage() {
                   className="inline-flex items-center gap-2 rounded border border-[#232832] bg-[#14171d] px-5 py-3 font-mono text-xs uppercase tracking-wider text-[#f2eee6] hover:border-[#8b949e] hover:bg-[#1a1e26] transition-colors"
                 >
                   <BookOpen className="h-4 w-4 text-[#8b949e]" />
-                  <span>The Journal &amp; Memoir</span>
+                  <span>2. Read My Writing</span>
                 </Link>
                 <Link
-                  href="/archive"
+                  href="/about"
                   className="inline-flex items-center gap-2 rounded border border-[#232832] bg-[#090a0d] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[#8b949e] hover:text-[#f2eee6] hover:border-[#38404f] transition-colors"
                 >
-                  <span>Digital Time Capsule &rarr;</span>
+                  <span>3. Get To Know Me &rarr;</span>
                 </Link>
               </div>
 
@@ -102,7 +103,7 @@ export default function HomePage() {
               <div className="pt-6 border-t border-[#1d222b] grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs text-[#8b949e]">
                 <div>
                   <span className="text-[#6b7280] block text-[10px]">CURRENT FOCUS</span>
-                  <span className="text-[#e4decb]">Multi-Agent AI & InfoSec</span>
+                  <span className="text-[#e4decb]">Multi-Agent AI &amp; InfoSec</span>
                 </div>
                 <div>
                   <span className="text-[#6b7280] block text-[10px]">EXPERIENCE</span>
@@ -110,7 +111,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <span className="text-[#6b7280] block text-[10px]">ACADEMIC</span>
-                  <span className="text-[#e4decb]">PCE Panvel (B.Tech)</span>
+                  <span className="text-[#e4decb]">PCE Panvel (B.Tech IT)</span>
                 </div>
                 <div>
                   <span className="text-[#6b7280] block text-[10px]">PHILOSOPHY</span>
@@ -119,44 +120,31 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Portrait & Visual Column */}
-            <div className="lg:col-span-4 flex flex-col items-center lg:items-end">
-              <div className="relative w-full max-w-sm rounded-xl border border-[#232832] bg-[#14171d] p-4 shadow-2xl">
-                {/* Photo Container */}
-                <div className="relative aspect-square w-full rounded-lg overflow-hidden border border-[#282e3b] bg-[#090a0d]">
+            {/* Right Portrait & Fact Card */}
+            <div className="lg:col-span-4">
+              <div className="rounded-2xl border border-[#232832] bg-[#14171d] p-4 shadow-xl">
+                <div className="relative aspect-[4/5] w-full rounded-xl overflow-hidden border border-[#282e3b] bg-[#090a0d]">
                   <img
                     src="/images/profile.jpg"
-                    alt="Vedant Garud portrait"
-                    className="h-full w-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-500"
+                    alt="Vedant Garud Portrait"
+                    className="h-full w-full object-cover"
                   />
-                  <div className="absolute bottom-2 left-2 rounded bg-[#090a0d]/80 backdrop-blur-sm px-2 py-1 font-mono text-[10px] text-[#a3abb6] border border-[#232832]">
-                    VEDANT GARUD // MUMBAI
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-transparent to-transparent opacity-80" />
+                  <div className="absolute bottom-4 left-4 right-4 font-mono text-xs text-[#f2eee6]">
+                    <div className="text-[10px] text-[#e1523d] font-semibold">// LIVING TRAILER</div>
+                    <div className="text-sm font-bold font-sans">Vedant Garud</div>
+                    <div className="text-[11px] text-[#8b949e]">Student Engineer &amp; Essayist</div>
                   </div>
                 </div>
 
-                {/* Photo Annotation Caption */}
-                <div className="mt-4 space-y-2 font-mono text-xs text-[#8b949e]">
-                  <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-[#e1523d]">FIG. 01 — THE PERSON</span>
-                    <span>19.033° N, 73.029° E</span>
+                <div className="mt-4 p-2 text-xs font-mono text-[#8b949e] space-y-1">
+                  <div className="flex justify-between text-[11px]">
+                    <span>LOCATION</span>
+                    <span className="text-[#f2eee6]">Thane / Panvel, IN</span>
                   </div>
-                  <p className="text-[12px] font-sans text-[#a3abb6] leading-relaxed font-light">
-                    “I design, build, and occasionally debug my own decisions. Learning how real systems scale, oscillate, and sometimes fail.”
-                  </p>
-                  <div className="pt-2 flex items-center justify-between border-t border-[#1f242e] text-[11px]">
-                    <Link
-                      href="/now"
-                      className="text-[#10b981] hover:underline"
-                    >
-                      ● Status: Active Now
-                    </Link>
-                    <Link
-                      href="/about"
-                      className="text-[#f2eee6] hover:text-[#e1523d] transition-colors inline-flex items-center gap-1"
-                    >
-                      <span>Read Journey</span>
-                      <ArrowUpRight className="h-3 w-3" />
-                    </Link>
+                  <div className="flex justify-between text-[11px]">
+                    <span>CANONICAL ROUTES</span>
+                    <span className="text-[#10b981]">6 Destinations</span>
                   </div>
                 </div>
               </div>
@@ -165,37 +153,37 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION A: SELECTED WORK (What I Make) */}
+      {/* SECTION 02: SELECTED WORK (3-4 PROJECTS) */}
       <section className="py-24 border-b border-[#232832]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <span className="font-mono text-xs font-semibold text-[#e1523d] uppercase tracking-wider">
-                // SECTION 01: WHAT I MAKE
+                // SECTION 02: SELECTED WORK
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#f2eee6] mt-2">
-                Selected Work &amp; Systems
+                Systems, Simulators &amp; Hardware
               </h2>
-              <p className="text-sm text-[#9ca3af] mt-1 max-w-xl">
-                Not generic demo cards. Each project explores a distinct technical hypothesis across AI, hardware telemetry, and educational data.
+              <p className="text-sm text-[#9ca3af] mt-1 max-w-xl font-light">
+                Carefully selected projects that demonstrate end-to-end architecture, technical constraints, and working implementations.
               </p>
             </div>
             <Link
               href="/work"
               className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#e1523d] hover:text-[#ef634f] transition-colors"
             >
-              <span>View Full Project Archive (6)</span>
+              <span>View All Projects &amp; Case Studies</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
-          <div className="space-y-12">
+          <div className="space-y-8">
             {/* Project 1: Vidyut */}
-            <div className="rounded-xl border border-[#232832] bg-[#14171d] overflow-hidden hover:border-[#38404f] transition-all">
-              <div className="grid grid-cols-1 lg:grid-cols-12">
-                <div className="lg:col-span-7 p-8 sm:p-10 flex flex-col justify-between">
+            <div className="rounded-2xl border border-[#232832] bg-[#14171d] overflow-hidden hover:border-[#38404f] transition-all">
+              <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+                <div className="lg:col-span-7 p-8 sm:p-10 flex flex-col justify-between space-y-6">
                   <div className="space-y-4">
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex items-center gap-2">
                       <span className="mono-badge text-[#e1523d] border-[#e1523d]/30">
                         FLAGSHIP R&amp;D
                       </span>
@@ -213,8 +201,8 @@ export default function HomePage() {
 
                     <div className="pt-2 grid grid-cols-2 gap-4 font-mono text-xs">
                       <div className="rounded border border-[#1f242e] bg-[#0d0f12] p-3">
-                        <span className="text-[#8b949e] block text-[10px]">INNOVATION</span>
-                        <span className="text-[#f2eee6] font-semibold">Education DNA Schema</span>
+                        <span className="text-[#8b949e] block text-[10px]">CORE SCHEMA</span>
+                        <span className="text-[#f2eee6] font-semibold">Education DNA (40+ Fields)</span>
                       </div>
                       <div className="rounded border border-[#1f242e] bg-[#0d0f12] p-3">
                         <span className="text-[#8b949e] block text-[10px]">FILTER SPEED</span>
@@ -223,7 +211,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="pt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#1f242e] mt-6">
+                  <div className="pt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#1f242e]">
                     <div className="flex flex-wrap gap-2">
                       {['Next.js 16', 'TypeScript', 'FastAPI', 'PostgreSQL'].map((t) => (
                         <span key={t} className="rounded bg-[#1a1e26] px-2 py-0.5 font-mono text-[10px] text-[#a3abb6]">
@@ -352,18 +340,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION B: THE DATA PORTRAIT (Interactive Constellation) */}
-      <section className="py-24 border-b border-[#232832] bg-[#0a0c0f]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10">
+      {/* SECTION 02B: PROJECT CONSTELLATION GRAPH */}
+      <section className="py-20 border-b border-[#232832] bg-[#0a0c0f]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
+          <div>
             <span className="font-mono text-xs font-semibold text-[#e1523d] uppercase tracking-wider">
-              // SECTION 02: ARCHITECTURE GRAPH
+              // ARCHITECTURAL RELATIONSHIPS
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#f2eee6] mt-2">
-              The Project &amp; Idea Constellation
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#f2eee6] mt-1">
+              Project &amp; Idea Constellation
             </h2>
-            <p className="text-sm text-[#9ca3af] mt-1 font-light">
-              A real, documented graph showing how projects, technical domains, and architectural patterns connect in my work.
+            <p className="text-xs sm:text-sm text-[#9ca3af] font-light">
+              Interactive network demonstrating how projects, technical domains, and engineering principles connect.
             </p>
           </div>
 
@@ -371,170 +359,268 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION C: THE JOURNAL & LIVING MEMOIR */}
+      {/* SECTION 03: THE NOTEBOOK (COMPACT EDITORIAL FEATURE) */}
       <section className="py-24 border-b border-[#232832]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <span className="font-mono text-xs font-semibold text-[#e1523d] uppercase tracking-wider">
-                // SECTION 03: THE NOTEBOOK &amp; MEMOIR
+                // SECTION 03: THE NOTEBOOK
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#f2eee6] mt-2">
-                Thoughts, Cinema, Mortality &amp; Being Human
+                Published Essays &amp; Reflections
               </h2>
               <p className="text-sm text-[#9ca3af] mt-1 max-w-xl font-light">
-                Personal journal entries on mental health, what visiting an orphanage taught me, superheroes, idols, and the quiet questions that keep us awake at night.
+                Long-form writing on mental health, human values, cinema, superheroes, and why perfection is a trap.
               </p>
             </div>
             <Link
               href="/writing"
               className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#e1523d] hover:text-[#ef634f] transition-colors"
             >
-              <span>Browse All Journal Pieces ({articles.length})</span>
+              <span>Browse Complete Notebook ({articles.length} Pieces)</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {recentArticles.map((article) => (
-              <article
-                key={article.slug}
-                className="group rounded-xl border border-[#232832] bg-[#14171d] p-6 flex flex-col justify-between hover:border-[#38404f] transition-all"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs font-mono text-[#8b949e]">
-                    <span className="text-[#e1523d] font-semibold">{article.category}</span>
-                    <span>{article.readTime}</span>
-                  </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Primary Featured Article Card (7 cols) */}
+            <article className="lg:col-span-7 rounded-2xl border border-[#232832] bg-[#14171d] p-8 sm:p-10 flex flex-col justify-between space-y-6 hover:border-[#38404f] transition-all">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between text-xs font-mono text-[#8b949e] border-b border-[#1f242e] pb-3">
+                  <span className="text-[#e1523d] font-semibold">{featuredArticle.category}</span>
+                  <span>{featuredArticle.readTime}</span>
+                </div>
 
-                  <h3 className="text-lg font-bold text-[#f2eee6] group-hover:text-[#e1523d] transition-colors leading-snug">
-                    <Link href={`/writing/${article.slug}`}>
-                      {article.title}
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-[#f2eee6] hover:text-[#e1523d] transition-colors">
+                    <Link href={`/writing/${featuredArticle.slug}`}>
+                      {featuredArticle.title}
                     </Link>
                   </h3>
-
-                  <p className="font-mono text-xs text-[#8b949e]">
-                    {article.subtitle}
-                  </p>
-
-                  <p className="text-xs text-[#cfd6e0] leading-relaxed line-clamp-3 font-serif italic">
-                    &ldquo;{article.excerpt}&rdquo;
+                  <p className="font-mono text-xs text-[#8b949e] mt-1">
+                    {featuredArticle.subtitle}
                   </p>
                 </div>
 
-                <div className="pt-6 border-t border-[#1f242e] mt-6 flex items-center justify-between font-mono text-xs text-[#8b949e]">
-                  <span>{article.date}</span>
-                  <Link
-                    href={`/writing/${article.slug}`}
-                    className="text-[#f2eee6] group-hover:text-[#e1523d] inline-flex items-center gap-1 transition-colors"
-                  >
-                    <span>Read Essay</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION D: WHAT MAKES ME // CINEMA, ORDINARY DAYS & MOMENTS */}
-      <section className="py-24 border-b border-[#232832] bg-[#0a0c0f]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <span className="font-mono text-xs font-semibold text-[#e1523d] uppercase tracking-wider">
-                // SECTION 04: WHAT MAKES ME
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#f2eee6] mt-2">
-                Cinema, Influences &amp; Ordinary Days
-              </h2>
-              <p className="text-sm text-[#9ca3af] mt-1 max-w-xl font-light">
-                The stories, films, people, and quiet moments that don&apos;t show up on a résumé, but explain everything about who I am.
-              </p>
-            </div>
-            <div className="flex items-center gap-4 font-mono text-xs">
-              <Link href="/cinema" className="text-[#f2eee6] hover:text-[#e1523d] transition-colors">
-                Cinema Journal &rarr;
-              </Link>
-              <Link href="/ordinary-days" className="text-[#f2eee6] hover:text-[#e1523d] transition-colors">
-                Ordinary Days &rarr;
-              </Link>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            {/* Cinema Highlights (7 cols) */}
-            <div className="md:col-span-7 space-y-4">
-              <span className="font-mono text-xs text-[#f59e0b] uppercase font-bold flex items-center gap-1.5">
-                <Film className="h-3.5 w-3.5" />
-                <span>Cinema That Stayed With Me</span>
-              </span>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {featuredCinema.map((film) => (
-                  <div
-                    key={film.slug}
-                    className="rounded-xl border border-[#232832] bg-[#14171d] p-5 space-y-3 hover:border-[#3b4352] transition-colors"
-                  >
-                    <div className="flex justify-between items-center text-[10px] font-mono text-[#8b949e]">
-                      <span>{film.year} // {film.creator}</span>
-                      <span className="mono-badge">{film.type}</span>
-                    </div>
-                    <h3 className="font-bold text-lg text-[#f2eee6]">{film.title}</h3>
-                    <p className="font-serif italic text-xs text-[#e1523d] leading-relaxed">
-                      &ldquo;{film.favoriteQuote}&rdquo;
-                    </p>
-                    <p className="text-xs text-[#a3abb6] leading-relaxed line-clamp-3 font-light">
-                      {film.reflection}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Ordinary Days & Fragments (5 cols) */}
-            <div className="md:col-span-5 space-y-4">
-              <span className="font-mono text-xs text-[#10b981] uppercase font-bold flex items-center gap-1.5">
-                <Camera className="h-3.5 w-3.5" />
-                <span>Ordinary Days &amp; Fragments</span>
-              </span>
-
-              {/* 2 AM Fragment Card */}
-              <div className="rounded-xl border border-[#e1523d]/30 bg-[#14171d] p-5 space-y-2">
-                <div className="flex items-center justify-between text-[10px] font-mono text-[#8b949e]">
-                  <span className="text-[#e1523d] font-bold">2:14 AM FRAGMENT</span>
-                  <span>{latestFragment.date}</span>
-                </div>
-                <p className="font-serif italic text-sm text-[#f2eee6] leading-relaxed">
-                  &ldquo;{latestFragment.text}&rdquo;
-                </p>
-                <div className="text-[10px] text-[#8b949e] font-mono">
-                  {latestFragment.context}
-                </div>
+                <blockquote className="rounded-xl border-l-2 border-[#e1523d] bg-[#0d0f12] p-4 text-xs sm:text-sm text-[#cfd6e0] font-serif italic leading-relaxed">
+                  &ldquo;{featuredArticle.excerpt}&rdquo;
+                </blockquote>
               </div>
 
-              {/* Ordinary Day Moment */}
-              {recentDays.map((day) => (
-                <div
-                  key={day.id}
-                  className="rounded-xl border border-[#232832] bg-[#14171d] p-4 space-y-1 text-xs"
+              <div className="pt-4 border-t border-[#1f242e] flex items-center justify-between">
+                <span className="font-mono text-xs text-[#6b7280]">{featuredArticle.date}</span>
+                <Link
+                  href={`/writing/${featuredArticle.slug}`}
+                  className="inline-flex items-center gap-1.5 font-mono text-xs text-[#e1523d] hover:text-[#ef634f] transition-colors"
                 >
-                  <div className="flex justify-between font-mono text-[10px] text-[#8b949e]">
-                    <span>{day.title}</span>
-                    <span className="text-[#10b981]">{day.location}</span>
+                  <span>Read Canonical Essay</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </article>
+
+            {/* Secondary Recent Articles (5 cols) */}
+            <div className="lg:col-span-5 space-y-6">
+              {recentArticles.map((article) => (
+                <article
+                  key={article.slug}
+                  className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-3 hover:border-[#38404f] transition-all flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-[11px] font-mono text-[#8b949e]">
+                      <span className="text-[#10b981]">{article.category}</span>
+                      <span>{article.readTime}</span>
+                    </div>
+
+                    <h4 className="text-lg font-bold text-[#f2eee6] hover:text-[#e1523d] transition-colors">
+                      <Link href={`/writing/${article.slug}`}>
+                        {article.title}
+                      </Link>
+                    </h4>
+
+                    <p className="text-xs text-[#9ca3af] leading-relaxed line-clamp-2 font-light">
+                      {article.excerpt}
+                    </p>
                   </div>
-                  <p className="text-[#a3abb6] font-light leading-relaxed">
-                    {day.caption}
-                  </p>
-                </div>
+
+                  <div className="pt-3 border-t border-[#1f242e] flex items-center justify-between text-xs font-mono">
+                    <span className="text-[#6b7280]">{article.date}</span>
+                    <Link
+                      href={`/writing/${article.slug}`}
+                      className="text-[#8b949e] hover:text-[#e1523d] inline-flex items-center gap-1 transition-colors"
+                    >
+                      <span>Read</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION E: CLOSING INVITATION */}
+      {/* SECTION 04: WHAT I'M INTO (TASTE PREVIEW) */}
+      <section className="py-24 border-b border-[#232832] bg-[#0a0c0f]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="font-mono text-xs font-semibold text-[#f59e0b] uppercase tracking-wider">
+                // SECTION 04: WHAT I&apos;M INTO
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#f2eee6] mt-2">
+                Stories, Sounds &amp; Influences
+              </h2>
+              <p className="text-sm text-[#9ca3af] mt-1 max-w-xl font-light">
+                A preview of the cultural archive: the films, songwriters, and books that built my perspective beyond lines of code.
+              </p>
+            </div>
+            <Link
+              href="/taste"
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#f59e0b] hover:text-[#fbbf24] transition-colors"
+            >
+              <span>Explore Complete Taste Gallery</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Film Preview Card */}
+            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between font-mono text-xs text-[#8b949e]">
+                  <span className="flex items-center gap-1.5 text-[#3b68ff]">
+                    <Film className="h-3.5 w-3.5" />
+                    <span>CINEMA</span>
+                  </span>
+                  <span>{featuredFilm.year}</span>
+                </div>
+
+                <h3 className="text-xl font-bold text-[#f2eee6]">{featuredFilm.title}</h3>
+                <p className="font-mono text-xs text-[#8b949e]">Dir. {featuredFilm.director}</p>
+
+                <p className="font-serif italic text-xs text-[#cfd6e0] leading-relaxed">
+                  &ldquo;{featuredFilm.favoriteQuote}&rdquo;
+                </p>
+
+                <p className="text-xs text-[#9ca3af] leading-relaxed line-clamp-3 font-light">
+                  {featuredFilm.whyILoveIt}
+                </p>
+              </div>
+
+              <div className="pt-3 border-t border-[#1f242e]">
+                <Link
+                  href="/taste"
+                  className="font-mono text-xs text-[#3b68ff] hover:text-white inline-flex items-center gap-1 transition-colors"
+                >
+                  <span>In Taste Archive &rarr;</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Music Preview Card */}
+            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between font-mono text-xs text-[#8b949e]">
+                  <span className="flex items-center gap-1.5 text-[#10b981]">
+                    <Music className="h-3.5 w-3.5" />
+                    <span>MUSIC</span>
+                  </span>
+                  <span>{featuredArtist.era}</span>
+                </div>
+
+                <h3 className="text-xl font-bold text-[#f2eee6]">{featuredArtist.name}</h3>
+                <p className="font-mono text-xs text-[#8b949e]">{featuredArtist.genre}</p>
+
+                <p className="text-xs text-[#9ca3af] leading-relaxed line-clamp-3 font-light">
+                  {featuredArtist.whyTheyMatter}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {featuredArtist.notableWorks.slice(0, 2).map((w) => (
+                    <span key={w} className="rounded bg-[#0d0f12] px-2 py-0.5 font-mono text-[10px] text-[#cfd6e0] border border-[#1f242e]">
+                      &ldquo;{w}&rdquo;
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-[#1f242e]">
+                <Link
+                  href="/taste"
+                  className="font-mono text-xs text-[#10b981] hover:text-white inline-flex items-center gap-1 transition-colors"
+                >
+                  <span>In Taste Archive &rarr;</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Book Preview Card */}
+            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between font-mono text-xs text-[#8b949e]">
+                  <span className="flex items-center gap-1.5 text-[#f59e0b]">
+                    <BookOpen className="h-3.5 w-3.5" />
+                    <span>READING</span>
+                  </span>
+                  <span>{featuredBook.year}</span>
+                </div>
+
+                <h3 className="text-xl font-bold text-[#f2eee6]">{featuredBook.title}</h3>
+                <p className="font-mono text-xs text-[#8b949e]">By {featuredBook.author}</p>
+
+                <blockquote className="font-serif italic text-xs text-[#cfd6e0] leading-relaxed">
+                  &ldquo;{featuredBook.memorablePassage.text}&rdquo;
+                </blockquote>
+
+                <p className="text-xs text-[#9ca3af] leading-relaxed line-clamp-2 font-light">
+                  {featuredBook.whyChosen}
+                </p>
+              </div>
+
+              <div className="pt-3 border-t border-[#1f242e]">
+                <Link
+                  href="/taste"
+                  className="font-mono text-xs text-[#f59e0b] hover:text-white inline-flex items-center gap-1 transition-colors"
+                >
+                  <span>In Taste Archive &rarr;</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 05: A GLIMPSE OF THE CURRENT CHAPTER (NOW PREVIEW) */}
+      <section className="py-24 border-b border-[#232832]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="font-mono text-xs font-semibold text-[#10b981] uppercase tracking-wider">
+                // SECTION 05: THE CURRENT CHAPTER
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#f2eee6] mt-2">
+                A Living Snapshot
+              </h2>
+              <p className="text-sm text-[#9ca3af] mt-1 max-w-xl font-light">
+                What occupies my hands and thoughts right now. Features a deterministic daily quote and real-time focus.
+              </p>
+            </div>
+            <Link
+              href="/now"
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#10b981] hover:text-[#34d399] transition-colors"
+            >
+              <span>Visit Full &ldquo;Right Now&rdquo; Page</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <DailyQuoteCard />
+        </div>
+      </section>
+
+      {/* SECTION 06: CLOSING TRANSMISSION */}
       <section className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-[#232832] bg-[#14171d] p-8 sm:p-14 relative overflow-hidden">
@@ -560,7 +646,7 @@ export default function HomePage() {
                   href="/archive"
                   className="inline-flex items-center gap-2 rounded border border-[#232832] bg-[#0d0f12] px-6 py-3.5 font-mono text-xs uppercase tracking-wider text-[#f2eee6] hover:border-[#8b949e] transition-colors"
                 >
-                  <span>Wander the Living Archive &rarr;</span>
+                  <span>Wander the Chronological Archive &rarr;</span>
                 </Link>
               </div>
             </div>
