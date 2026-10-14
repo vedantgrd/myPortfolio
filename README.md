@@ -26,14 +26,18 @@ The portfolio is structured as a multi-page publication with dedicated routes:
 
 | Route | Chapter / Purpose | Key Highlights |
 |---|---|---|
-| `/` | **01 // Cover & Overview** | Editorial cover headline, real portrait photo, selected works exhibition, candid introduction, interactive Project Constellation, and recent notebook preview. |
+| `/` | **01 // Cover & Overview** | Editorial cover headline, real portrait photo, selected works exhibition, candid introduction, interactive Project Constellation, What Makes Me section, and latest 2 AM fragment. |
 | `/work` | **02 // Work Exhibition** | Filterable project catalog (AI & Systems, Hardware & IoT, Security & Systems, Interactive & Games, Web Platforms) with exhibition cards & compact archive table. |
 | `/work/[slug]` | **Case Studies** | In-depth case studies with architectural diagrams, problems, key decisions, what broke & how it was fixed, verified outcomes, and actual tech stack. |
-| `/writing` | **03 // The Notebook** | Independent publication with long-form essays, category tags, search filters, and reading time estimates. |
-| `/writing/[slug]` | **Reading View** | Long-form reading experience, formatted code snippets, insight callout boxes, and previous/next navigation. |
-| `/about` | **04 // About Vedant** | Personal narrative, authentic portrait, visual interactive timeline (Pillai College of Engineering, VFS Global, VPM's Polytechnic), engineering principles, and verified résumé access. |
-| `/lab` | **05 // The Living Laboratory** | **Bullwhip AI Simulator** (real-time demand oscillation chart & safety stock dampener), **CipherLab Cryptography Workbench** (Caesar, Vigenère, and Avalanche bit-flip tester), and **Project-Linked Skill Evidence Matrix**. |
-| `/contact` | **06 // Direct Transmission** | One-click email copy with instant feedback, verified social links (GitHub, LinkedIn, X), and prefilled mail dispatch form. |
+| `/writing` | **03 // The Notebook** | Independent publication with long-form personal essays, cinema reflections, human stories, search filters, and reading time estimates. |
+| `/writing/[slug]` | **Reading View** | Long-form reading experience, formatted code snippets, quote callout boxes, and previous/next navigation. |
+| `/archive` | **04 // The Living Archive** | Unified chronological time capsule connecting essays, projects, photographic moments, cinema influences, and milestones across 2023–2026. |
+| `/cinema` | **05 // Cinema & Influences** | Personal cultural journal of films that altered perspective (*The Truman Show*, *Dead Poets Society*, *The Dark Knight*, *Spider-Man 2*), quotes, and reflections. |
+| `/ordinary-days` | **06 // Ordinary Days** | Intimate photographic journal capturing quiet moments (balancing drone props at 3 AM, orphanage visit, monsoon train rides, post-finals tea stalls). |
+| `/now` | **07 // Right Now** | Public living snapshot of what Vedant is building, learning, reading, watching, and thinking about right now. |
+| `/about` | **08 // About Vedant** | Personal narrative, authentic portrait, visual interactive timeline (Pillai College of Engineering, VFS Global, VPM's Polytechnic), engineering principles, and verified résumé access. |
+| `/lab` | **09 // The Living Laboratory** | **Bullwhip AI Simulator** (real-time demand oscillation chart & safety stock dampener), **CipherLab Cryptography Workbench** (Caesar, Vigenère, and Avalanche bit-flip tester), and **Project-Linked Skill Evidence Matrix**. |
+| `/contact` | **10 // Direct Transmission** | One-click email copy with instant feedback, verified social links (GitHub, LinkedIn, X), and prefilled mail dispatch form. |
 
 ---
 
