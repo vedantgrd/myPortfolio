@@ -20,6 +20,72 @@ import { tasteData, FilmEntry, MusicArtist, BookEntry } from '@/data/taste'
 
 type TabType = 'all' | 'cinema' | 'music' | 'books'
 
+function TasteMediaArtwork({
+  src,
+  alt,
+  aspect = 'aspect-[2/3]',
+  type = 'cinema',
+  badgeText,
+  accentColor = '#e1523d',
+  icon: Icon = Film,
+}: {
+  src: string
+  alt: string
+  aspect?: string
+  type?: 'cinema' | 'music' | 'books'
+  badgeText?: string
+  accentColor?: string
+  icon?: any
+}) {
+  const [hasError, setHasError] = useState(false)
+
+  return (
+    <div
+      className={`relative ${aspect} w-full overflow-hidden border border-[#2d3442] bg-[#090a0d] shadow-2xl shrink-0 group/media transition-all duration-300 ring-1 ring-white/10 hover:ring-white/30 ${
+        type === 'books'
+          ? 'rounded-r-xl rounded-l-sm border-l-4 border-l-[#222733]'
+          : 'rounded-xl'
+      }`}
+    >
+      {!hasError ? (
+        <>
+          <img
+            src={src}
+            alt={alt}
+            onError={() => setHasError(true)}
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+          {/* Subtle glossy sheen on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none duration-300" />
+
+          {/* Minimal glass format pill in top corner */}
+          {badgeText && (
+            <div className="absolute top-2.5 left-2.5 rounded bg-[#090a0d]/85 backdrop-blur-md px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[#cfd6e0] border border-white/10 flex items-center gap-1.5 shadow-md">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
+              <span>{badgeText}</span>
+            </div>
+          )}
+        </>
+      ) : (
+        /* Stylized fallback ONLY if file failed to load */
+        <div className="absolute inset-0 bg-gradient-to-br from-[#12161f] to-[#090a0d] p-4 flex flex-col justify-between">
+          <div className="flex justify-between items-center text-[10px] font-mono text-[#8b949e]">
+            <span className="uppercase font-semibold tracking-wider" style={{ color: accentColor }}>
+              {badgeText || type}
+            </span>
+            <Icon className="h-3.5 w-3.5 text-[#8b949e]" />
+          </div>
+          <div>
+            <span className="block text-xs font-bold text-[#f2eee6] leading-tight font-serif line-clamp-2">
+              {alt}
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function TastePage() {
   const [activeTab, setActiveTab] = useState<TabType>('all')
 
@@ -128,37 +194,22 @@ export default function TastePage() {
                     </div>
 
                     {/* Poster + Title Header Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-start">
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
                       {/* Film Poster Visual Container */}
-                      <div className="sm:col-span-4 relative aspect-[2/3] w-full rounded-xl overflow-hidden border border-[#282e3b] bg-[#090a0d] shadow-lg shrink-0">
-                        <img
+                      <div className="sm:col-span-5">
+                        <TasteMediaArtwork
                           src={film.posterUrl}
-                          alt={`${film.title} Poster`}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          onError={(e) => {
-                            // If user hasn't added the specific poster file yet, show the stylized poster fallback
-                            e.currentTarget.style.display = 'none'
-                          }}
+                          alt={`${film.title} Theatrical Poster`}
+                          aspect="aspect-[2/3]"
+                          type="cinema"
+                          badgeText={`${film.year} // 35MM`}
+                          accentColor={film.accentColor}
+                          icon={Film}
                         />
-                        {/* Stylized Poster Fallback / Typography */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/80 to-transparent p-3 flex flex-col justify-between pointer-events-none">
-                          <div className="flex justify-between items-center text-[10px] font-mono text-[#8b949e]">
-                            <span>{film.year}</span>
-                            <Film className="h-3 w-3 text-[#e1523d]" />
-                          </div>
-                          <div>
-                            <span className="block text-[10px] font-mono uppercase text-[#e1523d] font-semibold">
-                              POSTER
-                            </span>
-                            <span className="block text-xs font-bold text-[#f2eee6] leading-tight font-serif">
-                              {film.title}
-                            </span>
-                          </div>
-                        </div>
                       </div>
 
                       {/* Title & Theme Summary */}
-                      <div className="sm:col-span-8 space-y-3">
+                      <div className="sm:col-span-7 space-y-3">
                         <h3 className="text-2xl font-bold text-[#f2eee6] tracking-tight group-hover:text-[#e1523d] transition-colors">
                           {film.title}
                         </h3>
@@ -243,30 +294,20 @@ export default function TastePage() {
                     </div>
 
                     {/* Band / Artist Poster & Header */}
-                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-start">
-                      <div className="sm:col-span-4 relative aspect-square w-full rounded-xl overflow-hidden border border-[#282e3b] bg-[#090a0d] shadow-lg shrink-0">
-                        <img
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
+                      <div className="sm:col-span-5">
+                        <TasteMediaArtwork
                           src={artist.posterUrl}
-                          alt={`${artist.name} Poster`}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none'
-                          }}
+                          alt={`${artist.name} Artwork`}
+                          aspect="aspect-square"
+                          type="music"
+                          badgeText="VINYL ARCHIVE"
+                          accentColor={artist.accentColor}
+                          icon={Disc3}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/80 to-transparent p-3 flex flex-col justify-between pointer-events-none">
-                          <Music className="h-3.5 w-3.5 text-[#10b981]" />
-                          <div>
-                            <span className="block text-[10px] font-mono uppercase text-[#10b981] font-semibold">
-                              VINYL / POSTER
-                            </span>
-                            <span className="block text-xs font-bold text-[#f2eee6] leading-tight">
-                              {artist.name}
-                            </span>
-                          </div>
-                        </div>
                       </div>
 
-                      <div className="sm:col-span-8 space-y-2">
+                      <div className="sm:col-span-7 space-y-2">
                         <h3 className="text-2xl font-bold text-[#f2eee6] group-hover:text-[#10b981] transition-colors">
                           {artist.name}
                         </h3>
@@ -351,30 +392,20 @@ export default function TastePage() {
                     </div>
 
                     {/* Book Cover + Header Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-start">
-                      <div className="sm:col-span-4 relative aspect-[2/3] w-full rounded-xl overflow-hidden border border-[#282e3b] bg-[#090a0d] shadow-lg shrink-0">
-                        <img
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
+                      <div className="sm:col-span-5">
+                        <TasteMediaArtwork
                           src={book.posterUrl}
                           alt={`${book.title} Book Cover`}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none'
-                          }}
+                          aspect="aspect-[2/3]"
+                          type="books"
+                          badgeText={`${book.year} EDITION`}
+                          accentColor="#f59e0b"
+                          icon={BookOpen}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/80 to-transparent p-3 flex flex-col justify-between pointer-events-none">
-                          <BookOpen className="h-3.5 w-3.5 text-[#f59e0b]" />
-                          <div>
-                            <span className="block text-[10px] font-mono uppercase text-[#f59e0b] font-semibold">
-                              BOOK COVER
-                            </span>
-                            <span className="block text-xs font-bold text-[#f2eee6] leading-tight font-serif">
-                              {book.title}
-                            </span>
-                          </div>
-                        </div>
                       </div>
 
-                      <div className="sm:col-span-8 space-y-3">
+                      <div className="sm:col-span-7 space-y-3">
                         <h3 className="text-2xl font-bold text-[#f2eee6] tracking-tight group-hover:text-[#f59e0b] transition-colors">
                           {book.title}
                         </h3>

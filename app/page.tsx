@@ -512,19 +512,15 @@ export default function HomePage() {
                 </div>
 
                 {/* Poster visual element */}
-                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d]">
+                <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#e1523d]/30 transition-all">
                   <img
                     src={featuredFilm.posterUrl}
                     alt={featuredFilm.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/60 to-transparent p-3 flex flex-col justify-between pointer-events-none">
-                    <span className="text-[10px] font-mono text-[#e1523d] uppercase font-semibold">
-                      #01 FILM
-                    </span>
-                    <span className="text-sm font-bold text-[#f2eee6] font-serif">
-                      {featuredFilm.title}
-                    </span>
+                  <div className="absolute top-2.5 left-2.5 rounded bg-[#090a0d]/85 backdrop-blur-md px-2 py-0.5 font-mono text-[9px] text-[#e1523d] uppercase font-semibold border border-white/10 shadow flex items-center gap-1">
+                    <Film className="h-2.5 w-2.5" />
+                    <span>#01 FILM</span>
                   </div>
                 </div>
 
@@ -564,19 +560,15 @@ export default function HomePage() {
                 </div>
 
                 {/* Artist visual element */}
-                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d]">
+                <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#10b981]/30 transition-all">
                   <img
                     src={featuredArtist.posterUrl}
                     alt={featuredArtist.name}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/60 to-transparent p-3 flex flex-col justify-between pointer-events-none">
-                    <span className="text-[10px] font-mono text-[#10b981] uppercase font-semibold">
-                      FEATURED ARTIST
-                    </span>
-                    <span className="text-sm font-bold text-[#f2eee6]">
-                      {featuredArtist.name}
-                    </span>
+                  <div className="absolute top-2.5 left-2.5 rounded bg-[#090a0d]/85 backdrop-blur-md px-2 py-0.5 font-mono text-[9px] text-[#10b981] uppercase font-semibold border border-white/10 shadow flex items-center gap-1">
+                    <Music className="h-2.5 w-2.5" />
+                    <span>FEATURED ARTIST</span>
                   </div>
                 </div>
 
@@ -620,19 +612,15 @@ export default function HomePage() {
                 </div>
 
                 {/* Book visual element */}
-                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d]">
+                <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#f59e0b]/30 transition-all">
                   <img
                     src={featuredBook.posterUrl}
                     alt={featuredBook.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/60 to-transparent p-3 flex flex-col justify-between pointer-events-none">
-                    <span className="text-[10px] font-mono text-[#f59e0b] uppercase font-semibold">
-                      FEATURED BOOK
-                    </span>
-                    <span className="text-sm font-bold text-[#f2eee6] font-serif">
-                      {featuredBook.title}
-                    </span>
+                  <div className="absolute top-2.5 left-2.5 rounded bg-[#090a0d]/85 backdrop-blur-md px-2 py-0.5 font-mono text-[9px] text-[#f59e0b] uppercase font-semibold border border-white/10 shadow flex items-center gap-1">
+                    <BookOpen className="h-2.5 w-2.5" />
+                    <span>FEATURED BOOK</span>
                   </div>
                 </div>
 
