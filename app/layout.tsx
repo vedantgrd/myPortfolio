@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Navbar } from '@/components/navigation/Navbar'
+import { Footer } from '@/components/navigation/Footer'
 import './globals.css'
 
 const geistSans = Geist({
@@ -14,9 +16,20 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Vedant Garud | Portfolio',
-  description: 'Developer exploring the digital cosmos. Immersive portfolio experience.',
-  keywords: ['developer', 'portfolio', 'full-stack', 'react', 'next.js', 'three.js'],
+  title: 'VEDANT / UNFINISHED — Personal Archive & Technical Laboratory',
+  description:
+    'The personal digital publication, engineering notebook, and interactive project archive of Vedant Garud. Exploring multi-agent AI, systems engineering, hardware integration, and cryptography.',
+  keywords: [
+    'Vedant Garud',
+    'Vidyut',
+    'Bullwhip AI',
+    'Agridrone',
+    'CipherLab',
+    'Software Engineer',
+    'Pillai College of Engineering',
+    'VFS Global',
+    'Next.js 16',
+  ],
   authors: [{ name: 'Vedant Garud' }],
   creator: 'Vedant Garud',
   icons: {
@@ -39,7 +52,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0a0a14',
+  themeColor: '#0d0f12',
   width: 'device-width',
   initialScale: 1,
 }
@@ -50,12 +63,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark" style={{ background: 'transparent' }}>
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased text-foreground`} style={{ background: 'transparent' }}>
-        {children}
+    <html lang="en" className="dark scroll-smooth">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-[#0d0f12] text-[#f2eee6] min-h-screen flex flex-col selection:bg-[#e1523d]/30 selection:text-white`}
+      >
+        <Navbar />
+        <main className="flex-1 pt-16">{children}</main>
+        <Footer />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
 }
-
