@@ -11,9 +11,10 @@ const navItems = [
   { href: '/work', label: 'Work', number: '02' },
   { href: '/writing', label: 'Notebook', number: '03' },
   { href: '/taste', label: 'Taste', number: '04' },
-  { href: '/about', label: 'About', number: '05' },
-  { href: '/archive', label: 'Archive', number: '06' },
-  { href: '/now', label: 'Now', number: '07' },
+  { href: '/archive', label: 'Archive', number: '05' },
+  { href: '/now', label: 'Now', number: '06' },
+  { href: '/about', label: 'About', number: '07' },
+  { href: '/lab', label: 'Lab', number: '08' },
 ]
 
 export function Navbar() {
@@ -63,8 +64,8 @@ export function Navbar() {
             </span>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+          {/* Desktop Navigation - All 8 canonical items including Lab */}
+          <nav className="hidden lg:flex items-center gap-0.5">
             {navItems.map((item) => {
               const isActive =
                 item.href === '/'
@@ -75,7 +76,7 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition-colors ${
+                  className={`relative px-2.5 py-1.5 text-xs font-mono uppercase tracking-wider transition-colors ${
                     isActive
                       ? 'text-[#f2eee6] font-semibold'
                       : 'text-[#8b949e] hover:text-[#f2eee6]'
@@ -87,7 +88,7 @@ export function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="activeNavIndicator"
-                      className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#e1523d]"
+                      className="absolute bottom-0 left-2.5 right-2.5 h-[2px] bg-[#e1523d]"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -96,14 +97,8 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Quick Action Buttons (Lab & Transmission) */}
+          {/* Quick Action Transmission Button */}
           <div className="hidden sm:flex items-center gap-2 shrink-0">
-            <Link
-              href="/lab"
-              className="font-mono text-xs text-[#8b949e] hover:text-[#f2eee6] px-2.5 py-1.5 transition-colors"
-            >
-              <span>Lab</span>
-            </Link>
             <Link
               href="/contact"
               className="inline-flex items-center gap-1.5 rounded border border-[#e1523d]/40 bg-[#e1523d]/10 px-3 py-1.5 font-mono text-xs text-[#f2eee6] transition-all hover:bg-[#e1523d] hover:text-white hover:border-[#e1523d]"
@@ -163,17 +158,10 @@ export function Navbar() {
                   )
                 })}
 
-                <div className="pt-4 border-t border-[#1d222b] mt-2 flex flex-col gap-2">
-                  <Link
-                    href="/lab"
-                    className="flex items-center justify-between rounded px-3 py-2 text-xs font-mono text-[#8b949e] hover:bg-[#14171d] hover:text-[#f2eee6]"
-                  >
-                    <span>The Laboratory (Interactive)</span>
-                    <ArrowUpRight className="h-3 w-3" />
-                  </Link>
+                <div className="pt-4 border-t border-[#1d222b] mt-2">
                   <Link
                     href="/contact"
-                    className="flex items-center justify-between rounded bg-[#e1523d]/10 border border-[#e1523d]/30 px-3 py-2 text-xs font-mono text-[#f2eee6] hover:bg-[#e1523d] hover:text-white"
+                    className="flex items-center justify-between rounded bg-[#e1523d]/10 border border-[#e1523d]/30 px-3 py-2.5 text-xs font-mono text-[#f2eee6] hover:bg-[#e1523d] hover:text-white"
                   >
                     <span>Direct Transmission</span>
                     <ArrowUpRight className="h-3.5 w-3.5" />

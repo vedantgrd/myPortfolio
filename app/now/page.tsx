@@ -1,17 +1,11 @@
 import Link from 'next/link'
 import {
   ArrowRight,
-  BookOpen,
-  Calendar,
-  Compass,
   Cpu,
   Eye,
   Hammer,
   Lightbulb,
   MapPin,
-  Sparkles,
-  Music,
-  Film,
 } from 'lucide-react'
 import { nowData } from '@/data/now'
 import { DailyQuoteCard } from '@/components/now/DailyQuoteCard'
@@ -24,7 +18,7 @@ export default function NowPage() {
         <div className="pb-10 border-b border-[#232832] space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-[#8b949e]">
             <div className="flex items-center gap-2">
-              <span className="text-[#e1523d] font-semibold">// CHAPTER 07</span>
+              <span className="text-[#e1523d] font-semibold">// CHAPTER 06</span>
               <span>LIVING SNAPSHOT</span>
               <span>•</span>
               <span>THE NOW PAGE</span>
@@ -56,16 +50,6 @@ export default function NowPage() {
         <section className="space-y-3">
           <DailyQuoteCard />
         </section>
-
-        {/* Current Philosophy Banner */}
-        <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 text-center space-y-1.5">
-          <p className="font-serif italic text-lg sm:text-xl text-[#f2eee6]">
-            {nowData.currentMotto}
-          </p>
-          <span className="font-mono text-xs text-[#8b949e] block">
-            Focus: Software Architecture, Information Security, and Staying in India
-          </span>
-        </div>
 
         {/* PART B: WHAT I AM BUILDING */}
         <section className="space-y-6">
@@ -181,7 +165,7 @@ export default function NowPage() {
           </div>
         </section>
 
-        {/* PART E: WHAT IS ON MY MIND */}
+        {/* PART E: WHAT IS ON MY MIND (Fixed dashes and non-wrapping numbers) */}
         <section className="space-y-6">
           <div className="flex items-center justify-between border-b border-[#1d222b] pb-3">
             <div className="flex items-center gap-2 font-mono text-xs text-[#10b981] uppercase font-bold tracking-wider">
@@ -196,14 +180,14 @@ export default function NowPage() {
             </Link>
           </div>
 
-          <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4">
-            <ul className="space-y-3">
+          <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 sm:p-8 space-y-4">
+            <ul className="space-y-4">
               {nowData.thinkingAbout.map((thought, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-[#cfd6e0] font-light leading-relaxed">
-                  <span className="font-mono text-xs text-[#10b981] mt-0.5 font-bold">
+                <li key={i} className="flex items-start gap-3.5 text-sm text-[#cfd6e0] font-light leading-relaxed">
+                  <span className="shrink-0 font-mono text-xs text-[#10b981] font-bold mt-0.5 whitespace-nowrap select-none">
                     0{i + 1} //
                   </span>
-                  <span>{thought}</span>
+                  <span className="flex-1">{thought}</span>
                 </li>
               ))}
             </ul>

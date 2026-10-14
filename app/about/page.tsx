@@ -185,7 +185,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#232832] bg-[#e1523d] p-6 space-y-3">
+            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-3 hover:border-[#38404f] transition-all">
               <span className="font-mono text-xs text-[#e1523d] font-bold block">
                 03 // THE HUMAN STAKES
               </span>

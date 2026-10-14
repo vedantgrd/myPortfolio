@@ -85,21 +85,21 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>05 // About</span>
-                  <span className="text-[#3b4252]">The Narrative</span>
-                </Link>
-              </li>
-              <li>
                 <Link href="/archive" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>06 // Archive</span>
+                  <span>05 // Archive</span>
                   <span className="text-[#3b4252]">Verified Chronology</span>
                 </Link>
               </li>
               <li>
                 <Link href="/now" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>07 // Right Now</span>
+                  <span>06 // Right Now</span>
                   <span className="text-[#3b4252]">Daily Snapshot</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
+                  <span>07 // About</span>
+                  <span className="text-[#3b4252]">The Narrative</span>
                 </Link>
               </li>
               <li>

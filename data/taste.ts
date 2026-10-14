@@ -10,6 +10,7 @@ export interface FilmEntry {
   whatItMadeMeFeel: string
   theme: string
   accentColor: string
+  posterUrl: string
   linkedEssaySlug?: string
 }
 
@@ -23,6 +24,7 @@ export interface MusicArtist {
   musicalImpact: string
   personalNote?: string
   accentColor: string
+  posterUrl: string
 }
 
 export interface BookEntry {
@@ -38,6 +40,7 @@ export interface BookEntry {
     context: string
   }
   personalReflection: string
+  posterUrl: string
   linkedEssaySlug?: string
 }
 
@@ -50,60 +53,60 @@ export interface TasteCollection {
 export const tasteData: TasteCollection = {
   films: [
     {
-      slug: 'the-truman-show',
-      title: 'The Truman Show',
-      director: 'Peter Weir',
-      year: 1998,
-      genre: 'Drama / Satire',
-      favoriteQuote: 'In case I don\'t see ya: Good afternoon, good evening, and good night!',
-      memorableScene: 'Truman sailing the Santa Maria into the painted sky horizon, puncturing the dome, and taking a polite bow before stepping through the exit door into total darkness.',
-      whyILoveIt: 'Beyond its critique of media surveillance, The Truman Show is the most honest film ever made about the terror of growing up. Truman lives inside an artificial, comfortable dome where nothing can hurt him, but nothing is real. The decision to step through that door into uncertainty is what every young person must face.',
-      whatItMadeMeFeel: 'A profound sense of existential liberation. It reminds me that staying comfortable is a dangerous trap, and that autonomy always costs certainty.',
-      theme: 'Existential Courage & Autonomy',
-      accentColor: '#3b68ff',
-      linkedEssaySlug: 'the-films-and-idols-that-shaped-me',
-    },
-    {
-      slug: 'dead-poets-society',
-      title: 'Dead Poets Society',
-      director: 'Peter Weir',
-      year: 1989,
-      genre: 'Drama',
-      favoriteQuote: 'We don\'t read and write poetry because it\'s cute. We read and write poetry because we are members of the human race. And the human race is filled with passion.',
-      memorableScene: 'John Keating leading the boys into the trophy hall, whispering into the quiet room as they stare at photographs of former students from a century ago: "Carpe Diem. Seize the day, boys. Make your lives extraordinary."',
-      whyILoveIt: 'Robin Williams gave a performance that redefined intellectual rebellion for me. In an engineering discipline where people obsess over grades, certificates, and corporate packages, Keating reminds you that technical mastery sustains life, but passion, art, and empathy are what we stay alive for.',
-      whatItMadeMeFeel: 'Inspired to live deliberately. It gave me permission to care deeply about things that cannot be quantified on a resume.',
-      theme: 'Intellectual Freedom & Purpose',
+      slug: 'taxi-driver',
+      title: 'Taxi Driver',
+      director: 'Martin Scorsese',
+      year: 1976,
+      genre: 'Psychological Neo-Noir / Drama',
+      favoriteQuote: 'Loneliness has followed me my whole life, everywhere. In bars, in cars, sidewalks, stores, everywhere. There\'s no escape. I\'m God\'s lonely man.',
+      memorableScene: 'Travis Bickle pacing in his bare apartment, staring into the mirror, rehearsing confrontation with his imaginary reflection: "You talkin\' to me? ... Well, I\'m the only one here."',
+      whyILoveIt: 'The definitive cinematic portrait of isolation, urban alienation, and the distortion of morality. Scorsese and Paul Schrader craft a protagonist who desperately yearns for moral purpose and human connection, but is slowly poisoned by the cold indifference of a city that watches him drift into madness.',
+      whatItMadeMeFeel: 'Unsettled, deeply reflective, and acutely aware of how quiet loneliness can warp a person’s perception of reality.',
+      theme: 'Urban Alienation, Loneliness & Moral Ambiguity',
       accentColor: '#e1523d',
-      linkedEssaySlug: 'the-films-and-idols-that-shaped-me',
+      posterUrl: '/images/taste/taxi-driver.jpg',
     },
     {
-      slug: 'the-dark-knight',
-      title: 'The Dark Knight',
-      director: 'Christopher Nolan',
-      year: 2008,
-      genre: 'Neo-Noir / Superhero',
-      favoriteQuote: 'Because he\'s the hero Gotham deserves, but not the one it needs right now.',
-      memorableScene: 'The social experiment on the two ferries. When the convict throws the detonator into the river and the civilian businessman sets the detonator down, proving that ordinary people under terrifying pressure can still choose decency.',
-      whyILoveIt: 'The Dark Knight is not a superhero brawl; it is an interrogation of human morality. Nolan demonstrated that true courage is refusing to become cynical, even when the world gives you every rational excuse to stop believing in people.',
-      whatItMadeMeFeel: 'Humbled by moral conviction. It taught me that strength is quiet, and that doing the right thing rarely earns applause.',
-      theme: 'Moral Courage Under Terror',
-      accentColor: '#6b7280',
-      linkedEssaySlug: 'why-we-need-heroes',
+      slug: 'manchester-by-the-sea',
+      title: 'Manchester by the Sea',
+      director: 'Kenneth Lonergan',
+      year: 2016,
+      genre: 'Drama',
+      favoriteQuote: 'I can\'t beat it. I can\'t beat it. I\'m sorry.',
+      memorableScene: 'The sidewalk encounter between Lee and Randi. Randi tearfully pleads for forgiveness and tries to unburden both of them, but Lee cannot bear it — his hands tremble, he stammers, and walks away because some grief cannot be healed with a Hollywood reconciliation.',
+      whyILoveIt: 'The most brutally honest film about grief ever put on screen. It refuses to flatter the audience with false catharsis or easy redemption arcs. Some tragedies permanently fracture you; you don\'t "move on," you simply learn to survive inside the silence.',
+      whatItMadeMeFeel: 'Humbled by real human sorrow. It teaches you that listening and letting someone just exist with their pain is more compassionate than demanding they cheer up.',
+      theme: 'Grief, Irreparable Loss & Quiet Dignity',
+      accentColor: '#3b68ff',
+      posterUrl: '/images/taste/manchester-by-the-sea.jpg',
     },
     {
-      slug: 'spider-man-2',
-      title: 'Spider-Man 2',
-      director: 'Sam Raimi',
-      year: 2004,
-      genre: 'Superhero / Drama',
-      favoriteQuote: 'I believe there\'s a hero in all of us, that keeps us honest, gives us strength, makes us noble, and finally allows us to die with pride...',
-      memorableScene: 'The elevated train sequence. Peter webbing the tracks with his bare hands until his suit tears, passing out from physical exhaustion, and regular commuters gently carrying his bruised body into the train car, promising not to tell anyone who he is.',
-      whyILoveIt: 'Peter Parker is the definitive hero because having superpowers doesn’t fix his overdue rent, his failing college grades, or his strained relationships. He carries the burden of caring because inaction when you have the power to help is an abdication of character.',
-      whatItMadeMeFeel: 'A deep respect for everyday sacrifice. It shows that caring about others is exhausting and unglamorous, but indispensable.',
-      theme: 'Responsibility & Everyday Sacrifice',
-      accentColor: '#ef4444',
-      linkedEssaySlug: 'why-we-need-heroes',
+      slug: 'shutter-island',
+      title: 'Shutter Island',
+      director: 'Martin Scorsese',
+      year: 2010,
+      genre: 'Psychological Thriller / Mystery',
+      favoriteQuote: 'Which would be worse: to live as a monster, or to die as a good man?',
+      memorableScene: 'The final quiet exchange on the stone hospital steps. Teddy Daniels looks at Chuck, drops the devastating final line, stands up, and calmly walks with the orderlies toward the lighthouse, having chosen his own tragic peace.',
+      whyILoveIt: 'A psychological tour-de-force exploring guilt, denial, and the elaborate mental fortresses we construct to evade unbearable truth. DiCaprio’s descent is masterfully choreographed with atmospheric storm lighting, ominous classical dissonance, and unforgettable pacing.',
+      whatItMadeMeFeel: 'Chilled by the power of the human subconscious to rewrite memory to survive guilt.',
+      theme: 'Guilt, Memory Denial & Tragic Autonomy',
+      accentColor: '#10b981',
+      posterUrl: '/images/taste/shutter-island.jpg',
+    },
+    {
+      slug: 'the-hangover',
+      title: 'The Hangover',
+      director: 'Todd Phillips',
+      year: 2009,
+      genre: 'Comedy / Mystery',
+      favoriteQuote: 'Remember, what happens in Vegas stays in Vegas. Except for herpes, that shit\'ll come back with you.',
+      memorableScene: 'The morning-after suite reveal. Stepping through the shattered suite with a burning sofa, a wandering rooster, a baby in the closet, and a live Bengal tiger in the bathroom while nobody remembers a single minute of the night.',
+      whyILoveIt: 'Unlike superficial comedy, The Hangover is engineered like a razor-sharp mystery procedural. Every absurd artifact discovered in the morning connects logically to the chaotic night before. Unapologetic kinetic comedy with timeless chemistry between Cooper, Helms, and Galifianakis.',
+      whatItMadeMeFeel: 'Pure unadulterated joy. A reminder that cinema doesn’t always have to be solemn; sometimes genius is making millions of people laugh uncontrollably at sheer chaos.',
+      theme: 'Brotherhood, Kinetic Comedy & Chaos',
+      accentColor: '#f59e0b',
+      posterUrl: '/images/taste/hangover.jpg',
     },
   ],
 
@@ -118,6 +121,7 @@ export const tasteData: TasteCollection = {
       musicalImpact: 'Defined a global generation with acoustic-driven vocal harmonies and stadium anthems that aged surprisingly well.',
       personalNote: 'Songs like "Night Changes" hit differently as you enter your twenties and realize how quickly people and chapters drift apart.',
       accentColor: '#e1523d',
+      posterUrl: '/images/taste/one-direction.jpg',
     },
     {
       id: 'the-beatles',
@@ -129,6 +133,7 @@ export const tasteData: TasteCollection = {
       musicalImpact: 'Revolutionized studio recording, chord progressions, and proved that popular music could be as emotionally complex as literature.',
       personalNote: '"In My Life" is perhaps the most poignant three minutes of music ever recorded about memory and the people who shaped you.',
       accentColor: '#f59e0b',
+      posterUrl: '/images/taste/the-beatles.jpg',
     },
     {
       id: 'michael-jackson',
@@ -140,6 +145,7 @@ export const tasteData: TasteCollection = {
       musicalImpact: 'Redefined music videos into cinematic short films and broke racial barriers across global media.',
       personalNote: '"Man in the Mirror" is an anthem of personal accountability: if you want to make the world a better place, look at yourself and make that change.',
       accentColor: '#3b68ff',
+      posterUrl: '/images/taste/michael-jackson.jpg',
     },
     {
       id: 'the-smiths',
@@ -151,6 +157,7 @@ export const tasteData: TasteCollection = {
       musicalImpact: 'Pioneered independent guitar pop in Britain and influenced alternative rock bands for decades.',
       personalNote: 'Perfect music for late-night walks and quiet commutes on the Mumbai suburban railway when your head is full of unresolved thoughts.',
       accentColor: '#10b981',
+      posterUrl: '/images/taste/the-smiths.jpg',
     },
   ],
 
@@ -161,7 +168,7 @@ export const tasteData: TasteCollection = {
       author: 'Walter Isaacson',
       year: 2011,
       genre: 'Biography / Technology & Design',
-      whyChosen: 'Steve Jobs showed that technology at its highest level is not merely functional engineering — it sits at the intersection of liberal arts and sciences. Isaacson\'s biography is unflinching: it does not sanitize Jobs’s flaws or temper tantrums, making his achievements and design philosophies even more instructive.',
+      whyChosen: 'Steve Jobs proved that technology at its zenith sits at the intersection of liberal arts and sciences. Isaacson\'s biography is unflinching: it does not sanitize Jobs’s flaws or temper tantrums, making his achievements and design philosophies even more instructive.',
       coreTakeaways: [
         'The intersection of humanities and engineering is where products become memorable.',
         'Simplicity is the ultimate sophistication; removing clutter is much harder than adding features.',
@@ -173,6 +180,67 @@ export const tasteData: TasteCollection = {
         context: 'From the iconic 1997 "Think Different" campaign narrative recounted in the biography.',
       },
       personalReflection: 'Reading this book made me realize why I refuse to settle for boring, default developer portfolios with purple gradients. Jobs believed that tools should be beautiful, tactile, and respect the dignity of the person using them. As an engineering student, that philosophy shapes how I build Vidyut and how I design this living archive.',
+      posterUrl: '/images/taste/steve-jobs.jpg',
+    },
+    {
+      id: 'atomic-habits-james-clear',
+      title: 'Atomic Habits',
+      author: 'James Clear',
+      year: 2018,
+      genre: 'Psychology / Systems & Personal Growth',
+      whyChosen: 'Dismantles the deceptive cult of "overnight motivation" and replaces it with deterministic systems engineering for human behavior. Clear demonstrates that goals are overrated; systems and compounding iterations are what dictate real trajectories.',
+      coreTakeaways: [
+        'You do not rise to the level of your goals. You fall to the level of your systems.',
+        'Small habits don’t add up; they compound exponentially over years.',
+        'Identity-based habit formation: decide who you want to be, then prove it to yourself with small consistent wins.',
+        'Environment design is far more effective than relying on volatile willpower.',
+      ],
+      memorablePassage: {
+        text: 'Every action you take is a vote for the type of person you wish to become.',
+        context: 'On the foundational shift from outcome-based habits to identity-based habits.',
+      },
+      personalReflection: 'Writing code for Vidyut and working out regularly taught me that Clear is 100% right. When you show up every day to write 50 lines or balance one drone propeller, nothing seems different that afternoon. But 18 months later, you have built things most people only talk about.',
+      posterUrl: '/images/taste/atomic-habits.jpg',
+    },
+    {
+      id: 'design-of-everyday-things-don-norman',
+      title: 'The Design of Everyday Things',
+      author: 'Don Norman',
+      year: 2013,
+      genre: 'Cognitive Science / Human-Centered Design',
+      whyChosen: 'The definitive foundation on human affordances, signifiers, and feedback loops. Norman argues that when humans push the wrong door or crash a system, it is almost always a failure of design affordance, not user incompetence.',
+      coreTakeaways: [
+        'Good design is invisible; poor design screams with frustration.',
+        'Affordances and signifiers must communicate physical and digital possibilities instinctively.',
+        'Immediate, unambiguous feedback is required to close the human cognitive execution loop.',
+        'Human-centered design starts with understanding people, not forcing people to understand the computer.',
+      ],
+      memorablePassage: {
+        text: 'Good design is actually a lot harder to notice than poor design, in part because good designs fit our needs so well that the design is invisible.',
+        context: 'On why people blame themselves for bad door handles and confusing software interfaces.',
+      },
+      personalReflection: 'Crucial for our Agriculture Drone ground control station. In a dusty open field under bright sunlight, a farmer or student cannot navigate nested menus. Norman’s principles dictated high-contrast telemetry indicators and unambiguous physical controls.',
+      posterUrl: '/images/taste/design-of-everyday-things.jpg',
+    },
+    {
+      id: 'deep-work-cal-newport',
+      title: 'Deep Work',
+      author: 'Cal Newport',
+      year: 2016,
+      genre: 'Productivity / Cognitive Craftsmanship',
+      whyChosen: 'In a distracted culture addicted to social dopamine loops and fragmented multitasking, Newport provides an intellectual defense of uninterrupted, long-form concentration as a rare and valuable economic capability.',
+      coreTakeaways: [
+        'Deep work: professional activities performed in a state of distraction-free concentration that push cognitive capabilities to their limit.',
+        'Shallow work keeps you busy but creates zero durable value and is easily outsourced or automated.',
+        'Embrace boredom: training your brain to resist instant distraction is a prerequisite for complex engineering.',
+        'Drain the shallows: ruthlessly protect deep working blocks from superficial meeting schedules.',
+      ],
+      memorablePassage: {
+        text: 'The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy.',
+        context: 'The central thesis on why depth of concentration is the ultimate competitive advantage.',
+      },
+      personalReflection: 'Whether it is tracking down an asynchronous race condition in the supply chain simulator or writing a deeply vulnerable essay on mental health, nothing worthwhile gets produced in fragmented five-minute slices. Deep work is where craft happens.',
+      posterUrl: '/images/taste/deep-work.jpg',
     },
   ],
 }

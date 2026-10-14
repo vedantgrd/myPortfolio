@@ -14,6 +14,7 @@ import {
   Heart,
   Disc3,
   Layers,
+  Image as ImageIcon,
 } from 'lucide-react'
 import { tasteData, FilmEntry, MusicArtist, BookEntry } from '@/data/taste'
 
@@ -29,14 +30,14 @@ export default function TastePage() {
         <div className="border-b border-[#232832] pb-12 space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-[#8b949e]">
             <div className="flex items-center gap-2">
-              <span className="text-[#e1523d] font-semibold">// CHAPTER 05</span>
+              <span className="text-[#e1523d] font-semibold">// CHAPTER 04</span>
               <span>CULTURAL ARCHIVE</span>
               <span>•</span>
               <span>TASTE &amp; INFLUENCES</span>
             </div>
             <div className="flex items-center gap-2 rounded border border-[#232832] bg-[#14171d] px-3 py-1">
               <Sparkles className="h-3 w-3 text-[#f59e0b]" />
-              <span>CINEMA, MUSIC &amp; BOOKS</span>
+              <span>4 FILMS • 4 ARTISTS • 4 BOOKS</span>
             </div>
           </div>
 
@@ -48,7 +49,7 @@ export default function TastePage() {
               </span>
             </h1>
             <p className="text-base sm:text-lg text-[#9ca3af] leading-relaxed font-light">
-              This isn’t an IMDb rating feed or a Letterboxd log. It is a personal record of the films that altered my perspective, the music that accompanied long nights, and the books that proved engineering without humanity is empty.
+              This isn’t an IMDb rating feed or a Letterboxd log. It is an honest, personal record of the films that altered my perspective, the music that accompanied long nights, and the books that proved engineering without humanity is empty.
             </p>
           </div>
 
@@ -86,7 +87,7 @@ export default function TastePage() {
           </div>
         </div>
 
-        {/* PART A: CINEMA */}
+        {/* PART A: CINEMA (TOP 4 FILMS WITH POSTERS) */}
         {(activeTab === 'all' || activeTab === 'cinema') && (
           <section className="space-y-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#1d222b] pb-4">
@@ -110,9 +111,9 @@ export default function TastePage() {
               {tasteData.films.map((film, index) => (
                 <article
                   key={film.slug}
-                  className="rounded-2xl border border-[#232832] bg-[#14171d] p-6 sm:p-8 flex flex-col justify-between hover:border-[#3b4352] transition-all space-y-6"
+                  className="rounded-2xl border border-[#232832] bg-[#14171d] overflow-hidden flex flex-col justify-between hover:border-[#3b4352] transition-all group"
                 >
-                  <div className="space-y-5">
+                  <div className="p-6 sm:p-8 space-y-6">
                     {/* Top Row: Year, Director, Theme */}
                     <div className="flex items-center justify-between text-xs font-mono text-[#8b949e] border-b border-[#1f242e] pb-3">
                       <div className="flex items-center gap-2">
@@ -122,24 +123,53 @@ export default function TastePage() {
                         <span>{film.director}</span>
                       </div>
                       <span className="rounded bg-[#1a1e26] px-2 py-0.5 text-[10px] text-[#f59e0b] border border-[#f59e0b]/20">
-                        {film.theme}
+                        {film.genre}
                       </span>
                     </div>
 
-                    {/* Title & Genre */}
-                    <div>
-                      <h3 className="text-2xl font-bold text-[#f2eee6] tracking-tight">
-                        {film.title}
-                      </h3>
-                      <p className="font-mono text-xs text-[#8b949e] mt-1">
-                        {film.genre}
-                      </p>
-                    </div>
+                    {/* Poster + Title Header Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-start">
+                      {/* Film Poster Visual Container */}
+                      <div className="sm:col-span-4 relative aspect-[2/3] w-full rounded-xl overflow-hidden border border-[#282e3b] bg-[#090a0d] shadow-lg shrink-0">
+                        <img
+                          src={film.posterUrl}
+                          alt={`${film.title} Poster`}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          onError={(e) => {
+                            // If user hasn't added the specific poster file yet, show the stylized poster fallback
+                            e.currentTarget.style.display = 'none'
+                          }}
+                        />
+                        {/* Stylized Poster Fallback / Typography */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/80 to-transparent p-3 flex flex-col justify-between pointer-events-none">
+                          <div className="flex justify-between items-center text-[10px] font-mono text-[#8b949e]">
+                            <span>{film.year}</span>
+                            <Film className="h-3 w-3 text-[#e1523d]" />
+                          </div>
+                          <div>
+                            <span className="block text-[10px] font-mono uppercase text-[#e1523d] font-semibold">
+                              POSTER
+                            </span>
+                            <span className="block text-xs font-bold text-[#f2eee6] leading-tight font-serif">
+                              {film.title}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
 
-                    {/* Famous Quote */}
-                    <blockquote className="rounded-xl border-l-2 border-[#e1523d] bg-[#0d0f12] p-4 text-xs sm:text-sm text-[#cfd6e0] font-serif italic leading-relaxed">
-                      &ldquo;{film.favoriteQuote}&rdquo;
-                    </blockquote>
+                      {/* Title & Theme Summary */}
+                      <div className="sm:col-span-8 space-y-3">
+                        <h3 className="text-2xl font-bold text-[#f2eee6] tracking-tight group-hover:text-[#e1523d] transition-colors">
+                          {film.title}
+                        </h3>
+                        <p className="font-mono text-xs text-[#8b949e]">
+                          Theme: <span className="text-[#cfd6e0]">{film.theme}</span>
+                        </p>
+                        <blockquote className="rounded-xl border-l-2 border-[#e1523d] bg-[#0d0f12] p-3 text-xs text-[#cfd6e0] font-serif italic leading-relaxed">
+                          &ldquo;{film.favoriteQuote}&rdquo;
+                        </blockquote>
+                      </div>
+                    </div>
 
                     {/* Why I Love It */}
                     <div className="space-y-1.5 text-xs sm:text-sm">
@@ -162,22 +192,11 @@ export default function TastePage() {
                     </div>
                   </div>
 
-                  {/* Bottom: Linked Essay if genuinely exists */}
-                  <div className="pt-4 border-t border-[#1f242e] flex items-center justify-between">
-                    <span className="text-[11px] font-mono text-[#6b7280]">
-                      Feel: {film.whatItMadeMeFeel}
-                    </span>
-                    {film.linkedEssaySlug ? (
-                      <Link
-                        href={`/writing/${film.linkedEssaySlug}`}
-                        className="inline-flex items-center gap-1.5 font-mono text-xs text-[#e1523d] hover:text-[#ef634f] transition-colors"
-                      >
-                        <span>Read Related Essay</span>
-                        <ArrowRight className="h-3.5 w-3.5" />
-                      </Link>
-                    ) : (
-                      <span className="text-[11px] font-mono text-[#4b5563]">Standalone Reflection</span>
-                    )}
+                  {/* Bottom: Emotional Takeaway */}
+                  <div className="p-6 sm:p-8 pt-0">
+                    <div className="pt-4 border-t border-[#1f242e] flex items-center justify-between text-[11px] font-mono text-[#6b7280]">
+                      <span>What It Made Me Feel: <span className="text-[#cfd6e0]">{film.whatItMadeMeFeel}</span></span>
+                    </div>
                   </div>
                 </article>
               ))}
@@ -185,7 +204,7 @@ export default function TastePage() {
           </section>
         )}
 
-        {/* PART B: MUSIC & SONGWRITERS */}
+        {/* PART B: MUSIC & SONGWRITERS (WITH POSTERS / COVERS) */}
         {(activeTab === 'all' || activeTab === 'music') && (
           <section className="space-y-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#1d222b] pb-4">
@@ -209,9 +228,10 @@ export default function TastePage() {
               {tasteData.artists.map((artist) => (
                 <div
                   key={artist.id}
-                  className="rounded-2xl border border-[#232832] bg-[#14171d] p-6 sm:p-8 flex flex-col justify-between space-y-6 hover:border-[#38404f] transition-all"
+                  className="rounded-2xl border border-[#232832] bg-[#14171d] overflow-hidden flex flex-col justify-between hover:border-[#38404f] transition-all group"
                 >
-                  <div className="space-y-4">
+                  <div className="p-6 sm:p-8 space-y-6">
+                    {/* Top Row: Era & Genre */}
                     <div className="flex items-center justify-between text-xs font-mono text-[#8b949e] border-b border-[#1f242e] pb-3">
                       <div className="flex items-center gap-2">
                         <Disc3 className="h-3.5 w-3.5 text-[#10b981]" />
@@ -222,21 +242,41 @@ export default function TastePage() {
                       </span>
                     </div>
 
-                    <div>
-                      <h3 className="text-2xl font-bold text-[#f2eee6]">
-                        {artist.name}
-                      </h3>
+                    {/* Band / Artist Poster & Header */}
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-start">
+                      <div className="sm:col-span-4 relative aspect-square w-full rounded-xl overflow-hidden border border-[#282e3b] bg-[#090a0d] shadow-lg shrink-0">
+                        <img
+                          src={artist.posterUrl}
+                          alt={`${artist.name} Poster`}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/80 to-transparent p-3 flex flex-col justify-between pointer-events-none">
+                          <Music className="h-3.5 w-3.5 text-[#10b981]" />
+                          <div>
+                            <span className="block text-[10px] font-mono uppercase text-[#10b981] font-semibold">
+                              VINYL / POSTER
+                            </span>
+                            <span className="block text-xs font-bold text-[#f2eee6] leading-tight">
+                              {artist.name}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="sm:col-span-8 space-y-2">
+                        <h3 className="text-2xl font-bold text-[#f2eee6] group-hover:text-[#10b981] transition-colors">
+                          {artist.name}
+                        </h3>
+                        <p className="text-xs text-[#9ca3af] leading-relaxed font-light">
+                          {artist.whyTheyMatter}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="space-y-1.5 text-xs sm:text-sm">
-                      <span className="font-mono text-[10px] text-[#6b7280] uppercase tracking-wider block">
-                        WHY THEIR MUSIC MATTERS
-                      </span>
-                      <p className="text-[#9ca3af] leading-relaxed font-light">
-                        {artist.whyTheyMatter}
-                      </p>
-                    </div>
-
+                    {/* Notable Tracks */}
                     <div className="space-y-2">
                       <span className="font-mono text-[10px] text-[#6b7280] uppercase tracking-wider block">
                         NOTABLE TRACKS &amp; ALBUMS
@@ -254,14 +294,16 @@ export default function TastePage() {
                     </div>
 
                     {artist.personalNote && (
-                      <p className="text-xs text-[#a3abb6] font-serif italic border-l-2 border-[#10b981] pl-3 py-0.5">
+                      <p className="text-xs text-[#a3abb6] font-serif italic border-l-2 border-[#10b981] pl-3 py-1 bg-[#0d0f12]/40 rounded-r">
                         {artist.personalNote}
                       </p>
                     )}
                   </div>
 
-                  <div className="pt-4 border-t border-[#1f242e] text-[11px] font-mono text-[#6b7280] flex items-center justify-between">
-                    <span>Impact: {artist.musicalImpact}</span>
+                  <div className="p-6 sm:p-8 pt-0">
+                    <div className="pt-4 border-t border-[#1f242e] text-[11px] font-mono text-[#6b7280] flex items-center justify-between">
+                      <span>Impact: {artist.musicalImpact}</span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -269,7 +311,7 @@ export default function TastePage() {
           </section>
         )}
 
-        {/* PART C: BOOKS THAT CHANGED MY LIFE */}
+        {/* PART C: BOOKS THAT CHANGED MY LIFE (4 BOOKS WITH COVERS) */}
         {(activeTab === 'all' || activeTab === 'books') && (
           <section className="space-y-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#1d222b] pb-4">
@@ -281,73 +323,106 @@ export default function TastePage() {
                   Books That Changed My Perspective
                 </h2>
                 <p className="text-xs sm:text-sm text-[#8b949e] font-light mt-0.5">
-                  Long-form biographies and ideas that altered how I approach engineering and craft.
+                  Biographies, cognitive design, and habits that altered how I approach engineering and life.
                 </p>
               </div>
               <span className="font-mono text-xs text-[#6b7280]">
-                CURATED SELECTION
+                4 CURATED BOOKS
               </span>
             </div>
 
-            <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {tasteData.books.map((book) => (
                 <article
                   key={book.id}
-                  className="rounded-2xl border border-[#232832] bg-[#14171d] p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start hover:border-[#38404f] transition-all"
+                  className="rounded-2xl border border-[#232832] bg-[#14171d] overflow-hidden flex flex-col justify-between hover:border-[#38404f] transition-all group"
                 >
-                  {/* Left Column: Book Identity & Quote */}
-                  <div className="lg:col-span-5 space-y-6">
-                    <div className="flex items-center gap-2 text-xs font-mono text-[#8b949e]">
-                      <span className="text-[#f59e0b] font-semibold">{book.genre}</span>
-                      <span>•</span>
-                      <span>{book.year}</span>
+                  <div className="p-6 sm:p-8 space-y-6">
+                    {/* Top Metadata */}
+                    <div className="flex items-center justify-between text-xs font-mono text-[#8b949e] border-b border-[#1f242e] pb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#f59e0b] font-semibold">{book.year}</span>
+                        <span>•</span>
+                        <span>{book.author}</span>
+                      </div>
+                      <span className="rounded bg-[#1a1e26] px-2 py-0.5 text-[10px] text-[#cfd6e0]">
+                        {book.genre}
+                      </span>
                     </div>
 
-                    <div>
-                      <h3 className="text-3xl font-bold text-[#f2eee6] tracking-tight">
-                        {book.title}
-                      </h3>
-                      <p className="text-sm font-mono text-[#9ca3af] mt-1">
-                        By {book.author}
+                    {/* Book Cover + Header Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-start">
+                      <div className="sm:col-span-4 relative aspect-[2/3] w-full rounded-xl overflow-hidden border border-[#282e3b] bg-[#090a0d] shadow-lg shrink-0">
+                        <img
+                          src={book.posterUrl}
+                          alt={`${book.title} Book Cover`}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/80 to-transparent p-3 flex flex-col justify-between pointer-events-none">
+                          <BookOpen className="h-3.5 w-3.5 text-[#f59e0b]" />
+                          <div>
+                            <span className="block text-[10px] font-mono uppercase text-[#f59e0b] font-semibold">
+                              BOOK COVER
+                            </span>
+                            <span className="block text-xs font-bold text-[#f2eee6] leading-tight font-serif">
+                              {book.title}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="sm:col-span-8 space-y-3">
+                        <h3 className="text-2xl font-bold text-[#f2eee6] tracking-tight group-hover:text-[#f59e0b] transition-colors">
+                          {book.title}
+                        </h3>
+                        <p className="font-mono text-xs text-[#9ca3af]">
+                          By {book.author}
+                        </p>
+                        <blockquote className="rounded-xl border border-[#f59e0b]/30 bg-[#0d0f12] p-3 space-y-1">
+                          <p className="font-serif italic text-xs text-[#f2eee6] leading-relaxed">
+                            &ldquo;{book.memorablePassage.text}&rdquo;
+                          </p>
+                          <span className="block text-[10px] font-mono text-[#8b949e]">
+                            — {book.memorablePassage.context}
+                          </span>
+                        </blockquote>
+                      </div>
+                    </div>
+
+                    {/* Why Chosen */}
+                    <div className="space-y-1 text-xs">
+                      <span className="font-mono text-[10px] text-[#6b7280] uppercase tracking-wider block">
+                        WHY THIS BOOK
+                      </span>
+                      <p className="text-[#a3abb6] leading-relaxed font-light">
+                        {book.whyChosen}
                       </p>
                     </div>
 
-                    <blockquote className="rounded-xl border border-[#f59e0b]/30 bg-[#0d0f12] p-5 space-y-2">
-                      <Quote className="h-4 w-4 text-[#f59e0b]" />
-                      <p className="font-serif italic text-sm text-[#f2eee6] leading-relaxed">
-                        &ldquo;{book.memorablePassage.text}&rdquo;
-                      </p>
-                      <span className="block text-[11px] font-mono text-[#8b949e]">
-                        — {book.memorablePassage.context}
+                    {/* Core Takeaways */}
+                    <div className="space-y-2">
+                      <span className="font-mono text-[10px] text-[#f59e0b] uppercase font-bold tracking-wider block">
+                        CORE LESSONS
                       </span>
-                    </blockquote>
-
-                    <p className="text-xs sm:text-sm text-[#a3abb6] leading-relaxed font-light">
-                      {book.whyChosen}
-                    </p>
-                  </div>
-
-                  {/* Right Column: Takeaways & Personal Reflection */}
-                  <div className="lg:col-span-7 space-y-6 lg:border-l lg:border-[#1f242e] lg:pl-8">
-                    <div className="space-y-3">
-                      <span className="font-mono text-xs text-[#f59e0b] uppercase font-bold tracking-wider block">
-                        CORE ENGINEERING &amp; DESIGN LESSONS
-                      </span>
-                      <ul className="space-y-2.5">
-                        {book.coreTakeaways.map((takeaway, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#cfd6e0]">
+                      <ul className="space-y-1.5">
+                        {book.coreTakeaways.slice(0, 3).map((takeaway, idx) => (
+                          <li key={idx} className="flex items-start gap-2 text-xs text-[#cfd6e0]">
                             <span className="text-[#f59e0b] font-mono font-bold mt-0.5">•</span>
                             <span className="leading-relaxed">{takeaway}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
+                  </div>
 
-                    <div className="space-y-2 pt-4 border-t border-[#1f242e]">
-                      <span className="font-mono text-xs text-[#8b949e] uppercase font-bold tracking-wider block">
-                        HOW THIS SHAPES MY OWN WORK
-                      </span>
-                      <p className="text-xs sm:text-sm text-[#9ca3af] leading-relaxed font-light">
+                  {/* Bottom: How it shapes work */}
+                  <div className="p-6 sm:p-8 pt-0">
+                    <div className="pt-4 border-t border-[#1f242e] text-[11px] font-mono text-[#8b949e] space-y-1">
+                      <span className="text-[#6b7280] block text-[10px] uppercase">HOW IT SHAPES MY WORK</span>
+                      <p className="text-[#cfd6e0] font-sans font-light line-clamp-2">
                         {book.personalReflection}
                       </p>
                     </div>
@@ -358,13 +433,13 @@ export default function TastePage() {
           </section>
         )}
 
-        {/* PART D: TASTE EVOLVES (FOOTNOTE) */}
+        {/* PART D: TASTE EVOLVES FOOTNOTE */}
         <div className="rounded-xl border border-[#232832] bg-[#0a0c0f] p-6 text-center space-y-2 font-mono text-xs text-[#8b949e]">
           <p>
             Taste evolves as you live more days and read more lines.
           </p>
           <p className="text-[11px] text-[#6b7280]">
-            This section updates intentionally, not like a social feed, but whenever a story or record earns a permanent place in my life.
+            Poster images can be placed into <code className="text-[#cfd6e0]">/public/images/taste/</code> or customized manually.
           </p>
         </div>
       </div>

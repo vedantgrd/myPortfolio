@@ -120,31 +120,45 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Portrait & Fact Card */}
-            <div className="lg:col-span-4">
-              <div className="rounded-2xl border border-[#232832] bg-[#14171d] p-4 shadow-xl">
-                <div className="relative aspect-[4/5] w-full rounded-xl overflow-hidden border border-[#282e3b] bg-[#090a0d]">
+            {/* Right Portrait & Visual Column */}
+            <div className="lg:col-span-4 flex flex-col items-center lg:items-end">
+              <div className="relative w-full max-w-sm rounded-xl border border-[#232832] bg-[#14171d] p-4 shadow-2xl group hover:border-[#38404f] transition-all">
+                {/* Photo Container with b/w to color hover animation */}
+                <div className="relative aspect-square w-full rounded-lg overflow-hidden border border-[#282e3b] bg-[#090a0d]">
                   <img
                     src="/images/profile.jpg"
-                    alt="Vedant Garud Portrait"
-                    className="h-full w-full object-cover"
+                    alt="Vedant Garud portrait"
+                    className="h-full w-full object-cover grayscale contrast-110 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-transparent to-transparent opacity-80" />
-                  <div className="absolute bottom-4 left-4 right-4 font-mono text-xs text-[#f2eee6]">
-                    <div className="text-[10px] text-[#e1523d] font-semibold">// LIVING TRAILER</div>
-                    <div className="text-sm font-bold font-sans">Vedant Garud</div>
-                    <div className="text-[11px] text-[#8b949e]">Student Engineer &amp; Essayist</div>
+                  <div className="absolute bottom-2 left-2 rounded bg-[#090a0d]/80 backdrop-blur-sm px-2 py-1 font-mono text-[10px] text-[#a3abb6] border border-[#232832]">
+                    VEDANT GARUD // MUMBAI
                   </div>
                 </div>
 
-                <div className="mt-4 p-2 text-xs font-mono text-[#8b949e] space-y-1">
-                  <div className="flex justify-between text-[11px]">
-                    <span>LOCATION</span>
-                    <span className="text-[#f2eee6]">Thane / Panvel, IN</span>
+                {/* Photo Annotation Caption */}
+                <div className="mt-4 space-y-2 font-mono text-xs text-[#8b949e]">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="text-[#e1523d] font-semibold">FIG. 01 — THE PERSON</span>
+                    <span>19.033° N, 73.029° E</span>
                   </div>
-                  <div className="flex justify-between text-[11px]">
-                    <span>CANONICAL ROUTES</span>
-                    <span className="text-[#10b981]">6 Destinations</span>
+                  <p className="text-[12px] font-sans text-[#a3abb6] leading-relaxed font-light">
+                    “I design, build, and occasionally debug my own decisions. Learning how real systems scale, oscillate, and sometimes fail.”
+                  </p>
+                  <div className="pt-2 flex items-center justify-between border-t border-[#1f242e] text-[11px]">
+                    <Link
+                      href="/now"
+                      className="text-[#10b981] hover:underline flex items-center gap-1.5"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#10b981] animate-pulse" />
+                      <span>Status: Active Now</span>
+                    </Link>
+                    <Link
+                      href="/about"
+                      className="text-[#f2eee6] hover:text-[#e1523d] transition-colors inline-flex items-center gap-1"
+                    >
+                      <span>Read Journey</span>
+                      <ArrowUpRight className="h-3 w-3" />
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -487,18 +501,37 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Film Preview Card */}
-            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all">
-              <div className="space-y-3">
+            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all group">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between font-mono text-xs text-[#8b949e]">
-                  <span className="flex items-center gap-1.5 text-[#3b68ff]">
+                  <span className="flex items-center gap-1.5 text-[#e1523d]">
                     <Film className="h-3.5 w-3.5" />
                     <span>CINEMA</span>
                   </span>
                   <span>{featuredFilm.year}</span>
                 </div>
 
-                <h3 className="text-xl font-bold text-[#f2eee6]">{featuredFilm.title}</h3>
-                <p className="font-mono text-xs text-[#8b949e]">Dir. {featuredFilm.director}</p>
+                {/* Poster visual element */}
+                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d]">
+                  <img
+                    src={featuredFilm.posterUrl}
+                    alt={featuredFilm.title}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/60 to-transparent p-3 flex flex-col justify-between pointer-events-none">
+                    <span className="text-[10px] font-mono text-[#e1523d] uppercase font-semibold">
+                      #01 FILM
+                    </span>
+                    <span className="text-sm font-bold text-[#f2eee6] font-serif">
+                      {featuredFilm.title}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-[#f2eee6] group-hover:text-[#e1523d] transition-colors">{featuredFilm.title}</h3>
+                  <p className="font-mono text-xs text-[#8b949e]">Dir. {featuredFilm.director}</p>
+                </div>
 
                 <p className="font-serif italic text-xs text-[#cfd6e0] leading-relaxed">
                   &ldquo;{featuredFilm.favoriteQuote}&rdquo;
@@ -512,7 +545,7 @@ export default function HomePage() {
               <div className="pt-3 border-t border-[#1f242e]">
                 <Link
                   href="/taste"
-                  className="font-mono text-xs text-[#3b68ff] hover:text-white inline-flex items-center gap-1 transition-colors"
+                  className="font-mono text-xs text-[#e1523d] hover:text-[#ef634f] inline-flex items-center gap-1 transition-colors"
                 >
                   <span>In Taste Archive &rarr;</span>
                 </Link>
@@ -520,8 +553,8 @@ export default function HomePage() {
             </div>
 
             {/* Music Preview Card */}
-            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all">
-              <div className="space-y-3">
+            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all group">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between font-mono text-xs text-[#8b949e]">
                   <span className="flex items-center gap-1.5 text-[#10b981]">
                     <Music className="h-3.5 w-3.5" />
@@ -530,8 +563,27 @@ export default function HomePage() {
                   <span>{featuredArtist.era}</span>
                 </div>
 
-                <h3 className="text-xl font-bold text-[#f2eee6]">{featuredArtist.name}</h3>
-                <p className="font-mono text-xs text-[#8b949e]">{featuredArtist.genre}</p>
+                {/* Artist visual element */}
+                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d]">
+                  <img
+                    src={featuredArtist.posterUrl}
+                    alt={featuredArtist.name}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/60 to-transparent p-3 flex flex-col justify-between pointer-events-none">
+                    <span className="text-[10px] font-mono text-[#10b981] uppercase font-semibold">
+                      FEATURED ARTIST
+                    </span>
+                    <span className="text-sm font-bold text-[#f2eee6]">
+                      {featuredArtist.name}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-[#f2eee6] group-hover:text-[#10b981] transition-colors">{featuredArtist.name}</h3>
+                  <p className="font-mono text-xs text-[#8b949e]">{featuredArtist.genre}</p>
+                </div>
 
                 <p className="text-xs text-[#9ca3af] leading-relaxed line-clamp-3 font-light">
                   {featuredArtist.whyTheyMatter}
@@ -557,8 +609,8 @@ export default function HomePage() {
             </div>
 
             {/* Book Preview Card */}
-            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all">
-              <div className="space-y-3">
+            <div className="rounded-xl border border-[#232832] bg-[#14171d] p-6 space-y-4 flex flex-col justify-between hover:border-[#38404f] transition-all group">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between font-mono text-xs text-[#8b949e]">
                   <span className="flex items-center gap-1.5 text-[#f59e0b]">
                     <BookOpen className="h-3.5 w-3.5" />
@@ -567,8 +619,27 @@ export default function HomePage() {
                   <span>{featuredBook.year}</span>
                 </div>
 
-                <h3 className="text-xl font-bold text-[#f2eee6]">{featuredBook.title}</h3>
-                <p className="font-mono text-xs text-[#8b949e]">By {featuredBook.author}</p>
+                {/* Book visual element */}
+                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d]">
+                  <img
+                    src={featuredBook.posterUrl}
+                    alt={featuredBook.title}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f12] via-[#14171d]/60 to-transparent p-3 flex flex-col justify-between pointer-events-none">
+                    <span className="text-[10px] font-mono text-[#f59e0b] uppercase font-semibold">
+                      FEATURED BOOK
+                    </span>
+                    <span className="text-sm font-bold text-[#f2eee6] font-serif">
+                      {featuredBook.title}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-[#f2eee6] group-hover:text-[#f59e0b] transition-colors">{featuredBook.title}</h3>
+                  <p className="font-mono text-xs text-[#8b949e]">By {featuredBook.author}</p>
+                </div>
 
                 <blockquote className="font-serif italic text-xs text-[#cfd6e0] leading-relaxed">
                   &ldquo;{featuredBook.memorablePassage.text}&rdquo;
