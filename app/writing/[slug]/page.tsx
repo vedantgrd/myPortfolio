@@ -21,6 +21,51 @@ export async function generateStaticParams() {
   }))
 }
 
+function renderParagraphWithLinks(text: string) {
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g
+  const parts: (string | React.ReactNode)[] = []
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index))
+    }
+    const [fullMatch, linkText, url] = match
+    const isInternal = url.startsWith('/')
+    if (isInternal) {
+      parts.push(
+        <Link
+          key={match.index}
+          href={url}
+          className="text-[#e1523d] underline decoration-[#e1523d]/50 underline-offset-4 hover:decoration-[#ef634f] hover:text-[#ef634f] transition-colors font-medium"
+        >
+          {linkText}
+        </Link>
+      )
+    } else {
+      parts.push(
+        <a
+          key={match.index}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#e1523d] underline decoration-[#e1523d]/50 underline-offset-4 hover:decoration-[#ef634f] hover:text-[#ef634f] transition-colors font-medium"
+        >
+          {linkText}
+        </a>
+      )
+    }
+    lastIndex = match.index + fullMatch.length
+  }
+
+  if (lastIndex === 0) return text
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex))
+  }
+  return parts
+}
+
 export default async function ArticleDetailPage({
   params,
 }: {
@@ -48,7 +93,7 @@ export default async function ArticleDetailPage({
             className="inline-flex items-center gap-1.5 text-[#e1523d] hover:text-[#ef634f] transition-colors font-semibold"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>&larr; Return to The Journal &amp; Memoir</span>
+            <span>Return to The Journal &amp; Memoir</span>
           </Link>
           <div className="flex items-center gap-2">
             <span>MEMOIR ENTRY // 0{currentIndex + 1} OF 0{articles.length}</span>
@@ -97,19 +142,23 @@ export default async function ArticleDetailPage({
           <div className="flex-1 rounded-xl border-l-2 border-[#e1523d] bg-[#14171d] p-6 sm:p-8 text-base sm:text-lg text-[#cfd6e0] leading-relaxed italic font-serif">
             &ldquo;{article.content.lead}&rdquo;
           </div>
-          {article.slug === 'so-suicide' && (
+          {(article.photoFrame || article.slug === 'so-suicide') && (
             <div className="shrink-0">
               <div className="relative group cursor-pointer transition-all duration-300 ease-out rotate-2 hover:rotate-0 hover:scale-105">
-                <div className="relative bg-[#ffffff] p-2.5 pb-6 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20">
-                  <div className="relative aspect-[3/4] w-44 sm:w-48 overflow-hidden rounded-[2px] bg-[#0d0f12]">
+                <div className="relative bg-[#ffffff] p-2.5 pb-6 sm:p-3 sm:pb-7 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20">
+                  <div
+                    className={`relative ${
+                      article.photoFrame?.aspect || 'aspect-[3/4]'
+                    } w-48 sm:w-56 overflow-hidden rounded-[2px] bg-[#0d0f12]`}
+                  >
                     <img
-                      src="/images/rj-mitte.png"
-                      alt="RJ Mitte"
+                      src={article.photoFrame?.url || '/images/rj-mitte.png'}
+                      alt={article.photoFrame?.caption || 'Photo'}
                       className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="pt-2 text-center font-mono text-[10.5px] text-[#2b2b2b] tracking-wide select-none font-semibold">
-                    you will be missed, bro.
+                  <div className="pt-2 text-center font-mono text-[10px] sm:text-[10.5px] text-[#2b2b2b] tracking-wider select-none font-semibold uppercase">
+                    {article.photoFrame?.caption || 'you will be missed, bro.'}
                   </div>
                 </div>
               </div>
@@ -129,9 +178,76 @@ export default async function ArticleDetailPage({
 
               {section.paragraphs.map((para, pIdx) => (
                 <p key={pIdx} className="leading-relaxed">
-                  {para}
+                  {renderParagraphWithLinks(para)}
                 </p>
               ))}
+
+              {/* Optional Section Photo Frame (Single) */}
+              {section.photoFrame && (
+                <div className="my-8 flex justify-center">
+                  <div
+                    className={`relative group cursor-pointer transition-all duration-300 ease-out ${
+                      section.photoFrame.tilt === 'left'
+                        ? '-rotate-2'
+                        : section.photoFrame.tilt === 'none'
+                          ? 'rotate-0'
+                          : 'rotate-2'
+                    } hover:rotate-0 hover:scale-[1.02]`}
+                  >
+                    <div className="relative bg-[#ffffff] p-2.5 pb-6 sm:p-3 sm:pb-7 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20 max-w-sm sm:max-w-md md:max-w-lg">
+                      <div
+                        className={`relative ${
+                          section.photoFrame.aspect || 'aspect-[4/3]'
+                        } w-64 sm:w-80 md:w-[440px] overflow-hidden rounded-[2px] bg-[#0d0f12]`}
+                      >
+                        <img
+                          src={section.photoFrame.url}
+                          alt={section.photoFrame.caption}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="pt-2.5 text-center font-mono text-[10px] sm:text-[11px] text-[#2b2b2b] tracking-wider select-none font-semibold uppercase">
+                        {section.photoFrame.caption}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Optional Section Photo Frames (Multiple) */}
+              {section.photoFrames && section.photoFrames.length > 0 && (
+                <div className="my-8 flex flex-wrap items-center justify-center gap-6 sm:gap-8">
+                  {section.photoFrames.map((frame, fIdx) => (
+                    <div
+                      key={fIdx}
+                      className={`relative group cursor-pointer transition-all duration-300 ease-out ${
+                        frame.tilt === 'left'
+                          ? '-rotate-2'
+                          : frame.tilt === 'none'
+                            ? 'rotate-0'
+                            : 'rotate-2'
+                      } hover:rotate-0 hover:scale-105`}
+                    >
+                      <div className="relative bg-[#ffffff] p-2.5 pb-6 sm:p-3 sm:pb-7 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20">
+                        <div
+                          className={`relative ${
+                            frame.aspect || 'aspect-[4/3]'
+                          } w-60 sm:w-72 overflow-hidden rounded-[2px] bg-[#0d0f12]`}
+                        >
+                          <img
+                            src={frame.url}
+                            alt={frame.caption}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                        <div className="pt-2 text-center font-mono text-[10px] sm:text-[11px] text-[#2b2b2b] tracking-wider select-none font-semibold uppercase">
+                          {frame.caption}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Optional Section Image */}
               {section.image && (

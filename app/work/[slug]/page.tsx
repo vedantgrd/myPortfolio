@@ -46,7 +46,7 @@ export default async function ProjectDetailPage({
             className="inline-flex items-center gap-1.5 text-[#e1523d] hover:text-[#ef634f] transition-colors font-semibold"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>&larr; Return to Work Exhibition</span>
+            <span>Return to Work Exhibition</span>
           </Link>
           <div className="flex items-center gap-2">
             <span>INDEX // 0{currentIndex + 1} OF 0{projects.length}</span>

@@ -162,7 +162,7 @@ export default function AdminInboxPage() {
             className="flex items-center gap-2 hover:text-[#f2eee6] transition-colors text-[#e1523d]"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>&larr; Return to Public Portfolio</span>
+            <span>Return to Public Portfolio</span>
           </Link>
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1.5">

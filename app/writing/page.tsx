@@ -152,26 +152,28 @@ export default function WritingPage() {
               </div>
 
               {/* Right: Crooked Photo Frame in Same Style as Contact */}
-              <div className="shrink-0 flex items-center justify-center lg:justify-end lg:mr-4">
-                <div className="relative group cursor-pointer transition-all duration-300 ease-out rotate-2 hover:rotate-0 hover:scale-105">
-                  {/* Outer Photo Frame with White Border & Deep Shadow */}
-                  <div className="relative bg-[#ffffff] p-2.5 pb-6 sm:p-3 sm:pb-7 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20">
-                    {/* Photo Container */}
-                    <div className="relative aspect-[3/4] w-48 sm:w-56 md:w-60 overflow-hidden rounded-[2px] bg-[#0d0f12]">
-                      <img
-                        src="/images/rj-mitte.png"
-                        alt="RJ Mitte"
-                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
+              {(featuredArticle.photoFrame || featuredArticle.slug === 'so-suicide') && (
+                <div className="shrink-0 flex items-center justify-center lg:justify-end lg:mr-4">
+                  <div className="relative group cursor-pointer transition-all duration-300 ease-out rotate-2 hover:rotate-0 hover:scale-105">
+                    {/* Outer Photo Frame with White Border & Deep Shadow */}
+                    <div className="relative bg-[#ffffff] p-2.5 pb-6 sm:p-3 sm:pb-7 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20">
+                      {/* Photo Container */}
+                      <div className={`relative ${featuredArticle.photoFrame?.aspect || 'aspect-[3/4]'} w-48 sm:w-56 md:w-60 overflow-hidden rounded-[2px] bg-[#0d0f12]`}>
+                        <img
+                          src={featuredArticle.photoFrame?.url || '/images/rj-mitte.png'}
+                          alt={featuredArticle.photoFrame?.caption || 'Photo'}
+                          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
 
-                    {/* Polaroid Handwritten-style Caption */}
-                    <div className="pt-2 text-center font-mono text-[11px] text-[#2b2b2b] tracking-wide select-none font-semibold">
-                      you will be missed, bro.
+                      {/* Polaroid Handwritten-style Caption */}
+                      <div className="pt-2 text-center font-mono text-[10px] sm:text-[11px] text-[#2b2b2b] tracking-wider select-none font-semibold uppercase">
+                        {featuredArticle.photoFrame?.caption || 'you will be missed, bro.'}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </section>
         )}
