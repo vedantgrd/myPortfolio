@@ -82,7 +82,7 @@ export default function ContactPage() {
         <div className="pb-12 border-b border-[#232832] flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="max-w-2xl space-y-3">
             <div className="flex items-center gap-3 font-mono text-xs text-[#e1523d]">
-              <span>// CHAPTER 06</span>
+              <span>// CHAPTER 09</span>
               <span>•</span>
               <span>DIRECT TRANSMISSION</span>
             </div>
