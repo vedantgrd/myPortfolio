@@ -205,7 +205,7 @@ export default function AdminInboxPage() {
                   <input
                     type="password"
                     autoFocus
-                    placeholder="Enter passkey (default: vedant2026)"
+                    placeholder="Enter master passkey..."
                     value={passkey}
                     onChange={(e) => setPasskey(e.target.value)}
                     className="w-full rounded border border-[#232832] bg-[#090a0d] p-3 text-sm text-[#f2eee6] placeholder-[#4b5563] focus:border-[#e1523d] focus:outline-none"
@@ -232,8 +232,7 @@ export default function AdminInboxPage() {
               </form>
 
               <div className="rounded border border-[#1f242e] bg-[#0d0f12] p-3 font-mono text-[11px] text-[#6b7280]">
-                <span>Default development key: </span>
-                <code className="text-[#e1523d]">vedant2026</code>
+                <span>Restricted administrator terminal. Transmissions are encrypted.</span>
               </div>
             </div>
           </div>

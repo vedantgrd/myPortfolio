@@ -244,8 +244,8 @@ const nodes: ConstellationNode[] = [
     cluster: 'infosec',
     clusterLabel: 'Specialization',
     type: 'concept',
-    x: 160,
-    y: 485,
+    x: 145,
+    y: 460,
     color: '#f59e0b',
     radius: 11,
     description: 'Academic specialization focus at Pillai College of Engineering covering secure systems and forensics.',
@@ -257,8 +257,8 @@ const nodes: ConstellationNode[] = [
     cluster: 'infosec',
     clusterLabel: 'Information Security',
     type: 'concept',
-    x: 310,
-    y: 450,
+    x: 295,
+    y: 445,
     color: '#f59e0b',
     radius: 10,
     description: 'Testing how single-bit input variations propagate into >50% randomized output alterations.',
@@ -274,8 +274,8 @@ const nodes: ConstellationNode[] = [
     cluster: 'core',
     clusterLabel: 'Core Language',
     type: 'tech',
-    x: 420,
-    y: 320,
+    x: 440,
+    y: 350,
     color: '#cfd6e0',
     radius: 13,
     description: 'Core runtime powering discrete-event simulations, Pygame engines, and cryptanalysis scripts.',
@@ -287,8 +287,8 @@ const nodes: ConstellationNode[] = [
     cluster: 'core',
     clusterLabel: 'Architecture',
     type: 'concept',
-    x: 580,
-    y: 380,
+    x: 590,
+    y: 375,
     color: '#e1523d',
     radius: 12,
     description: 'Rigorous state transitions for reliable game combat and audit-proof scholarship applications.',
@@ -301,7 +301,7 @@ const nodes: ConstellationNode[] = [
     clusterLabel: 'Game Engine',
     type: 'project',
     x: 770,
-    y: 390,
+    y: 385,
     color: '#ef4444',
     radius: 17,
     description: 'Custom 2D tile collision slide physics, delta-time game loop, and battle state machines in Pygame.',
@@ -314,7 +314,7 @@ const nodes: ConstellationNode[] = [
     cluster: 'core',
     clusterLabel: 'Physics & Rendering',
     type: 'concept',
-    x: 900,
+    x: 905,
     y: 430,
     color: '#ef4444',
     radius: 10,
@@ -323,11 +323,106 @@ const nodes: ConstellationNode[] = [
   },
 ]
 
+interface ClusterConfig {
+  id: string
+  label: string
+  title: string
+  color: string
+  glowId: string
+  leadNodeId: string
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+const clusters: ClusterConfig[] = [
+  {
+    id: 'ai',
+    label: 'AI & Aid',
+    title: '// CLUSTER 01: AI & SCHOLARSHIPS',
+    color: '#e1523d',
+    glowId: 'aiGlow',
+    leadNodeId: 'vidyut',
+    x: 25,
+    y: 20,
+    width: 270,
+    height: 265,
+  },
+  {
+    id: 'multiagent',
+    label: 'Multi-Agent',
+    title: '// CLUSTER 02: MULTI-AGENT SUPPLY CHAINS',
+    color: '#3b68ff',
+    glowId: 'agentGlow',
+    leadNodeId: 'bullwhip',
+    x: 315,
+    y: 20,
+    width: 315,
+    height: 265,
+  },
+  {
+    id: 'hardware',
+    label: 'Avionics',
+    title: '// CLUSTER 03: HARDWARE & AVIONICS',
+    color: '#10b981',
+    glowId: 'hardwareGlow',
+    leadNodeId: 'agridrone',
+    x: 650,
+    y: 20,
+    width: 325,
+    height: 265,
+  },
+  {
+    id: 'infosec',
+    label: 'InfoSec',
+    title: '// CLUSTER 04: INFOSEC & DATA FORENSICS',
+    color: '#f59e0b',
+    glowId: 'cryptoGlow',
+    leadNodeId: 'cipherlab',
+    x: 25,
+    y: 300,
+    width: 350,
+    height: 205,
+  },
+  {
+    id: 'core',
+    label: 'Systems Core',
+    title: '// CLUSTER 05: SYSTEMS & DETERMINISTIC ENGINES',
+    color: '#ef4444',
+    glowId: 'coreGlow',
+    leadNodeId: 'pokemon',
+    x: 395,
+    y: 300,
+    width: 580,
+    height: 205,
+  },
+]
+
 export function ProjectConstellation() {
   const [selectedNode, setSelectedNode] = useState<ConstellationNode>(nodes[0])
   const [hoveredNode, setHoveredNode] = useState<string | null>(null)
   const [activeCluster, setActiveCluster] = useState<string>('all')
 
+  const handleClusterSelect = (clusterId: string) => {
+    setActiveCluster(clusterId)
+    setHoveredNode(null)
+    if (clusterId === 'all') {
+      const defaultNode = nodes.find((n) => n.id === 'vidyut') || nodes[0]
+      setSelectedNode(defaultNode)
+    } else {
+      const clusterConfig = clusters.find((c) => c.id === clusterId)
+      const targetNode =
+        nodes.find((n) => n.id === clusterConfig?.leadNodeId) ||
+        nodes.find((n) => n.cluster === clusterId)
+      if (targetNode) {
+        setSelectedNode(targetNode)
+      }
+    }
+  }
+
+  const isFiltered = activeCluster !== 'all'
+  const activeClusterConfig = clusters.find((c) => c.id === activeCluster)
   const activeId = hoveredNode || selectedNode.id
   const activeNode = nodes.find((n) => n.id === activeId) || selectedNode
 
@@ -337,12 +432,6 @@ export function ProjectConstellation() {
     if (activeNode.connections.includes(nodeId)) return true
     const otherNode = nodes.find((n) => n.id === nodeId)
     return otherNode?.connections.includes(activeNode.id) ?? false
-  }
-
-  // Filter clusters if user isolates a quadrant
-  const isNodeVisibleInCluster = (node: ConstellationNode) => {
-    if (activeCluster === 'all') return true
-    return node.cluster === activeCluster
   }
 
   return (
@@ -365,24 +454,37 @@ export function ProjectConstellation() {
         {/* Cluster Filter Buttons */}
         <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs">
           {[
-            { id: 'all', label: 'All Clusters' },
-            { id: 'ai', label: 'AI & Aid' },
-            { id: 'multiagent', label: 'Multi-Agent' },
-            { id: 'hardware', label: 'Avionics' },
-            { id: 'infosec', label: 'InfoSec' },
-          ].map((c) => (
-            <button
-              key={c.id}
-              onClick={() => setActiveCluster(c.id)}
-              className={`rounded px-2.5 py-1 transition-all ${
-                activeCluster === c.id
-                  ? 'bg-[#1e232d] text-[#f2eee6] font-bold border border-[#e1523d]'
-                  : 'bg-[#090a0d] text-[#8b949e] border border-[#232832] hover:text-[#f2eee6]'
-              }`}
-            >
-              {c.label}
-            </button>
-          ))}
+            { id: 'all', label: 'All Clusters', color: '#e1523d' },
+            ...clusters.map((c) => ({ id: c.id, label: c.label, color: c.color })),
+          ].map((c) => {
+            const isSelectedFilter = activeCluster === c.id
+            return (
+              <button
+                key={c.id}
+                onClick={() => handleClusterSelect(c.id)}
+                className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 font-mono text-xs transition-all ${
+                  isSelectedFilter
+                    ? 'bg-[#181d26] text-[#ffffff] font-bold shadow-lg'
+                    : 'bg-[#090a0d] text-[#8b949e] border border-[#232832] hover:text-[#f2eee6] hover:border-[#38404f]'
+                }`}
+                style={{
+                  borderColor: isSelectedFilter ? c.color : undefined,
+                  borderWidth: isSelectedFilter ? '1.5px' : '1px',
+                  boxShadow: isSelectedFilter ? `0 0 14px ${c.color}35` : undefined,
+                }}
+              >
+                <span
+                  className="h-2 w-2 rounded-full transition-transform"
+                  style={{
+                    backgroundColor: c.color,
+                    transform: isSelectedFilter ? 'scale(1.25)' : 'scale(1)',
+                    boxShadow: isSelectedFilter ? `0 0 8px ${c.color}` : 'none',
+                  }}
+                />
+                <span>{c.label}</span>
+              </button>
+            )
+          })}
         </div>
       </div>
 
@@ -393,66 +495,114 @@ export function ProjectConstellation() {
           className="w-full h-full"
         >
           <defs>
-            {/* Glowing filter for highlighted pathways */}
+            {/* Glowing filter for highlighted pathways and nodes */}
             <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
 
-            {/* Subtle background glow for clusters */}
+            {/* Glowing filter for high-clarity text */}
+            <filter id="textGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="0" stdDeviation="2.5" floodColor="#ffffff" floodOpacity="0.4" />
+            </filter>
+
+            {/* Background radial gradients for cluster zones */}
             <radialGradient id="aiGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#e1523d" stopOpacity="0.08" />
+              <stop offset="0%" stopColor="#e1523d" stopOpacity="0.25" />
               <stop offset="100%" stopColor="#e1523d" stopOpacity="0" />
             </radialGradient>
             <radialGradient id="agentGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#3b68ff" stopOpacity="0.08" />
+              <stop offset="0%" stopColor="#3b68ff" stopOpacity="0.25" />
               <stop offset="100%" stopColor="#3b68ff" stopOpacity="0" />
             </radialGradient>
             <radialGradient id="hardwareGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#10b981" stopOpacity="0.08" />
+              <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
               <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
             </radialGradient>
             <radialGradient id="cryptoGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.08" />
+              <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.25" />
               <stop offset="100%" stopColor="#f59e0b" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#ef4444" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
             </radialGradient>
           </defs>
 
-          {/* Background Cluster Zones */}
-          <rect x="25" y="25" width="270" height="255" rx="8" fill="url(#aiGlow)" stroke="#1a202c" strokeDasharray="3 3" strokeWidth="0.8" opacity="0.6" />
-          <text x="35" y="45" fill="#e1523d" fontSize="9" fontFamily="monospace" opacity="0.7">// CLUSTER 01: AI &amp; SCHOLARSHIPS</text>
+          {/* Background Cluster Zones: only the active cluster glows brightly when filtered */}
+          {clusters.map((cluster) => {
+            const isClusterActive = activeCluster === cluster.id
+            const isDimmed = isFiltered && !isClusterActive
 
-          <rect x="315" y="25" width="315" height="230" rx="8" fill="url(#agentGlow)" stroke="#1a202c" strokeDasharray="3 3" strokeWidth="0.8" opacity="0.6" />
-          <text x="325" y="45" fill="#3b68ff" fontSize="9" fontFamily="monospace" opacity="0.7">// CLUSTER 02: MULTI-AGENT SUPPLY CHAINS</text>
+            return (
+              <g
+                key={cluster.id}
+                onClick={() => handleClusterSelect(cluster.id)}
+                className="cursor-pointer transition-all duration-300"
+              >
+                <rect
+                  x={cluster.x}
+                  y={cluster.y}
+                  width={cluster.width}
+                  height={cluster.height}
+                  rx="10"
+                  fill={`url(#${cluster.glowId})`}
+                  fillOpacity={isClusterActive ? 0.35 : isDimmed ? 0.02 : 0.12}
+                  stroke={isClusterActive ? cluster.color : isDimmed ? '#141821' : '#232a38'}
+                  strokeDasharray={isClusterActive ? 'none' : '4 4'}
+                  strokeWidth={isClusterActive ? 2 : 1}
+                  filter={isClusterActive ? 'url(#nodeGlow)' : undefined}
+                  opacity={isDimmed ? 0.12 : 1.0}
+                  className="transition-all duration-300"
+                />
+                <text
+                  x={cluster.x + 14}
+                  y={cluster.y + 22}
+                  fill={isClusterActive ? cluster.color : isDimmed ? '#242b38' : cluster.color}
+                  fontSize={isClusterActive ? '11' : '9.5'}
+                  fontWeight={isClusterActive ? 'bold' : 'normal'}
+                  fontFamily="monospace"
+                  opacity={isDimmed ? 0.15 : isClusterActive ? 1.0 : 0.75}
+                  filter={isClusterActive ? 'url(#nodeGlow)' : undefined}
+                  className="transition-all duration-300 select-none"
+                >
+                  {cluster.title}
+                </text>
+              </g>
+            )
+          })}
 
-          <rect x="650" y="25" width="325" height="255" rx="8" fill="url(#hardwareGlow)" stroke="#1a202c" strokeDasharray="3 3" strokeWidth="0.8" opacity="0.6" />
-          <text x="660" y="45" fill="#10b981" fontSize="9" fontFamily="monospace" opacity="0.7">// CLUSTER 03: HARDWARE &amp; AVIONICS</text>
-
-          <rect x="25" y="315" width="350" height="185" rx="8" fill="url(#cryptoGlow)" stroke="#1a202c" strokeDasharray="3 3" strokeWidth="0.8" opacity="0.6" />
-          <text x="35" y="335" fill="#f59e0b" fontSize="9" fontFamily="monospace" opacity="0.7">// CLUSTER 04: INFOSEC &amp; DATA FORENSICS</text>
-
-          <rect x="500" y="315" width="475" height="185" rx="8" fill="#141821" fillOpacity="0.25" stroke="#1a202c" strokeDasharray="3 3" strokeWidth="0.8" opacity="0.6" />
-          <text x="510" y="335" fill="#8b949e" fontSize="9" fontFamily="monospace" opacity="0.7">// CLUSTER 05: SYSTEMS &amp; DETERMINISTIC ENGINES</text>
-
-          {/* Render All Connection Lines (Guaranteed 100% precision: from source cx,cy to target cx,cy) */}
+          {/* Render All Connection Lines */}
           {nodes.map((source) =>
             source.connections.map((targetId) => {
               const target = nodes.find((n) => n.id === targetId)
               if (!target) return null
+              if (source.id > target.id) return null // avoid duplicate undirected lines
 
-              // Prevent double rendering undirected lines
-              if (source.id > target.id) return null
-
-              const isEdgeConnectedToActive =
-                source.id === activeId || target.id === activeId
-
-              const edgeInActiveCluster =
-                activeCluster === 'all' ||
-                source.cluster === activeCluster ||
+              // When filtered: ONLY lines between nodes within active cluster glow!
+              const bothInActiveCluster =
+                isFiltered &&
+                source.cluster === activeCluster &&
                 target.cluster === activeCluster
+
+              // When NOT filtered: lines connected to the active/hovered node glow
+              const isConnectedToActiveNode =
+                !isFiltered && (source.id === activeId || target.id === activeId)
+
+              const isGlowingLine = bothInActiveCluster || isConnectedToActiveNode
+
+              // If a cluster is filtered, suppress cross-cluster lines so ONLY that cluster glows
+              if (isFiltered && !bothInActiveCluster) {
+                return null
+              }
+
+              // Determine line color
+              const lineColor = isFiltered
+                ? activeClusterConfig?.color || '#3b68ff'
+                : activeNode.color
 
               return (
                 <line
@@ -461,23 +611,11 @@ export function ProjectConstellation() {
                   y1={source.y}
                   x2={target.x}
                   y2={target.y}
-                  stroke={
-                    isEdgeConnectedToActive
-                      ? activeNode.color
-                      : edgeInActiveCluster
-                      ? '#283141'
-                      : '#191f2b'
-                  }
-                  strokeWidth={isEdgeConnectedToActive ? 2.5 : 1}
-                  strokeDasharray={isEdgeConnectedToActive ? 'none' : '3,3'}
-                  strokeOpacity={
-                    isEdgeConnectedToActive
-                      ? 1.0
-                      : edgeInActiveCluster
-                      ? 0.45
-                      : 0.15
-                  }
-                  filter={isEdgeConnectedToActive ? 'url(#nodeGlow)' : undefined}
+                  stroke={isGlowingLine ? lineColor : '#283141'}
+                  strokeWidth={isGlowingLine ? 2.5 : 1}
+                  strokeDasharray={isGlowingLine ? 'none' : '3,3'}
+                  strokeOpacity={isGlowingLine ? 1.0 : 0.25}
+                  filter={isGlowingLine ? 'url(#nodeGlow)' : undefined}
                   className="transition-all duration-300"
                 />
               )
@@ -486,36 +624,51 @@ export function ProjectConstellation() {
 
           {/* Render All Nodes (Circles + Labels with absolute geometric alignment) */}
           {nodes.map((node) => {
+            const isNodeInActiveCluster = !isFiltered || node.cluster === activeCluster
             const isSelected = selectedNode.id === node.id
             const isHovered = hoveredNode === node.id
             const isConnected = isDirectlyConnected(node.id)
-            const inCluster = isNodeVisibleInCluster(node)
 
-            const opacity = inCluster
-              ? isConnected || isHovered || isSelected
+            // Glowing state:
+            // When a cluster filter is clicked, ALL nodes inside that cluster glow!
+            // When 'all' is selected, active node and directly connected neighbors glow
+            const isGlowing = isFiltered
+              ? isNodeInActiveCluster
+              : isSelected || isHovered || isConnected
+
+            const opacity = isFiltered
+              ? isNodeInActiveCluster
                 ? 1.0
-                : 0.35
-              : 0.15
+                : 0.08 // dim everything else completely
+              : isGlowing
+              ? 1.0
+              : 0.45
 
             return (
               <g
                 key={node.id}
-                onClick={() => setSelectedNode(node)}
+                onClick={() => {
+                  setSelectedNode(node)
+                  if (isFiltered && node.cluster !== activeCluster) {
+                    handleClusterSelect(node.cluster)
+                  }
+                }}
                 onMouseEnter={() => setHoveredNode(node.id)}
                 onMouseLeave={() => setHoveredNode(null)}
                 className="cursor-pointer transition-opacity duration-300"
                 opacity={opacity}
               >
                 {/* Active Outer Pulse Halo */}
-                {(isSelected || isHovered) && (
+                {(isSelected || isHovered) && isNodeInActiveCluster && (
                   <circle
                     cx={node.x}
                     cy={node.y}
                     r={node.radius + 8}
                     fill="none"
                     stroke={node.color}
-                    strokeWidth="1.5"
-                    strokeOpacity="0.7"
+                    strokeWidth="2"
+                    strokeOpacity="0.8"
+                    filter="url(#nodeGlow)"
                     className="animate-pulse"
                   />
                 )}
@@ -525,10 +678,10 @@ export function ProjectConstellation() {
                   cx={node.x}
                   cy={node.y}
                   r={node.radius}
-                  fill={isSelected ? node.color : '#0d1017'}
-                  stroke={node.color}
+                  fill={isSelected && isNodeInActiveCluster ? node.color : '#0d1017'}
+                  stroke={isGlowing ? node.color : '#232a38'}
                   strokeWidth={node.type === 'project' ? 2.5 : 1.5}
-                  filter={isSelected || isHovered ? 'url(#nodeGlow)' : undefined}
+                  filter={isGlowing ? 'url(#nodeGlow)' : undefined}
                 />
 
                 {/* Inner Project Pip */}
@@ -537,7 +690,7 @@ export function ProjectConstellation() {
                     cx={node.x}
                     cy={node.y}
                     r={node.radius * 0.4}
-                    fill={isSelected ? '#ffffff' : node.color}
+                    fill={isSelected && isNodeInActiveCluster ? '#ffffff' : node.color}
                   />
                 )}
 
@@ -546,24 +699,34 @@ export function ProjectConstellation() {
                   x={node.x - 70}
                   y={node.y + node.radius + 5}
                   width="140"
-                  height="16"
+                  height="18"
                   rx="3"
                   fill="#090a0d"
-                  fillOpacity={isSelected || isHovered ? '0.95' : '0.75'}
-                  stroke={isSelected || isHovered ? node.color : '#1f242e'}
-                  strokeWidth={isSelected || isHovered ? '1' : '0.5'}
+                  fillOpacity={isGlowing ? 0.95 : 0.6}
+                  stroke={isGlowing ? node.color : '#1f242e'}
+                  strokeWidth={isGlowing ? 1 : 0.5}
+                  filter={isGlowing && (isSelected || isHovered) ? 'url(#nodeGlow)' : undefined}
                 />
 
                 {/* Node Label Text */}
                 <text
                   x={node.x}
-                  y={node.y + node.radius + 16.5}
-                  fill={isSelected || isHovered ? '#ffffff' : '#cfd6e0'}
+                  y={node.y + node.radius + 17.5}
+                  fill={
+                    !isNodeInActiveCluster
+                      ? '#2d3748'
+                      : isSelected || isHovered
+                      ? '#ffffff'
+                      : isGlowing
+                      ? '#f2eee6'
+                      : '#8b949e'
+                  }
                   fontSize="9.5"
-                  fontWeight={isSelected || isHovered ? 'bold' : 'normal'}
+                  fontWeight={isGlowing ? 'bold' : 'normal'}
                   fontFamily="monospace"
                   textAnchor="middle"
-                  className="pointer-events-none select-none"
+                  filter={isGlowing && isNodeInActiveCluster ? 'url(#textGlow)' : undefined}
+                  className="pointer-events-none select-none transition-colors duration-200"
                 >
                   {node.label}
                 </text>

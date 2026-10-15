@@ -209,7 +209,7 @@ export default function TastePage() {
                           aspect="aspect-[2/3]"
                           type="cinema"
                           badgeText={`${film.year} // 35MM`}
-                          badgePosition={film.slug === 'shutter-island' ? 'bottom' : 'top'}
+                          badgePosition={['shutter-island', 'manchester-by-the-sea', 'the-hangover'].includes(film.slug) ? 'bottom' : 'top'}
                           accentColor={film.accentColor}
                           icon={Film}
                         />
@@ -309,7 +309,7 @@ export default function TastePage() {
                           aspect="aspect-square"
                           type="music"
                           badgeText="VINYL ARCHIVE"
-                          badgePosition={artist.id === 'one-direction' || artist.id === 'the-smiths' ? 'bottom' : 'top'}
+                          badgePosition={['one-direction', 'the-smiths', 'michael-jackson'].includes(artist.id) ? 'bottom' : 'top'}
                           accentColor={artist.accentColor}
                           icon={Disc3}
                         />
@@ -408,7 +408,7 @@ export default function TastePage() {
                           aspect="aspect-[2/3]"
                           type="books"
                           badgeText={`${book.year} EDITION`}
-                          badgePosition={book.id.includes('steve-jobs') ? 'bottom' : 'top'}
+                          badgePosition={book.id.includes('steve-jobs') || book.id.includes('design-of-everyday-things') ? 'bottom' : 'top'}
                           accentColor="#f59e0b"
                           icon={BookOpen}
                         />
