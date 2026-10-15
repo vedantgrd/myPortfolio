@@ -164,14 +164,6 @@ const techItems: TechItem[] = [
     projectSlug: 'bullwhip-ai',
   },
   {
-    name: '433MHz Serial Telemetry',
-    category: 'ai-robotics',
-    highlight: 'Wireless Radio Bridges',
-    context: 'Low-latency MAVLink packet transmission over noisy wireless radio transceivers for real-time quadcopter HUD.',
-    project: 'Agridrone',
-    projectSlug: 'agridrone',
-  },
-  {
     name: 'Deterministic State Machines',
     category: 'ai-robotics',
     highlight: 'Finite-State Logic',
@@ -221,11 +213,10 @@ export function HomeTechStack() {
           <button
             key={cat.id}
             onClick={() => setActiveCategory(cat.id)}
-            className={`rounded px-3 py-1.5 font-mono text-xs transition-all duration-200 ${
-              activeCategory === cat.id
+            className={`rounded px-3 py-1.5 font-mono text-xs transition-all duration-200 ${activeCategory === cat.id
                 ? 'bg-[#1a1e26] text-[#f2eee6] font-bold border border-[#e1523d] shadow-sm'
                 : 'bg-[#090a0d] text-[#8b949e] border border-[#232832] hover:text-[#f2eee6] hover:border-[#38404f]'
-            }`}
+              }`}
           >
             {cat.label}
           </button>
@@ -244,11 +235,10 @@ export function HomeTechStack() {
               href="/about#tech-stack"
               onMouseEnter={() => setHoveredTech(tech)}
               onMouseLeave={() => setHoveredTech(null)}
-              className={`group relative rounded-xl border p-4 transition-all duration-200 flex flex-col justify-between ${
-                isHovered
+              className={`group relative rounded-xl border p-4 transition-all duration-200 flex flex-col justify-between ${isHovered
                   ? 'border-[#e1523d] bg-[#161a22] shadow-[0_0_20px_rgba(225,82,61,0.12)] scale-[1.02]'
                   : 'border-[#232832] bg-[#14171d] hover:border-[#38404f]'
-              }`}
+                }`}
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between font-mono text-xs">

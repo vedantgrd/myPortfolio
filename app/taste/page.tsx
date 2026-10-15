@@ -26,6 +26,7 @@ function TasteMediaArtwork({
   aspect = 'aspect-[2/3]',
   type = 'cinema',
   badgeText,
+  badgePosition = 'top',
   accentColor = '#e1523d',
   icon: Icon = Film,
 }: {
@@ -34,6 +35,7 @@ function TasteMediaArtwork({
   aspect?: string
   type?: 'cinema' | 'music' | 'books'
   badgeText?: string
+  badgePosition?: 'top' | 'bottom'
   accentColor?: string
   icon?: any
 }) {
@@ -58,9 +60,13 @@ function TasteMediaArtwork({
           {/* Subtle glossy sheen on hover */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none duration-300" />
 
-          {/* Minimal glass format pill in top corner */}
+          {/* Minimal glass format pill (top or bottom to avoid obscuring poster title typography) */}
           {badgeText && (
-            <div className="absolute top-2.5 left-2.5 rounded bg-[#090a0d]/85 backdrop-blur-md px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[#cfd6e0] border border-white/10 flex items-center gap-1.5 shadow-md">
+            <div
+              className={`absolute ${
+                badgePosition === 'bottom' ? 'bottom-2.5 left-2.5' : 'top-2.5 left-2.5'
+              } rounded bg-[#090a0d]/90 backdrop-blur-md px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[#cfd6e0] border border-white/10 flex items-center gap-1.5 shadow-md z-10`}
+            >
               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accentColor }} />
               <span>{badgeText}</span>
             </div>
@@ -203,6 +209,7 @@ export default function TastePage() {
                           aspect="aspect-[2/3]"
                           type="cinema"
                           badgeText={`${film.year} // 35MM`}
+                          badgePosition={film.slug === 'shutter-island' ? 'bottom' : 'top'}
                           accentColor={film.accentColor}
                           icon={Film}
                         />
@@ -302,6 +309,7 @@ export default function TastePage() {
                           aspect="aspect-square"
                           type="music"
                           badgeText="VINYL ARCHIVE"
+                          badgePosition={artist.id === 'one-direction' || artist.id === 'the-smiths' ? 'bottom' : 'top'}
                           accentColor={artist.accentColor}
                           icon={Disc3}
                         />
@@ -400,6 +408,7 @@ export default function TastePage() {
                           aspect="aspect-[2/3]"
                           type="books"
                           badgeText={`${book.year} EDITION`}
+                          badgePosition={book.id.includes('steve-jobs') ? 'bottom' : 'top'}
                           accentColor="#f59e0b"
                           icon={BookOpen}
                         />
