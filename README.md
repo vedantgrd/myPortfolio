@@ -2,7 +2,7 @@
 
 <img src="https://capsule-render.vercel.app/api?type=slice&height=260&color=0:0d0f12,60:1c1f26,100:e1523d&text=VEDANT%20%2F%20UNFINISHED&fontColor=ffffff&fontSize=50&fontAlign=50&fontAlignY=50&animation=fadeIn" alt="VEDANT / UNFINISHED" width="100%"/>
 
-### 📖 *A personal memoir, so my children can remember me.*
+### 📖 *More than just a tech portfolio, it’s a memoir of my journey..*
 
 <a href="https://garudvedantportfolio.vercel.app">
   <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=17&duration=3000&pause=1000&color=E1523D&center=true&vCenter=true&width=700&lines=A+personal+publication.+Not+a+r%C3%A9sum%C3%A9.;Engineering+and+humanity.+Same+person.;Read+the+notebook.+Break+the+lab.+Stay+a+while." alt="Typing animation" />
