@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -12,6 +12,7 @@ import {
   Heart,
   Film,
   Sparkles,
+  Star,
 } from 'lucide-react'
 import { articles, Article } from '@/data/writing'
 
@@ -27,6 +28,29 @@ const categories = [
 export default function WritingPage() {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [highlightDrawn, setHighlightDrawn] = useState(false)
+  const highlightRef = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const el = highlightRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          const timer = setTimeout(() => {
+            setHighlightDrawn(true)
+          }, 250)
+          observer.disconnect()
+          return () => clearTimeout(timer)
+        }
+      },
+      { threshold: 0.2 }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const featuredArticle = articles.find((a) => a.featured) || articles[0]
 
@@ -57,7 +81,13 @@ export default function WritingPage() {
             The Journal &amp; Living Memoir
           </h1>
           <p className="text-base sm:text-lg text-[#cfd6e0] mt-4 max-w-3xl leading-relaxed font-light">
-            I don&apos;t just write about algorithms. I write about being human — mental health, cinema, superheroes, visiting orphanages, what we take for granted, and the quiet questions that keep us awake at night. If I leave this earth tomorrow, let this place be the honest record of how I thought, felt, and tried to make sense of the world.
+            I don&apos;t just write about algorithms. I write about being human — mental health, cinema, superheroes, visiting orphanages, what we take for granted, and the quiet questions that keep us awake at night.{' '}
+            <span
+              ref={highlightRef}
+              className={`journal-highlight font-normal not-italic ${highlightDrawn ? 'is-drawn' : ''}`}
+            >
+              If I leave this earth tomorrow, let this place be the honest record of how I thought, felt, and tried to make sense of the world.
+            </span>
           </p>
 
           {/* Search & Category Filter Controls */}
@@ -97,7 +127,27 @@ export default function WritingPage() {
 
         {/* Featured Cover Story (Visible when no query active) */}
         {!searchQuery && selectedCategory === 'All' && featuredArticle && (
-          <section className="rounded-2xl border border-[#232832] bg-[#14171d] p-8 sm:p-10 lg:p-12 hover:border-[#38404f] transition-all relative overflow-hidden shadow-2xl">
+          <section className="rounded-2xl border border-[#232832] bg-[#14171d] p-8 sm:p-10 lg:p-12 hover:border-[#38404f] transition-all relative shadow-2xl">
+            {/* Journal Scrapbook Sticker on Top Left Corner */}
+            <div className="absolute -top-3.5 left-6 sm:left-10 z-20 select-none cursor-pointer group">
+              <div className="relative -rotate-3 group-hover:rotate-0 group-hover:scale-105 transition-all duration-300 ease-out">
+                {/* Washi Tape Strip holding the sticker */}
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-10 sm:w-12 h-3.5 bg-white/20 backdrop-blur-[1px] border-y border-white/30 shadow-xs -rotate-1 z-10 pointer-events-none" />
+
+                {/* Sticker Paper Body */}
+                <div className="relative bg-[#faf8f4] text-[#14171d] px-3.5 py-1.5 sm:px-4 sm:py-1.5 rounded-[2px] shadow-[0_12px_28px_rgba(0,0,0,0.65)] border-2 border-white ring-1 ring-black/20 flex items-center gap-2">
+                  <Star className="h-3.5 w-3.5 fill-[#e1523d] text-[#e1523d] shrink-0" />
+                  <span className="font-mono text-xs sm:text-[13px] font-black tracking-wider uppercase text-[#14171d]">
+                    BEST WORK
+                  </span>
+                  <span className="text-[#8b949e] font-mono text-xs">/</span>
+                  <span className="font-mono text-[9px] sm:text-[10px] font-bold text-[#e1523d] uppercase tracking-widest bg-[#e1523d]/10 px-1.5 py-0.5 rounded-[2px] border border-[#e1523d]/25">
+                    TOP RATED
+                  </span>
+                </div>
+              </div>
+            </div>
+
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12 relative z-10">
               {/* Left Editorial Text Column */}
               <div className="max-w-2xl space-y-4">
