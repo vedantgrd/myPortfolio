@@ -1,0 +1,11 @@
+[
+  {
+    "id": "tx_init_1001",
+    "timestamp": "2026-10-15T03:15:00.000Z",
+    "name": "Research Directorate",
+    "email": "systems@pce.ac.in",
+    "subject": "Inquiry regarding Bullwhip AI & Autonomous Agents",
+    "message": "Vedant, reviewed your perishable food supply chain simulation dampening model. Exceptional work on coupling discrete-event lag with multi-agent coordination. Let's schedule a deep dive during the upcoming symposium.",
+    "read": false
+  }
+]

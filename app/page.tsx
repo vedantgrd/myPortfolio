@@ -24,6 +24,7 @@ import { tasteData } from '@/data/taste'
 import { nowData } from '@/data/now'
 import { ProjectConstellation } from '@/components/visualizations/ProjectConstellation'
 import { DailyQuoteCard } from '@/components/now/DailyQuoteCard'
+import { HomeTechStack } from '@/components/sections/HomeTechStack'
 
 export default function HomePage() {
   // Canonical derivations
@@ -373,6 +374,34 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* SECTION 02C: TECHNICAL ARSENAL & REPERTOIRE */}
+      <section className="py-24 border-b border-[#232832] bg-[#0c0e12]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="font-mono text-xs font-semibold text-[#e1523d] uppercase tracking-wider">
+                // SECTION 02C: TECHNICAL ARSENAL
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#f2eee6] mt-2">
+                Core Stack &amp; Systems Matrix
+              </h2>
+              <p className="text-sm text-[#9ca3af] mt-1 max-w-xl font-light">
+                The foundational technologies, full-stack frameworks, forensics tools, and hardware protocols I engineer with. Click any skill chip to inspect its role and context in About.
+              </p>
+            </div>
+            <Link
+              href="/about#tech-stack"
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#e1523d] hover:text-[#ef634f] transition-colors"
+            >
+              <span>Explore Detailed Inventory in About</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <HomeTechStack />
+        </div>
+      </section>
+
       {/* SECTION 03: THE NOTEBOOK (COMPACT EDITORIAL FEATURE) */}
       <section className="py-24 border-b border-[#232832]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
@@ -512,9 +541,9 @@ export default function HomePage() {
                 </div>
 
                 {/* Poster visual element */}
-                <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#e1523d]/30 transition-all">
+                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#e1523d]/30 transition-all">
                   <img
-                    src={featuredFilm.posterUrl}
+                    src="/images/taste/taxi-driver-horizontal.png"
                     alt={featuredFilm.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -560,9 +589,9 @@ export default function HomePage() {
                 </div>
 
                 {/* Artist visual element */}
-                <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#10b981]/30 transition-all">
+                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#10b981]/30 transition-all">
                   <img
-                    src={featuredArtist.posterUrl}
+                    src="/images/taste/the-beatles-horizontal.png"
                     alt={featuredArtist.name}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -612,9 +641,9 @@ export default function HomePage() {
                 </div>
 
                 {/* Book visual element */}
-                <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#f59e0b]/30 transition-all">
+                <div className="relative aspect-[16/9] w-full rounded-lg overflow-hidden border border-[#232832] bg-[#090a0d] shadow-md ring-1 ring-white/10 group-hover:ring-[#f59e0b]/30 transition-all">
                   <img
-                    src={featuredBook.posterUrl}
+                    src="/images/taste/steve-jobs-horizontal.png"
                     alt={featuredBook.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />

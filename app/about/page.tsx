@@ -16,6 +16,10 @@ import {
   ShieldCheck,
   Film,
   Music,
+  Code2,
+  Cpu,
+  Layers,
+  Shield,
 } from 'lucide-react'
 import { timelineEvents } from '@/data/timeline'
 
@@ -96,13 +100,167 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-[#232832] bg-[#0d0f12] p-5 font-mono text-xs text-[#8b949e] space-y-2">
-              <span className="text-[#f2eee6] block font-semibold text-[11px] uppercase tracking-wider">
-                CORE TECHNICAL REPERTOIRE
-              </span>
-              <p className="text-[11px] text-[#6b7280] leading-relaxed">
-                Python, TypeScript, Next.js 16, FastAPI, PostgreSQL, Embedded Hardware, Android, Cryptographic Algorithms, System Dynamics.
-              </p>
+            {/* Expanded Full-Height Technical Repertoire Panel */}
+            <div
+              id="tech-stack"
+              className="rounded-xl border border-[#232832] bg-[#101217] p-5 font-mono text-xs text-[#8b949e] space-y-6 shadow-xl scroll-mt-24"
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-[#1f242e]">
+                <div>
+                  <span className="text-[#e1523d] font-bold text-xs uppercase tracking-wider block">
+                    // TECHNICAL REPERTOIRE
+                  </span>
+                  <span className="text-[10px] text-[#6b7280]">
+                    Verified Engineering Competencies
+                  </span>
+                </div>
+                <span className="rounded bg-[#1a1e26] border border-[#2d3442] px-2 py-0.5 text-[10px] text-[#10b981] font-semibold">
+                  5 DOMAINS
+                </span>
+              </div>
+
+              {/* Category 1: Languages & Core Runtimes */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between text-[11px] text-[#cfd6e0]">
+                  <span className="flex items-center gap-1.5 font-bold text-[#f2eee6]">
+                    <Code2 className="h-3.5 w-3.5 text-[#e1523d]" />
+                    <span>Languages &amp; Runtimes</span>
+                  </span>
+                  <span className="text-[10px] text-[#6b7280]">5 Core</span>
+                </div>
+                <div className="space-y-1.5 text-[11px]">
+                  <div className="rounded border border-[#1f242e] bg-[#090a0d] p-2.5 flex items-center justify-between hover:border-[#38404f] transition-colors">
+                    <div>
+                      <strong className="text-white block">TypeScript / JavaScript</strong>
+                      <span className="text-[10px] text-[#8b949e]">Strict types, Next.js 16, interactive simulation runtimes</span>
+                    </div>
+                    <span className="rounded bg-[#e1523d]/15 px-1.5 py-0.5 text-[9px] text-[#e1523d] font-bold">Vidyut</span>
+                  </div>
+
+                  <div className="rounded border border-[#1f242e] bg-[#090a0d] p-2.5 flex items-center justify-between hover:border-[#38404f] transition-colors">
+                    <div>
+                      <strong className="text-white block">Python 3</strong>
+                      <span className="text-[10px] text-[#8b949e]">Discrete-event modeling, Pygame engines, cryptanalysis</span>
+                    </div>
+                    <span className="rounded bg-[#3b68ff]/15 px-1.5 py-0.5 text-[9px] text-[#3b68ff] font-bold">Bullwhip AI</span>
+                  </div>
+
+                  <div className="rounded border border-[#1f242e] bg-[#090a0d] p-2.5 flex items-center justify-between hover:border-[#38404f] transition-colors">
+                    <div>
+                      <strong className="text-white block">Java / Android SDK</strong>
+                      <span className="text-[10px] text-[#8b949e]">Native mobile GCS, MAVLink serial radio telemetry HUD</span>
+                    </div>
+                    <span className="rounded bg-[#10b981]/15 px-1.5 py-0.5 text-[9px] text-[#10b981] font-bold">Agridrone</span>
+                  </div>
+
+                  <div className="rounded border border-[#1f242e] bg-[#090a0d] p-2.5 flex items-center justify-between hover:border-[#38404f] transition-colors">
+                    <div>
+                      <strong className="text-white block">SQL &amp; Relational Modeling</strong>
+                      <span className="text-[10px] text-[#8b949e]">ACID transactions, indexed filters, schema normalization</span>
+                    </div>
+                    <span className="rounded bg-[#8b949e]/15 px-1.5 py-0.5 text-[9px] text-[#cfd6e0] font-bold">PostgreSQL</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Category 2: Web & Full-Stack Systems */}
+              <div className="space-y-2.5 pt-2 border-t border-[#1f242e]">
+                <div className="flex items-center justify-between text-[11px] text-[#cfd6e0]">
+                  <span className="flex items-center gap-1.5 font-bold text-[#f2eee6]">
+                    <Layers className="h-3.5 w-3.5 text-[#3b68ff]" />
+                    <span>Web &amp; Full-Stack Systems</span>
+                  </span>
+                  <span className="text-[10px] text-[#6b7280]">Production</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 text-[10px]">
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#f2eee6]">
+                    Next.js 16 (App Router)
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#f2eee6]">
+                    React 19
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#f2eee6]">
+                    FastAPI
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#f2eee6]">
+                    Tailwind CSS 4
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#f2eee6]">
+                    Framer Motion
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#f2eee6]">
+                    REST APIs
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#f2eee6]">
+                    SVG Charting
+                  </span>
+                </div>
+              </div>
+
+              {/* Category 3: InfoSec & Data Forensics (Specialization) */}
+              <div className="space-y-2.5 pt-2 border-t border-[#1f242e]">
+                <div className="flex items-center justify-between text-[11px] text-[#cfd6e0]">
+                  <span className="flex items-center gap-1.5 font-bold text-[#f2eee6]">
+                    <Shield className="h-3.5 w-3.5 text-[#f59e0b]" />
+                    <span>InfoSec &amp; Forensics (Major)</span>
+                  </span>
+                  <span className="rounded bg-[#f59e0b]/15 px-1.5 py-0.5 text-[9px] text-[#f59e0b] font-bold">
+                    PCE Panvel
+                  </span>
+                </div>
+                <p className="text-[10px] text-[#8b949e] font-sans leading-relaxed">
+                  Academic specialization at Pillai College of Engineering focusing on applied cryptanalysis, packet integrity inspection, and forensic artifact reconstruction.
+                </p>
+                <div className="flex flex-wrap gap-1.5 text-[10px]">
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#cfd6e0]">
+                    Applied Cryptanalysis
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#cfd6e0]">
+                    Avalanche Effect Testing
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#cfd6e0]">
+                    Data Forensics
+                  </span>
+                  <span className="rounded border border-[#2d3442] bg-[#14171d] px-2 py-1 text-[#cfd6e0]">
+                    Packet Protocols
+                  </span>
+                </div>
+              </div>
+
+              {/* Category 4: AI & Multi-Agent Systems */}
+              <div className="space-y-2.5 pt-2 border-t border-[#1f242e]">
+                <div className="flex items-center justify-between text-[11px] text-[#cfd6e0]">
+                  <span className="flex items-center gap-1.5 font-bold text-[#f2eee6]">
+                    <Cpu className="h-3.5 w-3.5 text-[#10b981]" />
+                    <span>Multi-Agent &amp; Embedded</span>
+                  </span>
+                  <span className="text-[10px] text-[#6b7280]">Research</span>
+                </div>
+                <div className="space-y-1 text-[10px]">
+                  <div className="text-[#a3abb6]">
+                    &bull; <strong className="text-white">Multi-Agent Coordination:</strong> Decentralized signal dampening mitigating perishable bullwhip oscillations.
+                  </div>
+                  <div className="text-[#a3abb6]">
+                    &bull; <strong className="text-white">Embedded Avionics:</strong> Quadcopter flight controllers, 433MHz telemetry transceivers, and motor vibration dampening.
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer Links to Lab & Work */}
+              <div className="pt-3 border-t border-[#1f242e] flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px]">
+                <Link
+                  href="/lab"
+                  className="text-[#e1523d] hover:underline inline-flex items-center gap-1"
+                >
+                  <span>Test in The Living Lab &rarr;</span>
+                </Link>
+                <Link
+                  href="/work"
+                  className="text-[#8b949e] hover:text-[#f2eee6] inline-flex items-center gap-1"
+                >
+                  <span>Inspect Case Studies &rarr;</span>
+                </Link>
+              </div>
             </div>
           </div>
 

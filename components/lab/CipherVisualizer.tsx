@@ -1,15 +1,6 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from 'recharts'
 import { Shield, Key, RefreshCw, Sparkles, Activity } from 'lucide-react'
 
 // Standard English Letter Frequencies (%)
@@ -18,6 +9,195 @@ const englishFreq: Record<string, number> = {
   H: 6.1, I: 7.0, J: 0.15, K: 0.77, L: 4.0, M: 2.4, N: 6.7,
   O: 7.5, P: 1.9, Q: 0.09, R: 6.0, S: 6.3, T: 9.1, U: 2.8,
   V: 0.98, W: 2.4, X: 0.15, Y: 2.0, Z: 0.07,
+}
+
+function InteractiveFrequencyChart({
+  data,
+}: {
+  data: Array<{
+    letter: string
+    'Ciphertext %': number
+    'English Standard %': number
+  }>
+}) {
+  const [hoveredLetter, setHoveredLetter] = useState<string | null>(null)
+
+  const width = 800
+  const height = 240
+  const padLeft = 35
+  const padRight = 15
+  const padTop = 20
+  const padBottom = 28
+
+  const plotW = width - padLeft - padRight
+  const plotH = height - padTop - padBottom
+
+  // Find max percentage to scale nicely (minimum 15%)
+  const maxPct = Math.max(
+    16,
+    Math.ceil(
+      Math.max(
+        ...data.map((d) => Math.max(d['Ciphertext %'], d['English Standard %']))
+      ) / 5
+    ) * 5
+  )
+
+  const slotW = plotW / data.length
+  const barW = Math.max(4, Math.floor(slotW * 0.36))
+
+  const activeItem = hoveredLetter
+    ? data.find((d) => d.letter === hoveredLetter)
+    : null
+
+  const yGridSteps = [0, 5, 10, 15, 20].filter((v) => v <= maxPct)
+
+  return (
+    <div className="space-y-2 select-none">
+      {/* Dynamic HUD */}
+      {activeItem ? (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded border border-[#2d3442] bg-[#14171d] px-3 py-1.5 font-mono text-xs shadow-md">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-[#f59e0b] bg-[#f59e0b]/10 px-2 py-0.5 rounded">
+              LETTER {activeItem.letter}
+            </span>
+            <span className="text-[#8b949e]">Telemetry:</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-[#f59e0b]">
+              Ciphertext: <strong className="text-white">{activeItem['Ciphertext %']}%</strong>
+            </span>
+            <span className="text-[#8b949e]">
+              English Standard: <strong className="text-white">{activeItem['English Standard %']}%</strong>
+            </span>
+            <span className="text-[#10b981]">
+              Delta: <strong className="text-white">
+                {(activeItem['Ciphertext %'] - activeItem['English Standard %']).toFixed(1)}%
+              </strong>
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="text-right font-mono text-[11px] text-[#6b7280]">
+          Hover letter column to inspect cryptanalytic frequency distribution
+        </div>
+      )}
+
+      {/* SVG Canvas */}
+      <div className="relative w-full aspect-[800/240] rounded-lg bg-[#0d0f12] p-1 border border-[#1f242e] overflow-hidden">
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="w-full h-full overflow-visible"
+        >
+          {/* Horizontal Gridlines */}
+          {yGridSteps.map((val) => {
+            const y = padTop + plotH - (val / maxPct) * plotH
+            return (
+              <g key={val}>
+                <line
+                  x1={padLeft}
+                  y1={y}
+                  x2={width - padRight}
+                  y2={y}
+                  stroke="#1f242e"
+                  strokeDasharray="3 3"
+                  strokeWidth="1"
+                />
+                <text
+                  x={padLeft - 6}
+                  y={y + 3}
+                  fill="#6b7280"
+                  fontSize="9"
+                  fontFamily="monospace"
+                  textAnchor="end"
+                >
+                  {val}%
+                </text>
+              </g>
+            )
+          })}
+
+          {/* Bars for each letter */}
+          {data.map((item, i) => {
+            const groupCenterX = padLeft + i * slotW + slotW / 2
+            const isHovered = hoveredLetter === item.letter
+
+            const cipherH = (item['Ciphertext %'] / maxPct) * plotH
+            const englishH = (item['English Standard %'] / maxPct) * plotH
+
+            const cipherY = padTop + plotH - cipherH
+            const englishY = padTop + plotH - englishH
+
+            return (
+              <g
+                key={item.letter}
+                onMouseEnter={() => setHoveredLetter(item.letter)}
+                onMouseLeave={() => setHoveredLetter(null)}
+                className="cursor-pointer transition-opacity"
+              >
+                {/* Hover column background highlight */}
+                {isHovered && (
+                  <rect
+                    x={padLeft + i * slotW}
+                    y={padTop}
+                    width={slotW}
+                    height={plotH}
+                    fill="#f59e0b"
+                    fillOpacity="0.08"
+                    rx="2"
+                  />
+                )}
+
+                {/* English Standard Bar (Grey) */}
+                <rect
+                  x={groupCenterX - barW - 1}
+                  y={englishY}
+                  width={barW}
+                  height={englishH}
+                  fill={isHovered ? '#64748b' : '#333b49'}
+                  rx="1.5"
+                />
+
+                {/* Ciphertext Bar (Amber) */}
+                <rect
+                  x={groupCenterX + 1}
+                  y={cipherY}
+                  width={barW}
+                  height={cipherH}
+                  fill={isHovered ? '#fbbf24' : '#f59e0b'}
+                  rx="1.5"
+                />
+
+                {/* Letter X-Axis Label */}
+                <text
+                  x={groupCenterX}
+                  y={height - 10}
+                  fill={isHovered ? '#f59e0b' : '#6b7280'}
+                  fontSize="10"
+                  fontWeight={isHovered ? 'bold' : 'normal'}
+                  fontFamily="monospace"
+                  textAnchor="middle"
+                >
+                  {item.letter}
+                </text>
+              </g>
+            )
+          })}
+        </svg>
+      </div>
+
+      {/* Legend */}
+      <div className="flex items-center justify-center gap-6 pt-1 font-mono text-[11px] text-[#8b949e]">
+        <div className="flex items-center gap-2">
+          <span className="h-3 w-3 rounded-sm bg-[#f59e0b] inline-block" />
+          <span className="text-[#f2eee6]">Ciphertext Letter %</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="h-3 w-3 rounded-sm bg-[#333b49] inline-block" />
+          <span>Standard English %</span>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function CipherVisualizer() {
@@ -237,28 +417,7 @@ export function CipherVisualizer() {
               </span>
             </div>
 
-            <div className="h-[240px] sm:h-[280px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={frequencyData}
-                  margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                >
-                  <CartesianGrid stroke="#1f242e" vertical={false} />
-                  <XAxis dataKey="letter" stroke="#6b7280" fontSize={10} tickLine={false} />
-                  <YAxis stroke="#6b7280" fontSize={10} tickLine={false} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#14171d',
-                      borderColor: '#282e3b',
-                      fontSize: '11px',
-                      fontFamily: 'monospace',
-                    }}
-                  />
-                  <Bar dataKey="Ciphertext %" fill="#f59e0b" radius={[2, 2, 0, 0]} />
-                  <Bar dataKey="English Standard %" fill="#3b4252" radius={[2, 2, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            <InteractiveFrequencyChart data={frequencyData} />
           </div>
         </div>
       ) : (

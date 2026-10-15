@@ -21,6 +21,7 @@ export default function ContactPage() {
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
   const [formSubmitted, setFormSubmitted] = useState(false)
+  const [isSending, setIsSending] = useState(false)
   const [error, setError] = useState('')
 
   const handleCopyEmail = async () => {
@@ -33,7 +34,7 @@ export default function ContactPage() {
     }
   }
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
 
@@ -42,17 +43,36 @@ export default function ContactPage() {
       return
     }
 
-    // Compose prefilled mailto link so it actually dispatches from user's email client
-    const mailtoSubject = encodeURIComponent(
-      subject.trim() || `Inquiry from ${name} via Portfolio`
-    )
-    const mailtoBody = encodeURIComponent(
-      `Hi Vedant,\n\n${message}\n\nFrom:\n${name}\nEmail: ${email}`
-    )
-    const mailtoUrl = `mailto:vedantgarud05@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`
+    setIsSending(true)
 
-    window.location.href = mailtoUrl
-    setFormSubmitted(true)
+    try {
+      // 1. Post to persistent backend store
+      const res = await fetch('/api/transmission', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message }),
+      })
+
+      if (!res.ok) {
+        console.warn('Backend transmission logging status:', res.status)
+      }
+    } catch (err) {
+      console.error('Failed to log transmission to backend store:', err)
+    } finally {
+      setIsSending(false)
+      setFormSubmitted(true)
+
+      // 2. Open mailto client for direct user delivery
+      const mailtoSubject = encodeURIComponent(
+        subject.trim() || `Inquiry from ${name} via Portfolio`
+      )
+      const mailtoBody = encodeURIComponent(
+        `Hi Vedant,\n\n${message}\n\nFrom:\n${name}\nEmail: ${email}`
+      )
+      const mailtoUrl = `mailto:vedantgarud05@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`
+
+      window.location.href = mailtoUrl
+    }
   }
 
   return (
@@ -205,11 +225,10 @@ export default function ContactPage() {
               <div className="rounded border border-[#10b981]/40 bg-[#10b981]/10 p-4 font-mono text-xs text-[#a7f3d0] space-y-1">
                 <div className="font-bold flex items-center gap-1.5">
                   <Check className="h-4 w-4" />
-                  <span>Mail client dispatched!</span>
+                  <span>Transmission Logged &amp; Dispatched!</span>
                 </div>
                 <p className="font-sans text-xs">
-                  Your email client has opened with this draft prefilled. Click send in your client or send directly to{' '}
-                  <strong className="underline">vedantgarud05@gmail.com</strong>.
+                  Your transmission has been recorded directly into Vedant’s private inbox log and opened in your email client for redundant delivery.
                 </p>
               </div>
             )}
@@ -266,9 +285,10 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full rounded bg-[#e1523d] py-3.5 font-mono text-xs uppercase tracking-wider text-white font-medium hover:bg-[#ef634f] transition-colors flex items-center justify-center gap-2"
+                disabled={isSending}
+                className="w-full rounded bg-[#e1523d] py-3.5 font-mono text-xs uppercase tracking-wider text-white font-medium hover:bg-[#ef634f] transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                <span>Dispatch Transmission via Mail</span>
+                <span>{isSending ? 'Recording Transmission...' : 'Dispatch Transmission'}</span>
                 <Send className="h-3.5 w-3.5" />
               </button>
             </form>

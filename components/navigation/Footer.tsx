@@ -182,6 +182,10 @@ export function Footer() {
               RIGHT NOW
             </Link>
             <span>•</span>
+            <Link href="/admin" className="hover:text-[#e1523d] transition-colors">
+              TERMINAL
+            </Link>
+            <span>•</span>
             <span className="hover:text-[#a3abb6] transition-colors">
               ALL RIGHTS RESERVED
             </span>
