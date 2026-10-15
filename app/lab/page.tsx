@@ -11,7 +11,7 @@ export default function LabPage() {
         {/* Header */}
         <div className="pb-12 border-b border-[#232832]">
           <div className="flex items-center gap-3 font-mono text-xs text-[#e1523d]">
-            <span>// CHAPTER 05</span>
+            <span>// CHAPTER 08</span>
             <span>•</span>
             <span>TECHNICAL PLAYGROUND & REPRODUCIBLE EXPERIMENTS</span>
           </div>
