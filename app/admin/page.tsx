@@ -153,7 +153,7 @@ export default function AdminInboxPage() {
   const unreadCount = transmissions.filter((t) => !t.read).length
 
   return (
-    <div className="min-h-screen bg-[#090a0d] text-[#f2eee6] py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-[#090a0d] text-[#f2eee6] pt-6 pb-20 sm:pt-8 sm:pb-24 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="mx-auto max-w-5xl space-y-8">
         {/* Top Breadcrumb & Status */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#1f242e] font-mono text-xs text-[#8b949e]">
@@ -176,7 +176,7 @@ export default function AdminInboxPage() {
 
         {!isAuthenticated ? (
           /* Authentication Screen */
-          <div className="mx-auto max-w-md pt-12">
+          <div className="mx-auto max-w-md pt-6 sm:pt-8">
             <div className="rounded-2xl border border-[#232832] bg-[#14171d] p-8 shadow-2xl space-y-6">
               <div className="flex items-center justify-between">
                 <div className="h-10 w-10 rounded-xl bg-[#e1523d]/10 border border-[#e1523d]/30 flex items-center justify-center text-[#e1523d]">
