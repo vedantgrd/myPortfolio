@@ -2,7 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowUpRight, Github, Linkedin, Mail, Twitter } from 'lucide-react'
+import { ArrowUpRight, Github, Linkedin, Mail, Twitter, Radio, Sparkles, FileText } from 'lucide-react'
+
+const directoryItems = [
+  { href: '/', number: '01', label: 'Home', descriptor: 'Cover Trailer' },
+  { href: '/work', number: '02', label: 'Work', descriptor: 'Case Studies' },
+  { href: '/writing', number: '03', label: 'Notebook', descriptor: 'All Writing' },
+  { href: '/taste', number: '04', label: 'Taste', descriptor: 'Cinema, Music, Books' },
+  { href: '/archive', number: '05', label: 'Archive', descriptor: 'Verified Chronology' },
+  { href: '/now', number: '06', label: 'Right Now', descriptor: 'Daily Snapshot' },
+  { href: '/about', number: '07', label: 'About', descriptor: 'The Narrative' },
+  { href: '/lab', number: '08', label: 'The Lab', descriptor: 'Simulators' },
+]
 
 export function Footer() {
   const [currentTime, setCurrentTime] = useState('')
@@ -27,105 +38,94 @@ export function Footer() {
 
   return (
     <footer className="border-t border-[#232832] bg-[#090a0d] text-[#8b949e]">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          {/* Colophon & Identity */}
-          <div className="lg:col-span-5 space-y-4">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14 space-y-10 lg:space-y-12">
+        <div className="grid grid-cols-1 gap-12 sm:gap-14 lg:grid-cols-12 lg:gap-16 items-start">
+          <div className="lg:col-span-5 space-y-6">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs font-semibold text-[#e1523d]">
+              <span className="font-mono text-xs font-semibold text-[#e1523d] tracking-wider uppercase">
                 // COLOPHON
               </span>
-              <span className="h-px w-8 bg-[#232832]" />
             </div>
-            <h2 className="text-xl font-bold tracking-tight text-[#f2eee6]">
-              VEDANT / UNFINISHED
-            </h2>
-            <p className="text-sm leading-relaxed text-[#cfd6e0] max-w-md font-light">
-              A life, in progress. The personal living archive of Vedant Garud — uniting engineering projects, cinema reflections, human memories, and working principles in one enduring digital home.
+
+            <div className="space-y-3">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#f2eee6]">
+                VEDANT <span className="text-[#8b949e] font-light">/</span> UNFINISHED
+              </h2>
+              <p className="text-xs font-mono uppercase tracking-wider text-[#e1523d]">
+                A life, in progress.
+              </p>
+            </div>
+
+            <p className="text-sm leading-relaxed text-[#cfd6e0] max-w-lg font-light">
+              The personal living archive and technical laboratory of Vedant Garud — uniting engineering systems, cinema reflections, human memories, and working principles in one enduring digital home.
             </p>
-            <div className="pt-2 flex items-center gap-3">
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" />
-              </span>
-              <span className="font-mono text-xs text-[#a3abb6]">
-                Thane &amp; Panvel, India // {currentTime ? `${currentTime} IST` : '19:55:00 IST'}
-              </span>
+
+            <div className="pt-2 flex flex-wrap items-center gap-3 font-mono text-xs text-[#a3abb6]">
+              <div className="flex items-center gap-2 rounded-md border border-[#1f242e] bg-[#101217] px-3 py-1.5 shadow-sm">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" />
+                </span>
+                <span>Thane &amp; New Panvel, India</span>
+              </div>
+              <span className="text-[#3b4252] hidden sm:inline">•</span>
+              <div className="rounded-md border border-[#1f242e] bg-[#101217] px-3 py-1.5 text-[#cfd6e0] font-mono text-xs">
+                {currentTime ? `${currentTime} IST` : '19:55:00 IST'}
+              </div>
             </div>
           </div>
 
-          {/* Directory Navigation */}
-          <div className="lg:col-span-3 space-y-4">
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#f2eee6]">
-              Canonical Directory
-            </span>
-            <ul className="space-y-2 font-mono text-xs">
-              <li>
-                <Link href="/" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>01 // Home</span>
-                  <span className="text-[#3b4252]">Cover Trailer</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/work" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>02 // Work</span>
-                  <span className="text-[#3b4252]">Case Studies</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/writing" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>03 // Notebook</span>
-                  <span className="text-[#3b4252]">All Writing</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/taste" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>04 // Taste</span>
-                  <span className="text-[#3b4252]">Cinema, Music, Books</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/archive" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>05 // Archive</span>
-                  <span className="text-[#3b4252]">Verified Chronology</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/now" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>06 // Right Now</span>
-                  <span className="text-[#3b4252]">Daily Snapshot</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>07 // About</span>
-                  <span className="text-[#3b4252]">The Narrative</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/lab" className="hover:text-[#e1523d] transition-colors flex items-center justify-between">
-                  <span>08 // The Lab</span>
-                  <span className="text-[#3b4252]">Simulators</span>
-                </Link>
-              </li>
-            </ul>
+          <div className="lg:col-span-4 space-y-6">
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-xs font-semibold text-[#e1523d] tracking-wider uppercase">
+                // DIRECTORY
+              </span>
+            </div>
+
+            <nav aria-label="Footer Navigation">
+              <ul className="divide-y divide-[#171b23] border-y border-[#171b23] font-mono text-xs">
+                {directoryItems.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="group flex items-center justify-between py-2.5 transition-colors hover:text-[#f2eee6]"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-[#6b7280] group-hover:text-[#e1523d] transition-colors font-medium">
+                          {item.number}
+                        </span>
+                        <span className="text-[#3b4252] select-none">//</span>
+                        <span className="text-[#cfd6e0] group-hover:text-white group-hover:translate-x-0.5 transition-all font-medium">
+                          {item.label}
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#6b7280] group-hover:text-[#9ca3af] transition-colors font-sans font-light">
+                        {item.descriptor}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
-          {/* Verified Socials & Direct Line */}
-          <div className="lg:col-span-4 space-y-4">
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-[#f2eee6]">
-              Coordinates &amp; Transmission
-            </span>
-            <div className="space-y-2">
+          <div className="lg:col-span-3 space-y-6">
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-xs font-semibold text-[#e1523d] tracking-wider uppercase">
+                // COORDINATES
+              </span>
+            </div>
+
+            <div className="space-y-3">
               <a
                 href="mailto:vedantgarud05@gmail.com"
-                className="group flex items-center justify-between rounded border border-[#232832] bg-[#14171d] p-3 text-xs font-mono text-[#f2eee6] transition-all hover:border-[#e1523d] hover:bg-[#1a1e26]"
+                className="group flex items-center justify-between rounded-xl border border-[#232832] bg-[#14171d]/60 p-3.5 text-xs font-mono text-[#f2eee6] transition-all hover:border-[#e1523d] hover:bg-[#14171d] shadow-sm"
               >
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-[#e1523d]" />
-                  <span>vedantgarud05@gmail.com</span>
+                <div className="flex items-center gap-2.5">
+                  <Mail className="h-4 w-4 text-[#e1523d] shrink-0" />
+                  <span className="truncate">vedantgarud05@gmail.com</span>
                 </div>
-                <ArrowUpRight className="h-3.5 w-3.5 text-[#8b949e] group-hover:text-[#e1523d] transition-colors" />
+                <ArrowUpRight className="h-3.5 w-3.5 text-[#8b949e] group-hover:text-[#e1523d] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
               </a>
 
               <div className="grid grid-cols-3 gap-2">
@@ -133,62 +133,86 @@ export function Footer() {
                   href="https://github.com/vedantgrd"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded border border-[#232832] bg-[#14171d] py-2.5 text-xs font-mono text-[#9ca3af] transition-colors hover:border-[#8b949e] hover:text-[#f2eee6]"
+                  className="flex items-center justify-center gap-1.5 rounded-lg border border-[#232832] bg-[#14171d]/60 py-2.5 text-xs font-mono text-[#cfd6e0] transition-all hover:border-[#8b949e] hover:bg-[#14171d] hover:text-white"
                 >
-                  <Github className="h-3.5 w-3.5" />
+                  <Github className="h-3.5 w-3.5 text-[#8b949e]" />
                   <span>GitHub</span>
                 </a>
                 <a
                   href="https://www.linkedin.com/in/vedant-garud-94bb38263/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded border border-[#232832] bg-[#14171d] py-2.5 text-xs font-mono text-[#9ca3af] transition-colors hover:border-[#8b949e] hover:text-[#f2eee6]"
+                  className="flex items-center justify-center gap-1.5 rounded-lg border border-[#232832] bg-[#14171d]/60 py-2.5 text-xs font-mono text-[#cfd6e0] transition-all hover:border-[#8b949e] hover:bg-[#14171d] hover:text-white"
                 >
-                  <Linkedin className="h-3.5 w-3.5" />
+                  <Linkedin className="h-3.5 w-3.5 text-[#8b949e]" />
                   <span>LinkedIn</span>
                 </a>
                 <a
                   href="https://x.com/iamvedantgrd"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded border border-[#232832] bg-[#14171d] py-2.5 text-xs font-mono text-[#9ca3af] transition-colors hover:border-[#8b949e] hover:text-[#f2eee6]"
+                  className="flex items-center justify-center gap-1.5 rounded-lg border border-[#232832] bg-[#14171d]/60 py-2.5 text-xs font-mono text-[#cfd6e0] transition-all hover:border-[#8b949e] hover:bg-[#14171d] hover:text-white"
                 >
-                  <Twitter className="h-3.5 w-3.5" />
+                  <Twitter className="h-3.5 w-3.5 text-[#8b949e]" />
                   <span>Twitter</span>
                 </a>
               </div>
             </div>
-            <p className="text-[11px] text-[#6b7280] leading-relaxed">
-              Pillai College of Engineering, B.Tech IT (InfoSec &amp; Forensics) // Former Backend Intern at VFS Global.
-            </p>
+
+            <div className="rounded-xl border border-[#1f242e] bg-[#0d0f12] p-4 space-y-3 font-mono text-xs">
+              <div className="flex items-center justify-between text-[11px] text-[#8b949e] border-b border-[#1f242e] pb-2">
+                <span className="text-[#f2eee6] font-semibold">ACADEMIC &amp; WORK</span>
+                <span className="text-[#10b981]">Active</span>
+              </div>
+              <div className="space-y-1.5 text-[11px] font-sans leading-relaxed text-[#9ca3af]">
+                <p>
+                  <strong className="text-[#cfd6e0] font-mono">B.Tech IT (PCE Panvel)</strong> // Specialization in InfoSec &amp; Data Forensics.
+                </p>
+                <p className="text-[10.5px] text-[#6b7280]">
+                  Former Backend Developer Intern at VFS Global.
+                </p>
+              </div>
+              <div className="pt-2 border-t border-[#1f242e] flex items-center justify-between text-[10.5px]">
+                <span className="text-[#8b949e]">CURRICULUM VITAE</span>
+                <a
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#e1523d] hover:underline inline-flex items-center gap-1 font-semibold"
+                >
+                  <FileText className="h-3 w-3" />
+                  <span>Resume (PDF) &rarr;</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Rule & Metadata */}
-        <div className="mt-12 pt-8 border-t border-[#1d222b] flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[#6b7280]">
+        <div className="pt-6 border-t border-[#1d222b] flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[#6b7280]">
           <p>
-            &copy; {new Date().getFullYear()} Vedant Garud. A life, in progress.
+            &copy; {new Date().getFullYear()} Vedant Garud. All personal essays, prototypes &amp; reflections preserved.
           </p>
-          <div className="flex items-center gap-4">
-            <Link href="/archive" className="hover:text-[#a3abb6] transition-colors">
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Link href="/" className="hover:text-[#cfd6e0] transition-colors">
+              TOP // COVER
+            </Link>
+            <span>•</span>
+            <Link href="/archive" className="hover:text-[#cfd6e0] transition-colors">
               THE ARCHIVE
             </Link>
             <span>•</span>
-            <Link href="/taste" className="hover:text-[#a3abb6] transition-colors">
+            <Link href="/taste" className="hover:text-[#cfd6e0] transition-colors">
               TASTE
             </Link>
             <span>•</span>
-            <Link href="/now" className="hover:text-[#a3abb6] transition-colors">
+            <Link href="/now" className="hover:text-[#cfd6e0] transition-colors">
               RIGHT NOW
             </Link>
             <span>•</span>
-            <Link href="/admin" className="hover:text-[#e1523d] transition-colors">
+            <Link href="/admin" className="text-[#8b949e] hover:text-[#e1523d] transition-colors">
               TERMINAL
             </Link>
-            <span>•</span>
-            <span className="hover:text-[#a3abb6] transition-colors">
-              ALL RIGHTS RESERVED
-            </span>
           </div>
         </div>
       </div>

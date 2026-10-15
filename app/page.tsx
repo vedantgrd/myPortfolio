@@ -38,7 +38,7 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen bg-[#0d0f12] text-[#f2eee6]">
       {/* SECTION 01: INTRODUCTION & EDITORIAL TRAILER */}
-      <section className="relative border-b border-[#232832] pt-12 pb-20 lg:pt-20 lg:pb-28">
+      <section className="relative border-b border-[#232832] pt-6 pb-20 lg:pt-8 lg:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Masthead Header Strip */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-8 border-b border-[#1d222b] text-xs font-mono text-[#8b949e]">

@@ -39,7 +39,7 @@ export default async function ArticleDetailPage({
     articles[(currentIndex - 1 + articles.length) % articles.length]
 
   return (
-    <article className="min-h-screen bg-[#0d0f12] py-16 sm:py-24">
+    <article className="min-h-screen bg-[#0d0f12] pt-6 pb-20 sm:pt-8 sm:pb-24">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between border-b border-[#232832] pb-6 font-mono text-xs text-[#8b949e]">
@@ -92,9 +92,29 @@ export default async function ArticleDetailPage({
           </div>
         </header>
 
-        {/* Lead In / Abstract */}
-        <div className="rounded-xl border-l-2 border-[#e1523d] bg-[#14171d] p-6 sm:p-8 text-base sm:text-lg text-[#cfd6e0] leading-relaxed italic font-serif">
-          &ldquo;{article.content.lead}&rdquo;
+        {/* Lead In / Abstract + Commemorative Photo Frame */}
+        <div className="flex flex-col md:flex-row items-center gap-8">
+          <div className="flex-1 rounded-xl border-l-2 border-[#e1523d] bg-[#14171d] p-6 sm:p-8 text-base sm:text-lg text-[#cfd6e0] leading-relaxed italic font-serif">
+            &ldquo;{article.content.lead}&rdquo;
+          </div>
+          {article.slug === 'so-suicide' && (
+            <div className="shrink-0">
+              <div className="relative group cursor-pointer transition-all duration-300 ease-out rotate-2 hover:rotate-0 hover:scale-105">
+                <div className="relative bg-[#ffffff] p-2.5 pb-6 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20">
+                  <div className="relative aspect-[3/4] w-44 sm:w-48 overflow-hidden rounded-[2px] bg-[#0d0f12]">
+                    <img
+                      src="/images/rj-mitte.png"
+                      alt="RJ Mitte"
+                      className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="pt-2 text-center font-mono text-[10.5px] text-[#2b2b2b] tracking-wide select-none font-semibold">
+                    you will be missed, bro.
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Article Body Content */}
@@ -147,15 +167,14 @@ export default async function ArticleDetailPage({
               {/* Callout box if present */}
               {section.callout && (
                 <div
-                  className={`my-6 rounded-lg border p-6 space-y-2 ${
-                    section.callout.type === 'quote'
-                      ? 'border-[#e1523d]/40 bg-[#e1523d]/10 text-[#fca5a5]'
-                      : section.callout.type === 'warning'
+                  className={`my-6 rounded-lg border p-6 space-y-2 ${section.callout.type === 'quote'
+                    ? 'border-[#e1523d]/40 bg-[#e1523d]/10 text-[#fca5a5]'
+                    : section.callout.type === 'warning'
                       ? 'border-[#dc2626]/40 bg-[#dc2626]/10 text-[#fca5a5]'
                       : section.callout.type === 'insight'
-                      ? 'border-[#3b68ff]/40 bg-[#3b68ff]/10 text-[#bfdbfe]'
-                      : 'border-[#f59e0b]/40 bg-[#f59e0b]/10 text-[#fde68a]'
-                  }`}
+                        ? 'border-[#3b68ff]/40 bg-[#3b68ff]/10 text-[#bfdbfe]'
+                        : 'border-[#f59e0b]/40 bg-[#f59e0b]/10 text-[#fde68a]'
+                    }`}
                 >
                   <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider">
                     {section.callout.type === 'quote' && <Quote className="h-4 w-4 text-[#e1523d]" />}

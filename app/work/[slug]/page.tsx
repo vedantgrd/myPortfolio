@@ -37,8 +37,8 @@ export default async function ProjectDetailPage({
   const nextProject = projects[(currentIndex + 1) % projects.length]
 
   return (
-    <article className="min-h-screen bg-[#0d0f12] py-16 sm:py-24">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 space-y-16">
+    <article className="min-h-screen bg-[#0d0f12] pt-6 pb-20 sm:pt-8 sm:pb-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Navigation Breadcrumbs & Back Link */}
         <div className="flex items-center justify-between border-b border-[#232832] pb-6 font-mono text-xs text-[#8b949e]">
           <Link

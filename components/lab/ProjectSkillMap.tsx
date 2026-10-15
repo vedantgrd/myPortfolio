@@ -38,11 +38,10 @@ export function ProjectSkillMap() {
                 setSelectedCategory(cat)
                 setActiveItem(cat.items[0])
               }}
-              className={`rounded px-3.5 py-1.5 font-mono text-xs transition-colors ${
-                isSelected
+              className={`rounded px-3.5 py-1.5 font-mono text-xs transition-colors ${isSelected
                   ? 'bg-[#1a1e26] text-[#f2eee6] font-bold border border-[#e1523d]'
                   : 'bg-[#090a0d] text-[#8b949e] border border-[#232832] hover:text-[#f2eee6]'
-              }`}
+                }`}
             >
               {cat.title}
             </button>
@@ -60,17 +59,15 @@ export function ProjectSkillMap() {
               <button
                 key={item.name}
                 onClick={() => setActiveItem(item)}
-                className={`w-full text-left rounded-lg p-3.5 transition-all flex items-center justify-between border ${
-                  isActive
+                className={`w-full text-left rounded-lg p-3.5 transition-all flex items-center justify-between border ${isActive
                     ? 'border-[#e1523d] bg-[#1a1e26] text-[#f2eee6]'
                     : 'border-[#232832] bg-[#090a0d] text-[#a3abb6] hover:border-[#38404f] hover:text-[#f2eee6]'
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <span
-                    className={`h-2 w-2 rounded-full ${
-                      isActive ? 'bg-[#e1523d]' : 'bg-[#3b4252]'
-                    }`}
+                    className={`h-2 w-2 rounded-full ${isActive ? 'bg-[#e1523d]' : 'bg-[#3b4252]'
+                      }`}
                   />
                   <span className="font-semibold">{item.name}</span>
                 </div>

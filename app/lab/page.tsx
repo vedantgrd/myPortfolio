@@ -6,7 +6,7 @@ import { ProjectSkillMap } from '@/components/lab/ProjectSkillMap'
 
 export default function LabPage() {
   return (
-    <div className="min-h-screen bg-[#0d0f12] py-16 sm:py-24">
+    <div className="min-h-screen bg-[#0d0f12] pt-6 pb-20 sm:pt-8 sm:pb-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Header */}
         <div className="pb-12 border-b border-[#232832]">

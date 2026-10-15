@@ -44,7 +44,7 @@ export default function WritingPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#0d0f12] py-16 sm:py-24">
+    <div className="min-h-screen bg-[#0d0f12] pt-6 pb-20 sm:pt-8 sm:pb-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Page Header */}
         <div className="pb-12 border-b border-[#232832]">
@@ -97,55 +97,80 @@ export default function WritingPage() {
 
         {/* Featured Cover Story (Visible when no query active) */}
         {!searchQuery && selectedCategory === 'All' && featuredArticle && (
-          <section className="rounded-xl border border-[#232832] bg-[#14171d] p-8 sm:p-12 hover:border-[#38404f] transition-all relative overflow-hidden">
-            <div className="max-w-3xl space-y-4 relative z-10">
-              <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-[#8b949e]">
-                <span className="mono-badge text-[#e1523d] border-[#e1523d]/30">
-                  FEATURED MEMOIR PIECE
-                </span>
-                <span>{featuredArticle.category}</span>
-                <span>•</span>
-                <span>{featuredArticle.readTime}</span>
-                <span>•</span>
-                <span>{featuredArticle.date}</span>
-              </div>
-
-              <h2 className="text-2xl sm:text-4xl font-bold text-[#f2eee6] leading-tight">
-                <Link
-                  href={`/writing/${featuredArticle.slug}`}
-                  className="hover:text-[#e1523d] transition-colors"
-                >
-                  {featuredArticle.title}
-                </Link>
-              </h2>
-
-              <p className="font-mono text-xs sm:text-sm text-[#e1523d]">
-                {featuredArticle.subtitle}
-              </p>
-
-              <p className="text-sm sm:text-base text-[#cfd6e0] leading-relaxed italic font-serif">
-                &ldquo;{featuredArticle.excerpt}&rdquo;
-              </p>
-
-              <div className="pt-4 flex flex-wrap items-center justify-between gap-4">
-                <div className="flex flex-wrap gap-2">
-                  {featuredArticle.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded bg-[#1a1e26] px-2 py-0.5 font-mono text-[10px] text-[#a3abb6]"
-                    >
-                      #{t}
-                    </span>
-                  ))}
+          <section className="rounded-2xl border border-[#232832] bg-[#14171d] p-8 sm:p-10 lg:p-12 hover:border-[#38404f] transition-all relative overflow-hidden shadow-2xl">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12 relative z-10">
+              {/* Left Editorial Text Column */}
+              <div className="max-w-2xl space-y-4">
+                <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-[#8b949e]">
+                  <span className="mono-badge text-[#e1523d] border-[#e1523d]/30">
+                    FEATURED MEMOIR PIECE
+                  </span>
+                  <span>{featuredArticle.category}</span>
+                  <span>•</span>
+                  <span>{featuredArticle.readTime}</span>
+                  <span>•</span>
+                  <span>{featuredArticle.date}</span>
                 </div>
 
-                <Link
-                  href={`/writing/${featuredArticle.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded bg-[#e1523d] px-4 py-2 font-mono text-xs uppercase tracking-wider text-white hover:bg-[#ef634f] transition-colors"
-                >
-                  <span>Read Full Essay</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
+                <h2 className="text-2xl sm:text-4xl font-bold text-[#f2eee6] leading-tight">
+                  <Link
+                    href={`/writing/${featuredArticle.slug}`}
+                    className="hover:text-[#e1523d] transition-colors"
+                  >
+                    {featuredArticle.title}
+                  </Link>
+                </h2>
+
+                <p className="font-mono text-xs sm:text-sm text-[#e1523d]">
+                  {featuredArticle.subtitle}
+                </p>
+
+                <p className="text-sm sm:text-base text-[#cfd6e0] leading-relaxed italic font-serif">
+                  &ldquo;{featuredArticle.excerpt}&rdquo;
+                </p>
+
+                <div className="pt-4 flex flex-wrap items-center justify-between gap-4">
+                  <div className="flex flex-wrap gap-2">
+                    {featuredArticle.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded bg-[#1a1e26] px-2 py-0.5 font-mono text-[10px] text-[#a3abb6]"
+                      >
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <Link
+                    href={`/writing/${featuredArticle.slug}`}
+                    className="inline-flex items-center gap-1.5 rounded bg-[#e1523d] px-4 py-2 font-mono text-xs uppercase tracking-wider text-white hover:bg-[#ef634f] transition-colors font-medium shadow-sm"
+                  >
+                    <span>Read Full Essay</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right: Crooked Photo Frame in Same Style as Contact */}
+              <div className="shrink-0 flex items-center justify-center lg:justify-end lg:mr-4">
+                <div className="relative group cursor-pointer transition-all duration-300 ease-out rotate-2 hover:rotate-0 hover:scale-105">
+                  {/* Outer Photo Frame with White Border & Deep Shadow */}
+                  <div className="relative bg-[#ffffff] p-2.5 pb-6 sm:p-3 sm:pb-7 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20">
+                    {/* Photo Container */}
+                    <div className="relative aspect-[3/4] w-48 sm:w-56 md:w-60 overflow-hidden rounded-[2px] bg-[#0d0f12]">
+                      <img
+                        src="/images/rj-mitte.png"
+                        alt="RJ Mitte"
+                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+
+                    {/* Polaroid Handwritten-style Caption */}
+                    <div className="pt-2 text-center font-mono text-[11px] text-[#2b2b2b] tracking-wide select-none font-semibold">
+                      you will be missed, bro.
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>

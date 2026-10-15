@@ -96,7 +96,7 @@ export default function TastePage() {
   const [activeTab, setActiveTab] = useState<TabType>('all')
 
   return (
-    <div className="min-h-screen bg-[#0d0f12] text-[#f2eee6] py-16 sm:py-24">
+    <div className="min-h-screen bg-[#0d0f12] text-[#f2eee6] pt-6 pb-20 sm:pt-8 sm:pb-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Page Header / Editorial Masthead */}
         <div className="border-b border-[#232832] pb-12 space-y-6">

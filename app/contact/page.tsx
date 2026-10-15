@@ -76,21 +76,45 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d0f12] py-16 sm:py-24">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 space-y-16">
+    <div className="min-h-screen bg-[#0d0f12] pt-6 pb-20 sm:pt-8 sm:pb-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Header */}
-        <div className="pb-12 border-b border-[#232832]">
-          <div className="flex items-center gap-3 font-mono text-xs text-[#e1523d]">
-            <span>// CHAPTER 06</span>
-            <span>•</span>
-            <span>DIRECT TRANSMISSION</span>
+        <div className="pb-12 border-b border-[#232832] flex flex-col md:flex-row md:items-center justify-between gap-8">
+          <div className="max-w-2xl space-y-3">
+            <div className="flex items-center gap-3 font-mono text-xs text-[#e1523d]">
+              <span>// CHAPTER 06</span>
+              <span>•</span>
+              <span>DIRECT TRANSMISSION</span>
+            </div>
+            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#f2eee6]">
+              Get In Touch
+            </h1>
+            <p className="text-base sm:text-lg text-[#9ca3af] leading-relaxed font-light">
+              I’m always open to discussing autonomous multi-agent systems, scholarship platforms, agricultural robotics, or new engineering opportunities.
+            </p>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#f2eee6] mt-3">
-            Get In Touch
-          </h1>
-          <p className="text-base sm:text-lg text-[#9ca3af] mt-4 max-w-2xl leading-relaxed">
-            I’m always open to discussing autonomous multi-agent systems, scholarship platforms, agricultural robotics, or new engineering opportunities.
-          </p>
+
+          {/* Crooked / Tilted Photo Frame in Right Space (Moved slightly towards left) */}
+          <div className="shrink-0 flex items-center justify-start md:justify-end md:mr-16 lg:mr-28">
+            <div className="relative group cursor-pointer transition-all duration-300 ease-out -rotate-3 hover:rotate-0 hover:scale-105">
+              {/* Outer Photo Frame with White Border & Shadow */}
+              <div className="relative bg-[#ffffff] p-2.5 pb-6 sm:p-3 sm:pb-7 rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.7)] border-2 border-white ring-1 ring-black/20">
+                {/* Photo Image Container */}
+                <div className="relative aspect-[16/10] w-52 sm:w-60 md:w-64 overflow-hidden rounded-[2px] bg-[#0d0f12]">
+                  <img
+                    src="/images/cat.png"
+                    alt="Transmission Cat"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Subtle Monospace Photo Caption */}
+                <div className="pt-2 text-center font-mono text-[10px] text-[#333333] tracking-wider select-none font-semibold">
+                  *ME REACTING TO YOUR MESSAGES
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
