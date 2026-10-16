@@ -34,7 +34,6 @@ function readFeaturedSlug(): string {
 function readCustomArticles(): Article[] {
   try {
     if (!fs.existsSync(CUSTOM_ARTICLES_FILE)) {
-      fs.writeFileSync(CUSTOM_ARTICLES_FILE, '[]', 'utf8')
       return []
     }
     const data = fs.readFileSync(CUSTOM_ARTICLES_FILE, 'utf8')
@@ -68,7 +67,22 @@ export async function PUT(req: NextRequest) {
     if (!slug) {
       return NextResponse.json({ error: 'Slug is required' }, { status: 400 })
     }
-    fs.writeFileSync(FEATURED_MEMOIR_FILE, JSON.stringify({ slug }, null, 2), 'utf8')
+    try {
+      fs.writeFileSync(FEATURED_MEMOIR_FILE, JSON.stringify({ slug }, null, 2), 'utf8')
+    } catch (fsErr: any) {
+      if (fsErr.code === 'EROFS' || fsErr.message?.includes('read-only')) {
+        return NextResponse.json(
+          {
+            error: 'Serverless environment is read-only (EROFS). In Vercel / serverless deployments, please update data/featured-memoir.json directly in your repository.',
+            isReadOnly: true,
+            code: 'EROFS',
+            featuredSlug: slug,
+          },
+          { status: 403 }
+        )
+      }
+      throw fsErr
+    }
     return NextResponse.json({
       success: true,
       featuredSlug: slug,
@@ -198,7 +212,25 @@ export async function POST(req: NextRequest) {
     // Prepend to custom articles array (newest / updated appears first on top)
     const filteredCustom = existingCustom.filter((a) => a.slug !== newArticle.slug)
     const updatedCustom = [newArticle, ...filteredCustom]
-    saveCustomArticles(updatedCustom)
+
+    try {
+      saveCustomArticles(updatedCustom)
+    } catch (fsErr: any) {
+      if (fsErr.code === 'EROFS' || fsErr.message?.includes('read-only')) {
+        return NextResponse.json(
+          {
+            error: 'EROFS: Read-only file system detected (Vercel / Serverless production). Changes cannot be written to disk in production serverless runtimes. Please commit this article directly into data/custom-articles.json or run `npm run new:article` locally.',
+            isReadOnly: true,
+            code: 'EROFS',
+            slug: newArticle.slug,
+            article: newArticle,
+            updatedCustomJson: JSON.stringify(updatedCustom, null, 2),
+          },
+          { status: 403 }
+        )
+      }
+      throw fsErr
+    }
 
     return NextResponse.json({
       success: true,

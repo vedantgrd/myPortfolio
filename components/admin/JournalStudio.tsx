@@ -22,6 +22,8 @@ import {
   Clock,
   Layers,
   Star,
+  Download,
+  Terminal,
 } from 'lucide-react'
 
 interface SectionState {
@@ -211,6 +213,13 @@ export function JournalStudio() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [publishedSlug, setPublishedSlug] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
+  const [readOnlyNotice, setReadOnlyNotice] = useState<{
+    slug: string
+    article: any
+    updatedCustomJson?: string | null
+  } | null>(null)
+  const [copiedJson, setCopiedJson] = useState(false)
+  const [copiedCmd, setCopiedCmd] = useState(false)
 
   // Parsing result for Paste Code mode
   const parsedResult = useMemo(() => {
@@ -286,9 +295,24 @@ export function JournalStudio() {
 
       const data = await response.json()
       if (!response.ok) {
+        if (
+          data.isReadOnly ||
+          data.code === 'EROFS' ||
+          data.error?.includes('EROFS') ||
+          data.error?.includes('read-only')
+        ) {
+          setReadOnlyNotice({
+            slug: data.slug || art.slug,
+            article: data.article || art,
+            updatedCustomJson: data.updatedCustomJson || null,
+          })
+          setErrorMessage('')
+          return
+        }
         throw new Error(data.error || 'Failed to publish article')
       }
 
+      setReadOnlyNotice(null)
       setPublishedSlug(data.slug)
     } catch (err: any) {
       setErrorMessage(err.message || 'Error publishing article')
@@ -393,9 +417,24 @@ export function JournalStudio() {
       const data = await res.json()
 
       if (!res.ok) {
+        if (
+          data.isReadOnly ||
+          data.code === 'EROFS' ||
+          data.error?.includes('EROFS') ||
+          data.error?.includes('read-only')
+        ) {
+          setReadOnlyNotice({
+            slug: data.slug || payload.slug || 'new-article',
+            article: data.article || payload,
+            updatedCustomJson: data.updatedCustomJson || null,
+          })
+          setErrorMessage('')
+          return
+        }
         throw new Error(data.error || 'Failed to publish article')
       }
 
+      setReadOnlyNotice(null)
       setPublishedSlug(data.slug)
     } catch (err: any) {
       setErrorMessage(err.message || 'Error publishing article')
@@ -579,6 +618,72 @@ export function JournalStudio() {
         <div className="rounded-xl border border-[#ef4444]/40 bg-[#ef4444]/10 p-4 font-mono text-xs text-[#fca5a5] flex items-center gap-2">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{errorMessage}</span>
+        </div>
+      )}
+
+      {/* Read-Only Serverless Environment Notice */}
+      {readOnlyNotice && (
+        <div className="rounded-2xl border border-amber-500/40 bg-[#16130b] p-6 sm:p-7 space-y-4 shadow-xl">
+          <div className="flex items-start gap-3.5 text-amber-400">
+            <AlertCircle className="h-6 w-6 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <h3 className="font-bold text-base text-[#f2eee6]">
+                Serverless Production Detected (Read-Only Filesystem)
+              </h3>
+              <p className="text-xs text-[#cfd6e0] leading-relaxed">
+                Vercel / serverless functions operate in an immutable filesystem (<code className="text-amber-300">/var/task/data/custom-articles.json</code>), preventing live disk writes in production.
+                Your article for <code className="text-amber-200 font-semibold font-mono">/writing/{readOnlyNotice.slug}</code> is validated and formatted! Choose an option below to apply it to your repo:
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 pt-2 font-mono text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                const content = readOnlyNotice.updatedCustomJson || JSON.stringify([readOnlyNotice.article], null, 2)
+                navigator.clipboard.writeText(content)
+                setCopiedJson(true)
+                setTimeout(() => setCopiedJson(false), 3000)
+              }}
+              className="inline-flex items-center gap-2 rounded bg-amber-500 px-4 py-2.5 font-semibold text-black hover:bg-amber-400 transition-colors shadow-sm"
+            >
+              {copiedJson ? <Check className="h-3.5 w-3.5 text-black" /> : <Copy className="h-3.5 w-3.5 text-black" />}
+              <span>{copiedJson ? 'Copied custom-articles.json!' : 'Copy Complete custom-articles.json'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                const content = readOnlyNotice.updatedCustomJson || JSON.stringify([readOnlyNotice.article], null, 2)
+                const blob = new Blob([content], { type: 'application/json' })
+                const url = URL.createObjectURL(blob)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = 'custom-articles.json'
+                a.click()
+                URL.revokeObjectURL(url)
+              }}
+              className="inline-flex items-center gap-2 rounded border border-amber-500/40 bg-[#1e1910] px-4 py-2.5 text-[#f2eee6] hover:bg-[#282114] transition-colors"
+            >
+              <Download className="h-3.5 w-3.5 text-amber-400" />
+              <span>Download custom-articles.json</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                const cmd = `git add data/custom-articles.json && git commit -m "Publish: ${readOnlyNotice.article?.title || readOnlyNotice.slug}" && git push`
+                navigator.clipboard.writeText(cmd)
+                setCopiedCmd(true)
+                setTimeout(() => setCopiedCmd(false), 3000)
+              }}
+              className="inline-flex items-center gap-2 rounded border border-[#2e2617] bg-[#110e08] px-4 py-2.5 text-[#cfd6e0] hover:text-[#f2eee6] hover:border-amber-500/50 transition-colors"
+            >
+              {copiedCmd ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Terminal className="h-3.5 w-3.5 text-amber-400" />}
+              <span>{copiedCmd ? 'Copied Git Command!' : 'Copy Git Push Command'}</span>
+            </button>
+          </div>
         </div>
       )}
 

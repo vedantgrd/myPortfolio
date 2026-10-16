@@ -80,15 +80,33 @@ function run() {
   ].join(' ')
   const readTime = inputData.readTime || calculateReadTime(allText)
 
-  const date =
-    inputData.date ||
-    new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date())
+  const now = new Date()
+  const autoDate = new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'Asia/Kolkata',
+  }).format(now)
+
+  const autoTime =
+    new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'Asia/Kolkata',
+    }).format(now) + ' IST'
+
+  const date = inputData.date && inputData.date.trim() ? inputData.date.trim() : autoDate
+  const publishedTime = inputData.publishedTime || autoTime
+  const publishedAt = inputData.publishedAt || now.toISOString()
 
   const newArticle = {
     slug,
     title: inputData.title.trim(),
     subtitle: inputData.subtitle ? inputData.subtitle.trim() : '',
     date,
+    publishedTime,
+    publishedAt,
     readTime,
     category: inputData.category || 'Being Human',
     tags: Array.isArray(inputData.tags) ? inputData.tags : ['Journal', 'Memoir'],

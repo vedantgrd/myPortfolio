@@ -385,7 +385,7 @@ export default async function ArticleDetailPage({
               Vedant Garud
             </div>
             <p className="leading-relaxed">
-              Student engineer at Pillai College of Engineering, cinephile, and thinker. Writing about mental health, pop-culture, cinema, human ethics, and technology. Unfinished by design.
+              Student engineer at Pillai College of Engineering, cinephile, and thinker. Writing about mental health, pop-culture, cinema, understanding humans, and technology. Unfinished by design and Unfiltered by content.
             </p>
             <div className="pt-1 font-mono text-[11px] text-[#e1523d]">
               Thane, Maharashtra // <Link href="/contact" className="hover:underline">Send a response or thought &rarr;</Link>
