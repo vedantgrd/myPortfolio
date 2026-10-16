@@ -48,6 +48,76 @@ function saveCustomArticles(articles: Article[]) {
   fs.writeFileSync(CUSTOM_ARTICLES_FILE, JSON.stringify(articles, null, 2), 'utf8')
 }
 
+const GITHUB_REPO_OWNER = process.env.GITHUB_REPO_OWNER || 'vedantgrd'
+const GITHUB_REPO_NAME = process.env.GITHUB_REPO_NAME || 'myPortfolio'
+const GITHUB_REPO_BRANCH = process.env.GITHUB_REPO_BRANCH || 'main'
+
+async function commitFileToGitHub({
+  token,
+  filePath,
+  content,
+  message,
+}: {
+  token: string
+  filePath: string
+  content: string
+  message: string
+}) {
+  const url = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${filePath}`
+  const headers = {
+    Authorization: `Bearer ${token.trim()}`,
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'User-Agent': 'myPortfolio-Publisher',
+  }
+
+  // 1. Get existing file sha
+  let sha: string | undefined
+  try {
+    const getRes = await fetch(url, { headers })
+    if (getRes.ok) {
+      const getData = await getRes.json()
+      sha = getData.sha
+    }
+  } catch (err) {
+    console.error('Error fetching file SHA from GitHub:', err)
+  }
+
+  // 2. Put updated content
+  const base64Content = Buffer.from(content, 'utf8').toString('base64')
+  const putRes = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      message,
+      content: base64Content,
+      ...(sha ? { sha } : {}),
+      branch: GITHUB_REPO_BRANCH,
+    }),
+  })
+
+  if (!putRes.ok) {
+    const errText = await putRes.text()
+    let errorDetail = errText
+    try {
+      const parsedErr = JSON.parse(errText)
+      errorDetail = parsedErr.message || errText
+    } catch {}
+    throw new Error(`GitHub Commit failed (${putRes.status}): ${errorDetail}`)
+  }
+
+  const result = await putRes.json()
+  return {
+    commitUrl:
+      result.commit?.html_url ||
+      `https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/commit/${result.commit?.sha}`,
+    sha: result.content?.sha,
+  }
+}
+
 // GET: Fetch list of articles & currently pinned best work slug
 export async function GET() {
   const custom = readCustomArticles()
@@ -63,26 +133,59 @@ export async function GET() {
 // PUT: Update the manually pinned best work / top-rated piece
 export async function PUT(req: NextRequest) {
   try {
-    const { slug } = await req.json()
+    const body = await req.json()
+    const { slug } = body
     if (!slug) {
       return NextResponse.json({ error: 'Slug is required' }, { status: 400 })
     }
+
+    const githubToken =
+      req.headers.get('x-github-token') ||
+      body.githubToken ||
+      process.env.GITHUB_TOKEN ||
+      process.env.GH_TOKEN
+
+    let isSavedLocally = false
     try {
       fs.writeFileSync(FEATURED_MEMOIR_FILE, JSON.stringify({ slug }, null, 2), 'utf8')
+      isSavedLocally = true
     } catch (fsErr: any) {
-      if (fsErr.code === 'EROFS' || fsErr.message?.includes('read-only')) {
-        return NextResponse.json(
-          {
-            error: 'Serverless environment is read-only (EROFS). In Vercel / serverless deployments, please update data/featured-memoir.json directly in your repository.',
-            isReadOnly: true,
-            code: 'EROFS',
-            featuredSlug: slug,
-          },
-          { status: 403 }
-        )
+      if (fsErr.code !== 'EROFS' && !fsErr.message?.includes('read-only')) {
+        throw fsErr
       }
-      throw fsErr
     }
+
+    if (!isSavedLocally) {
+      if (githubToken) {
+        try {
+          const ghResult = await commitFileToGitHub({
+            token: githubToken,
+            filePath: 'data/featured-memoir.json',
+            content: JSON.stringify({ slug }, null, 2),
+            message: `Pin featured memoir to ${slug}`,
+          })
+          return NextResponse.json({
+            success: true,
+            publishedToGithub: true,
+            commitUrl: ghResult.commitUrl,
+            featuredSlug: slug,
+            message: `Best work pinned and committed to GitHub!`,
+          })
+        } catch (ghErr: any) {
+          return NextResponse.json(
+            { error: `GitHub Commit Error: ${ghErr.message}`, isReadOnly: true },
+            { status: 400 }
+          )
+        }
+      }
+      return NextResponse.json({
+        isReadOnly: true,
+        needsGithubToken: true,
+        featuredSlug: slug,
+        message: 'Read-only environment. Enter a GitHub Token to update pinned memoir live.',
+      })
+    }
+
     return NextResponse.json({
       success: true,
       featuredSlug: slug,
@@ -213,23 +316,67 @@ export async function POST(req: NextRequest) {
     const filteredCustom = existingCustom.filter((a) => a.slug !== newArticle.slug)
     const updatedCustom = [newArticle, ...filteredCustom]
 
+    const githubToken =
+      req.headers.get('x-github-token') ||
+      body.githubToken ||
+      process.env.GITHUB_TOKEN ||
+      process.env.GH_TOKEN
+
+    let isSavedLocally = false
     try {
       saveCustomArticles(updatedCustom)
+      isSavedLocally = true
     } catch (fsErr: any) {
-      if (fsErr.code === 'EROFS' || fsErr.message?.includes('read-only')) {
-        return NextResponse.json(
-          {
-            error: 'EROFS: Read-only file system detected (Vercel / Serverless production). Changes cannot be written to disk in production serverless runtimes. Please commit this article directly into data/custom-articles.json or run `npm run new:article` locally.',
-            isReadOnly: true,
-            code: 'EROFS',
-            slug: newArticle.slug,
-            article: newArticle,
-            updatedCustomJson: JSON.stringify(updatedCustom, null, 2),
-          },
-          { status: 403 }
-        )
+      if (fsErr.code !== 'EROFS' && !fsErr.message?.includes('read-only')) {
+        throw fsErr
       }
-      throw fsErr
+    }
+
+    if (!isSavedLocally) {
+      if (githubToken) {
+        try {
+          const ghResult = await commitFileToGitHub({
+            token: githubToken,
+            filePath: 'data/custom-articles.json',
+            content: JSON.stringify(updatedCustom, null, 2),
+            message: `Publish article: ${newArticle.title} (${newArticle.slug})`,
+          })
+          return NextResponse.json({
+            success: true,
+            publishedToGithub: true,
+            commitUrl: ghResult.commitUrl,
+            slug: newArticle.slug,
+            message: `Article published and committed to GitHub! Live deployment in progress.`,
+            article: newArticle,
+          })
+        } catch (ghErr: any) {
+          return NextResponse.json(
+            {
+              error: `GitHub Commit Error: ${ghErr.message}`,
+              isReadOnly: true,
+              needsGithubToken: true,
+              slug: newArticle.slug,
+              article: newArticle,
+              updatedCustomJson: JSON.stringify(updatedCustom, null, 2),
+            },
+            { status: 400 }
+          )
+        }
+      }
+
+      return NextResponse.json(
+        {
+          error:
+            'EROFS: Read-only file system detected on deployed site (Vercel / Serverless). Connect your GitHub Personal Access Token to publish directly to your live portfolio.',
+          isReadOnly: true,
+          needsGithubToken: true,
+          code: 'EROFS',
+          slug: newArticle.slug,
+          article: newArticle,
+          updatedCustomJson: JSON.stringify(updatedCustom, null, 2),
+        },
+        { status: 403 }
+      )
     }
 
     return NextResponse.json({

@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import { toast } from 'sonner'
 import {
   BookOpen,
   Image as ImageIcon,
@@ -24,6 +25,10 @@ import {
   Star,
   Download,
   Terminal,
+  Key,
+  X,
+  UploadCloud,
+  RefreshCw,
 } from 'lucide-react'
 
 interface SectionState {
@@ -125,6 +130,37 @@ export function JournalStudio() {
   const [isUpdatingPinned, setIsUpdatingPinned] = useState(false)
   const [pinnedSuccessMsg, setPinnedSuccessMsg] = useState('')
 
+  // GitHub Direct-Publishing Token State
+  const [githubToken, setGithubToken] = useState('')
+  const [tokenInputDraft, setTokenInputDraft] = useState('')
+  const [isTokenModalOpen, setIsTokenModalOpen] = useState(false)
+  const [isCommittingDirect, setIsCommittingDirect] = useState(false)
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('myportfolio_gh_token')
+      if (saved) {
+        setGithubToken(saved)
+        setTokenInputDraft(saved)
+      }
+    } catch {}
+  }, [])
+
+  const handleSaveToken = (tokenToSave: string) => {
+    const clean = tokenToSave.trim()
+    setGithubToken(clean)
+    setTokenInputDraft(clean)
+    try {
+      if (clean) {
+        localStorage.setItem('myportfolio_gh_token', clean)
+        toast.success('GitHub Token saved in your browser!')
+      } else {
+        localStorage.removeItem('myportfolio_gh_token')
+        toast.info('GitHub Token removed from browser.')
+      }
+    } catch {}
+  }
+
   useEffect(() => {
     fetch('/api/articles')
       .then((res) => (res.ok ? res.json() : null))
@@ -142,18 +178,28 @@ export function JournalStudio() {
   const handleUpdatePinned = async (slugToPin: string) => {
     setIsUpdatingPinned(true)
     setPinnedSuccessMsg('')
+    const tId = toast.loading('Pinning best work...')
     try {
       const res = await fetch('/api/articles', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug: slugToPin }),
+        headers: {
+          'Content-Type': 'application/json',
+          ...(githubToken ? { 'x-github-token': githubToken } : {}),
+        },
+        body: JSON.stringify({ slug: slugToPin, githubToken }),
       })
+      const data = await res.json()
       if (res.ok) {
         setPinnedBestSlug(slugToPin)
         setPinnedSuccessMsg('Best work pinned! Active across all portfolio pages.')
+        toast.success(data.publishedToGithub ? 'Pinned & committed to GitHub!' : 'Best work pinned locally!', { id: tId })
         setTimeout(() => setPinnedSuccessMsg(''), 4000)
+      } else {
+        toast.error(data.error || 'Failed to update pinned article', { id: tId })
       }
-    } catch {}
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to update pinned article', { id: tId })
+    }
     setIsUpdatingPinned(false)
   }
 
@@ -217,9 +263,64 @@ export function JournalStudio() {
     slug: string
     article: any
     updatedCustomJson?: string | null
+    error?: string
   } | null>(null)
   const [copiedJson, setCopiedJson] = useState(false)
   const [copiedCmd, setCopiedCmd] = useState(false)
+
+  // Direct Publish with GitHub Token
+  const handlePublishWithToken = async (overrideToken?: string) => {
+    const tokenToUse = (overrideToken || githubToken).trim()
+    if (!tokenToUse) {
+      toast.error('Please enter a GitHub Personal Access Token.')
+      return
+    }
+
+    if (!readOnlyNotice?.article) {
+      toast.error('No article payload available to publish.')
+      return
+    }
+
+    setIsCommittingDirect(true)
+    const tId = toast.loading('Committing article directly to GitHub (vedantgrd/myPortfolio)...')
+    try {
+      const res = await fetch('/api/articles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-github-token': tokenToUse,
+        },
+        body: JSON.stringify({
+          ...readOnlyNotice.article,
+          githubToken: tokenToUse,
+        }),
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || 'GitHub commit failed.')
+      }
+
+      handleSaveToken(tokenToUse)
+      setPublishedSlug(data.slug || readOnlyNotice.slug)
+      setReadOnlyNotice(null)
+      setIsTokenModalOpen(false)
+      toast.success('Committed to GitHub! Vercel build triggered (~45s).', {
+        id: tId,
+        duration: 9000,
+        action: data.commitUrl
+          ? {
+              label: 'View Commit',
+              onClick: () => window.open(data.commitUrl, '_blank'),
+            }
+          : undefined,
+      })
+    } catch (err: any) {
+      toast.error(err.message || 'GitHub commit failed', { id: tId, duration: 6000 })
+    } finally {
+      setIsCommittingDirect(false)
+    }
+  }
 
   // Parsing result for Paste Code mode
   const parsedResult = useMemo(() => {
@@ -264,39 +365,52 @@ export function JournalStudio() {
     setPublishedSlug(null)
 
     if (!rawCode.trim()) {
-      setErrorMessage('Please paste your article code snippet first.')
+      const msg = 'Please paste your article code snippet first.'
+      setErrorMessage(msg)
+      toast.error(msg)
       return
     }
 
     const res = parseArticleSnippet(rawCode)
     if (res.error || !res.article) {
-      setErrorMessage(`Cannot publish: ${res.error || 'Invalid code structure'}`)
+      const msg = `Cannot publish: ${res.error || 'Invalid code structure'}`
+      setErrorMessage(msg)
+      toast.error(msg)
       return
     }
 
     const art = res.article
     if (!art.title || !art.title.trim()) {
-      setErrorMessage('Article title is missing in your code object.')
+      const msg = 'Article title is missing in your code object.'
+      setErrorMessage(msg)
+      toast.error(msg)
       return
     }
     if (!art.content || !art.content.lead || !art.content.lead.trim()) {
-      setErrorMessage('Article content.lead is missing in your code object.')
+      const msg = 'Article content.lead is missing in your code object.'
+      setErrorMessage(msg)
+      toast.error(msg)
       return
     }
 
     setIsPublishingCode(true)
+    const toastId = toast.loading('Publishing article...')
 
     try {
       const response = await fetch('/api/articles', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(art),
+        headers: {
+          'Content-Type': 'application/json',
+          ...(githubToken ? { 'x-github-token': githubToken } : {}),
+        },
+        body: JSON.stringify({ ...art, githubToken }),
       })
 
       const data = await response.json()
       if (!response.ok) {
         if (
           data.isReadOnly ||
+          data.needsGithubToken ||
           data.code === 'EROFS' ||
           data.error?.includes('EROFS') ||
           data.error?.includes('read-only')
@@ -305,8 +419,16 @@ export function JournalStudio() {
             slug: data.slug || art.slug,
             article: data.article || art,
             updatedCustomJson: data.updatedCustomJson || null,
+            error: data.error,
           })
           setErrorMessage('')
+          toast.error(
+            data.error?.includes('GitHub Commit Error')
+              ? data.error
+              : 'Deployed site is read-only. Enter GitHub Token to publish live.',
+            { id: toastId, duration: 6000 }
+          )
+          setIsTokenModalOpen(true)
           return
         }
         throw new Error(data.error || 'Failed to publish article')
@@ -314,8 +436,23 @@ export function JournalStudio() {
 
       setReadOnlyNotice(null)
       setPublishedSlug(data.slug)
+      if (data.publishedToGithub) {
+        toast.success('Article committed to GitHub! Live deployment in progress (~45s).', {
+          id: toastId,
+          duration: 9000,
+          action: data.commitUrl
+            ? {
+                label: 'View Commit',
+                onClick: () => window.open(data.commitUrl, '_blank'),
+              }
+            : undefined,
+        })
+      } else {
+        toast.success('Article published successfully!', { id: toastId, duration: 5000 })
+      }
     } catch (err: any) {
       setErrorMessage(err.message || 'Error publishing article')
+      toast.error(err.message || 'Error publishing article', { id: toastId })
     } finally {
       setIsPublishingCode(false)
     }
@@ -362,16 +499,21 @@ export function JournalStudio() {
     setPublishedSlug(null)
 
     if (!title.trim()) {
-      setErrorMessage('Please provide an article title.')
+      const msg = 'Please provide an article title.'
+      setErrorMessage(msg)
+      toast.error(msg)
       return
     }
 
     if (!lead.trim()) {
-      setErrorMessage('Please provide the opening lead paragraph.')
+      const msg = 'Please provide the opening lead paragraph.'
+      setErrorMessage(msg)
+      toast.error(msg)
       return
     }
 
     setIsSubmitting(true)
+    const toastId = toast.loading('Publishing article...')
 
     try {
       const payload = {
@@ -406,11 +548,15 @@ export function JournalStudio() {
                   : undefined,
             })),
         },
+        githubToken,
       }
 
       const res = await fetch('/api/articles', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(githubToken ? { 'x-github-token': githubToken } : {}),
+        },
         body: JSON.stringify(payload),
       })
 
@@ -419,6 +565,7 @@ export function JournalStudio() {
       if (!res.ok) {
         if (
           data.isReadOnly ||
+          data.needsGithubToken ||
           data.code === 'EROFS' ||
           data.error?.includes('EROFS') ||
           data.error?.includes('read-only')
@@ -427,8 +574,16 @@ export function JournalStudio() {
             slug: data.slug || payload.slug || 'new-article',
             article: data.article || payload,
             updatedCustomJson: data.updatedCustomJson || null,
+            error: data.error,
           })
           setErrorMessage('')
+          toast.error(
+            data.error?.includes('GitHub Commit Error')
+              ? data.error
+              : 'Deployed site is read-only. Enter GitHub Token to publish live.',
+            { id: toastId, duration: 6000 }
+          )
+          setIsTokenModalOpen(true)
           return
         }
         throw new Error(data.error || 'Failed to publish article')
@@ -436,8 +591,23 @@ export function JournalStudio() {
 
       setReadOnlyNotice(null)
       setPublishedSlug(data.slug)
+      if (data.publishedToGithub) {
+        toast.success('Article committed to GitHub! Live deployment in progress (~45s).', {
+          id: toastId,
+          duration: 9000,
+          action: data.commitUrl
+            ? {
+                label: 'View Commit',
+                onClick: () => window.open(data.commitUrl, '_blank'),
+              }
+            : undefined,
+        })
+      } else {
+        toast.success('Article published successfully!', { id: toastId, duration: 5000 })
+      }
     } catch (err: any) {
       setErrorMessage(err.message || 'Error publishing article')
+      toast.error(err.message || 'Error publishing article', { id: toastId })
     } finally {
       setIsSubmitting(false)
     }
@@ -475,6 +645,157 @@ export function JournalStudio() {
       setPublishedSlug(null)
       setErrorMessage('')
     }
+  }
+
+  const renderFeedbackBlock = () => {
+    if (!publishedSlug && !errorMessage && !readOnlyNotice) return null
+
+    return (
+      <div className="space-y-4">
+        {/* Success Notification */}
+        {publishedSlug && (
+          <div className="rounded-2xl border border-[#10b981]/40 bg-[#10b981]/10 p-5 space-y-3">
+            <div className="flex items-center gap-3 text-[#34d399]">
+              <CheckCircle2 className="h-5 w-5 shrink-0" />
+              <div>
+                <h3 className="font-bold text-sm text-[#f2eee6]">Article Published Successfully!</h3>
+                <p className="text-xs text-[#a7f3d0] font-mono mt-0.5">
+                  Live at <code className="font-bold">/writing/{publishedSlug}</code> &bull; Added to top of journal archive.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Link
+                href={`/writing/${publishedSlug}`}
+                target="_blank"
+                className="inline-flex items-center gap-2 rounded bg-[#10b981] px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider text-black font-semibold hover:bg-[#34d399] transition-colors"
+              >
+                <span>View Live Article</span>
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+              <Link
+                href="/writing"
+                target="_blank"
+                className="inline-flex items-center gap-2 rounded border border-[#10b981]/40 bg-[#14171d] px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider text-[#f2eee6] hover:bg-[#1a1e26] transition-colors"
+              >
+                <span>View in Journal Stream</span>
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Error Notification */}
+        {errorMessage && (
+          <div className="rounded-xl border border-[#ef4444]/40 bg-[#ef4444]/10 p-4 font-mono text-xs text-[#fca5a5] flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 shrink-0 text-[#ef4444]" />
+              <span>{errorMessage}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setErrorMessage('')}
+              className="text-[#fca5a5]/70 hover:text-white text-xs px-2 py-0.5"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
+        {/* Read-Only Serverless Environment Notice */}
+        {readOnlyNotice && (
+          <div className="rounded-2xl border border-amber-500/40 bg-[#16130b] p-5 sm:p-6 space-y-4 shadow-xl">
+            <div className="flex items-start gap-3.5 text-amber-400">
+              <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <h3 className="font-bold text-sm text-[#f2eee6]">
+                  Serverless Production Detected (Read-Only Filesystem / EROFS)
+                </h3>
+                <p className="text-xs text-[#cfd6e0] leading-relaxed">
+                  On the deployed Vercel site, file writes are blocked by serverless runtimes. Your article for <code className="text-amber-200 font-semibold font-mono">/writing/{readOnlyNotice.slug}</code> is ready! Choose an option below to make it live:
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5 pt-1 font-mono text-xs">
+              <button
+                type="button"
+                onClick={() => {
+                  if (githubToken) {
+                    handlePublishWithToken()
+                  } else {
+                    setIsTokenModalOpen(true)
+                  }
+                }}
+                disabled={isCommittingDirect}
+                className="inline-flex items-center gap-2 rounded bg-amber-500 px-4 py-2 font-bold text-black hover:bg-amber-400 transition-colors shadow-sm disabled:opacity-50"
+              >
+                {isCommittingDirect ? (
+                  <>
+                    <span className="h-3.5 w-3.5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                    <span>Deploying to GitHub...</span>
+                  </>
+                ) : (
+                  <>
+                    <Key className="h-3.5 w-3.5 text-black" />
+                    <span>{githubToken ? 'Commit Directly to GitHub Now' : 'Enter GitHub Token to Publish Live'}</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const content = readOnlyNotice.updatedCustomJson || JSON.stringify([readOnlyNotice.article], null, 2)
+                  navigator.clipboard.writeText(content)
+                  setCopiedJson(true)
+                  toast.success('Copied custom-articles.json to clipboard!')
+                  setTimeout(() => setCopiedJson(false), 3000)
+                }}
+                className="inline-flex items-center gap-2 rounded border border-amber-500/40 bg-[#1e1910] px-3.5 py-2 text-[#f2eee6] hover:bg-[#282114] transition-colors"
+              >
+                {copiedJson ? <Check className="h-3.5 w-3.5 text-amber-400" /> : <Copy className="h-3.5 w-3.5 text-amber-400" />}
+                <span>{copiedJson ? 'Copied JSON!' : 'Copy custom-articles.json'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const content = readOnlyNotice.updatedCustomJson || JSON.stringify([readOnlyNotice.article], null, 2)
+                  const blob = new Blob([content], { type: 'application/json' })
+                  const url = URL.createObjectURL(blob)
+                  const a = document.createElement('a')
+                  a.href = url
+                  a.download = 'custom-articles.json'
+                  a.click()
+                  URL.revokeObjectURL(url)
+                  toast.success('custom-articles.json downloaded!')
+                }}
+                className="inline-flex items-center gap-2 rounded border border-amber-500/40 bg-[#1e1910] px-3.5 py-2 text-[#f2eee6] hover:bg-[#282114] transition-colors"
+              >
+                <Download className="h-3.5 w-3.5 text-amber-400" />
+                <span>Download JSON</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const cmd = `git add data/custom-articles.json && git commit -m "Publish: ${readOnlyNotice.article?.title || readOnlyNotice.slug}" && git push`
+                  navigator.clipboard.writeText(cmd)
+                  setCopiedCmd(true)
+                  toast.success('Copied Git command!')
+                  setTimeout(() => setCopiedCmd(false), 3000)
+                }}
+                className="inline-flex items-center gap-2 rounded border border-[#2e2617] bg-[#110e08] px-3.5 py-2 text-[#cfd6e0] hover:text-[#f2eee6] hover:border-amber-500/50 transition-colors"
+              >
+                {copiedCmd ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Terminal className="h-3.5 w-3.5 text-amber-400" />}
+                <span>{copiedCmd ? 'Copied Command!' : 'Copy Git Push Command'}</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    )
   }
 
   return (
@@ -541,6 +862,43 @@ export function JournalStudio() {
           </div>
         </div>
 
+        {/* GitHub Live Direct Publishing Strip */}
+        <div className="rounded-xl border border-[#232832] bg-[#0d0f12] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 font-mono text-xs">
+          <div className="flex items-center gap-2.5">
+            <Key className="h-4 w-4 text-amber-400 shrink-0" />
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[#8b949e]">LIVE SITE PUBLISHING (GITHUB SYNC):</span>
+                {githubToken ? (
+                  <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                    Token Connected (vedantgrd/myPortfolio)
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 text-amber-400/90 font-medium">
+                    <span className="h-2 w-2 rounded-full bg-amber-400/70" />
+                    Required for 1-click live deploy on Vercel
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-[#6b7280] font-sans mt-0.5">
+                Allows direct commits into <code className="text-[#cfd6e0]">vedantgrd/myPortfolio</code> from the deployed website, automatically triggering Vercel CI/CD.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => setIsTokenModalOpen(true)}
+              className="rounded border border-[#232832] bg-[#14171d] px-3 py-1.5 text-xs font-mono text-[#f2eee6] hover:border-[#e1523d] hover:text-[#e1523d] transition-colors flex items-center gap-1.5"
+            >
+              <Key className="h-3.5 w-3.5 text-amber-400" />
+              <span>{githubToken ? 'Configure Token' : 'Connect GitHub Token'}</span>
+            </button>
+          </div>
+        </div>
+
         {/* Composer Mode Tabs */}
         <div className="flex items-center gap-2 pt-2 border-t border-[#1f242e] font-mono text-xs">
           <button
@@ -580,112 +938,8 @@ export function JournalStudio() {
         </div>
       </div>
 
-      {/* Success Notification */}
-      {publishedSlug && (
-        <div className="rounded-2xl border border-[#10b981]/40 bg-[#10b981]/10 p-6 space-y-4">
-          <div className="flex items-center gap-3 text-[#34d399]">
-            <CheckCircle2 className="h-6 w-6 shrink-0" />
-            <div>
-              <h3 className="font-bold text-base text-[#f2eee6]">Article Published Successfully!</h3>
-              <p className="text-xs text-[#a7f3d0] font-mono mt-0.5">
-                Slug: <code className="font-bold">/writing/{publishedSlug}</code> &bull; Placed first in the archive stream.
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Link
-              href={`/writing/${publishedSlug}`}
-              target="_blank"
-              className="inline-flex items-center gap-2 rounded bg-[#10b981] px-4 py-2 font-mono text-xs uppercase tracking-wider text-black font-semibold hover:bg-[#34d399] transition-colors"
-            >
-              <span>View Live Article</span>
-              <ExternalLink className="h-3.5 w-3.5" />
-            </Link>
-            <Link
-              href="/writing"
-              target="_blank"
-              className="inline-flex items-center gap-2 rounded border border-[#10b981]/40 bg-[#14171d] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[#f2eee6] hover:bg-[#1a1e26] transition-colors"
-            >
-              <span>View in Journal Stream</span>
-              <ExternalLink className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-      )}
-
-      {/* Error Notification */}
-      {errorMessage && (
-        <div className="rounded-xl border border-[#ef4444]/40 bg-[#ef4444]/10 p-4 font-mono text-xs text-[#fca5a5] flex items-center gap-2">
-          <AlertCircle className="h-4 w-4 shrink-0" />
-          <span>{errorMessage}</span>
-        </div>
-      )}
-
-      {/* Read-Only Serverless Environment Notice */}
-      {readOnlyNotice && (
-        <div className="rounded-2xl border border-amber-500/40 bg-[#16130b] p-6 sm:p-7 space-y-4 shadow-xl">
-          <div className="flex items-start gap-3.5 text-amber-400">
-            <AlertCircle className="h-6 w-6 shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <h3 className="font-bold text-base text-[#f2eee6]">
-                Serverless Production Detected (Read-Only Filesystem)
-              </h3>
-              <p className="text-xs text-[#cfd6e0] leading-relaxed">
-                Vercel / serverless functions operate in an immutable filesystem (<code className="text-amber-300">/var/task/data/custom-articles.json</code>), preventing live disk writes in production.
-                Your article for <code className="text-amber-200 font-semibold font-mono">/writing/{readOnlyNotice.slug}</code> is validated and formatted! Choose an option below to apply it to your repo:
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 pt-2 font-mono text-xs">
-            <button
-              type="button"
-              onClick={() => {
-                const content = readOnlyNotice.updatedCustomJson || JSON.stringify([readOnlyNotice.article], null, 2)
-                navigator.clipboard.writeText(content)
-                setCopiedJson(true)
-                setTimeout(() => setCopiedJson(false), 3000)
-              }}
-              className="inline-flex items-center gap-2 rounded bg-amber-500 px-4 py-2.5 font-semibold text-black hover:bg-amber-400 transition-colors shadow-sm"
-            >
-              {copiedJson ? <Check className="h-3.5 w-3.5 text-black" /> : <Copy className="h-3.5 w-3.5 text-black" />}
-              <span>{copiedJson ? 'Copied custom-articles.json!' : 'Copy Complete custom-articles.json'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                const content = readOnlyNotice.updatedCustomJson || JSON.stringify([readOnlyNotice.article], null, 2)
-                const blob = new Blob([content], { type: 'application/json' })
-                const url = URL.createObjectURL(blob)
-                const a = document.createElement('a')
-                a.href = url
-                a.download = 'custom-articles.json'
-                a.click()
-                URL.revokeObjectURL(url)
-              }}
-              className="inline-flex items-center gap-2 rounded border border-amber-500/40 bg-[#1e1910] px-4 py-2.5 text-[#f2eee6] hover:bg-[#282114] transition-colors"
-            >
-              <Download className="h-3.5 w-3.5 text-amber-400" />
-              <span>Download custom-articles.json</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                const cmd = `git add data/custom-articles.json && git commit -m "Publish: ${readOnlyNotice.article?.title || readOnlyNotice.slug}" && git push`
-                navigator.clipboard.writeText(cmd)
-                setCopiedCmd(true)
-                setTimeout(() => setCopiedCmd(false), 3000)
-              }}
-              className="inline-flex items-center gap-2 rounded border border-[#2e2617] bg-[#110e08] px-4 py-2.5 text-[#cfd6e0] hover:text-[#f2eee6] hover:border-amber-500/50 transition-colors"
-            >
-              {copiedCmd ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Terminal className="h-3.5 w-3.5 text-amber-400" />}
-              <span>{copiedCmd ? 'Copied Git Command!' : 'Copy Git Push Command'}</span>
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Top Feedback Block */}
+      {renderFeedbackBlock()}
 
       {/* Mode 1: Paste Code Mode */}
       {composerMode === 'paste' ? (
@@ -844,6 +1098,9 @@ export function JournalStudio() {
                 </div>
               </div>
             )}
+
+            {/* Inline Feedback Strip right above the button */}
+            {renderFeedbackBlock()}
 
             {/* Publish Button Bar */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-[#1f242e]">
@@ -1442,6 +1699,9 @@ export function JournalStudio() {
             </div>
           </div>
 
+          {/* Inline Feedback Strip right above the action bar */}
+          {renderFeedbackBlock()}
+
           {/* Action Bar */}
           <div className="rounded-2xl border border-[#232832] bg-[#14171d] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4 font-mono text-xs text-[#8b949e]">
@@ -1481,6 +1741,126 @@ export function JournalStudio() {
             </div>
           </div>
         </form>
+      )}
+
+      {/* GitHub Direct Publishing Modal */}
+      {isTokenModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="relative w-full max-w-xl rounded-2xl border border-[#232832] bg-[#14171d] p-6 sm:p-7 shadow-2xl space-y-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-[#e1523d]/15 border border-[#e1523d]/30 text-[#e1523d]">
+                  <Key className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[#f2eee6]">
+                    GitHub 1-Click Live Publishing
+                  </h3>
+                  <p className="text-xs text-[#8b949e] font-mono mt-0.5">
+                    Target: <code className="text-[#e1523d]">vedantgrd/myPortfolio</code> &bull; Branch: <code className="text-[#f2eee6]">main</code>
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsTokenModalOpen(false)}
+                className="rounded-lg p-1.5 text-[#8b949e] hover:text-white hover:bg-[#1f242e] transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs text-[#cfd6e0] leading-relaxed">
+              <p>
+                Because Vercel serverless runtimes have an immutable read-only filesystem, publishing directly from the deployed site requires committing your article into <code className="text-amber-300">data/custom-articles.json</code> in your repository.
+              </p>
+              <p className="text-[#8b949e]">
+                Provide a GitHub Personal Access Token (PAT) with <span className="text-[#f2eee6] font-mono font-semibold">repo</span> or <span className="text-[#f2eee6] font-mono font-semibold">Contents: Read and write</span> permissions. The token is saved in your browser&apos;s local storage.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-xs font-mono font-semibold text-[#8b949e]">
+                GITHUB PERSONAL ACCESS TOKEN
+              </label>
+              <div className="relative">
+                <input
+                  type="password"
+                  value={tokenInputDraft}
+                  onChange={(e) => setTokenInputDraft(e.target.value)}
+                  placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                  className="w-full rounded-xl border border-[#232832] bg-[#090a0d] p-3 text-xs font-mono text-[#f2eee6] placeholder-[#4b5563] focus:border-[#e1523d] focus:outline-none"
+                />
+              </div>
+              <div className="flex items-center justify-between text-[11px] pt-1">
+                <a
+                  href="https://github.com/settings/tokens/new?scopes=repo&description=myPortfolio-Live-Admin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[#e1523d] hover:underline font-mono"
+                >
+                  <span>Generate a token on GitHub &rarr;</span>
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+                {githubToken && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleSaveToken('')
+                      setTokenInputDraft('')
+                    }}
+                    className="text-[#ef4444] hover:underline font-mono"
+                  >
+                    Remove Saved Token
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-[#1f242e]">
+              <button
+                type="button"
+                onClick={() => setIsTokenModalOpen(false)}
+                className="w-full sm:w-auto px-4 py-2 rounded-lg border border-[#232832] bg-[#0d0f12] text-xs font-mono text-[#8b949e] hover:text-[#f2eee6]"
+              >
+                Cancel
+              </button>
+
+              {readOnlyNotice?.article ? (
+                <button
+                  type="button"
+                  onClick={() => handlePublishWithToken(tokenInputDraft)}
+                  disabled={isCommittingDirect || !tokenInputDraft.trim()}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-[#e1523d] text-xs font-mono font-bold text-white uppercase tracking-wider hover:bg-[#ef634f] transition-colors shadow-lg disabled:opacity-40 flex items-center justify-center gap-2"
+                >
+                  {isCommittingDirect ? (
+                    <>
+                      <span className="h-3.5 w-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Committing &amp; Deploying...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Key className="h-3.5 w-3.5" />
+                      <span>Save &amp; Deploy Article Live Now</span>
+                    </>
+                  )}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleSaveToken(tokenInputDraft)
+                    setIsTokenModalOpen(false)
+                  }}
+                  disabled={!tokenInputDraft.trim()}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-[#e1523d] text-xs font-mono font-bold text-white uppercase tracking-wider hover:bg-[#ef634f] transition-colors shadow-lg disabled:opacity-40"
+                >
+                  Save Token
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Toaster } from 'sonner'
 import { Navbar } from '@/components/navigation/Navbar'
 import { Footer } from '@/components/navigation/Footer'
 import './globals.css'
@@ -70,6 +71,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1 pt-16">{children}</main>
         <Footer />
+        <Toaster position="top-right" theme="dark" richColors />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
