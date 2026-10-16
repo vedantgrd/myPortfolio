@@ -128,10 +128,37 @@ export async function POST(req: NextRequest) {
     ].join(' ')
     const finalReadTime = readTime?.trim() || calculateReadTime(allText)
 
-    // Format date if not provided
-    const formattedDate =
-      date?.trim() ||
-      new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date())
+    // Exact Timestamp Generation (Automatic Nostalgic Logging in IST)
+    const now = new Date()
+    const autoDate = new Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'Asia/Kolkata',
+    }).format(now)
+
+    const autoTime =
+      new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Kolkata',
+      }).format(now) + ' IST'
+
+    const finalDate =
+      date && date.trim() && date.trim().toLowerCase() !== 'personal journal'
+        ? date.trim()
+        : autoDate
+
+    const finalPublishedTime =
+      body.publishedTime && typeof body.publishedTime === 'string' && body.publishedTime.trim()
+        ? body.publishedTime.trim()
+        : autoTime
+
+    const finalPublishedAt =
+      body.publishedAt && typeof body.publishedAt === 'string' && body.publishedAt.trim()
+        ? body.publishedAt.trim()
+        : now.toISOString()
 
     // Parse tags if provided as comma-separated string
     const parsedTags = Array.isArray(tags)
@@ -144,7 +171,9 @@ export async function POST(req: NextRequest) {
       slug,
       title: title.trim(),
       subtitle: subtitle.trim(),
-      date: formattedDate,
+      date: finalDate,
+      publishedTime: finalPublishedTime,
+      publishedAt: finalPublishedAt,
       readTime: finalReadTime,
       category,
       tags: parsedTags.length > 0 ? parsedTags : ['Journal', 'Memoir'],

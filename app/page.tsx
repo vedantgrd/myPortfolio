@@ -452,7 +452,15 @@ export default function HomePage() {
               </div>
 
               <div className="pt-4 border-t border-[#1f242e] flex items-center justify-between">
-                <span className="font-mono text-xs text-[#6b7280]">{featuredArticle.date}</span>
+                <div className="flex items-center gap-2 font-mono text-xs text-[#6b7280]">
+                  <span>{featuredArticle.date}</span>
+                  {featuredArticle.publishedTime && (
+                    <>
+                      <span>•</span>
+                      <span className="text-[#e1523d]/80">{featuredArticle.publishedTime}</span>
+                    </>
+                  )}
+                </div>
                 <Link
                   href={`/writing/${featuredArticle.slug}`}
                   className="inline-flex items-center gap-1.5 font-mono text-xs text-[#e1523d] hover:text-[#ef634f] transition-colors"
@@ -488,7 +496,15 @@ export default function HomePage() {
                   </div>
 
                   <div className="pt-3 border-t border-[#1f242e] flex items-center justify-between text-xs font-mono">
-                    <span className="text-[#6b7280]">{article.date}</span>
+                    <div className="flex items-center gap-2 text-[#6b7280]">
+                      <span>{article.date}</span>
+                      {article.publishedTime && (
+                        <>
+                          <span>•</span>
+                          <span className="text-[#8b949e]">{article.publishedTime}</span>
+                        </>
+                      )}
+                    </div>
                     <Link
                       href={`/writing/${article.slug}`}
                       className="text-[#8b949e] hover:text-[#e1523d] inline-flex items-center gap-1 transition-colors"

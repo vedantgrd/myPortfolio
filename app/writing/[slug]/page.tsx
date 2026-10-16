@@ -147,6 +147,15 @@ export default async function ArticleDetailPage({
               <Calendar className="h-3.5 w-3.5" />
               {article.date}
             </span>
+            {article.publishedTime && (
+              <>
+                <span>•</span>
+                <span className="flex items-center gap-1 text-[#e1523d]/90 font-mono">
+                  <Clock className="h-3.5 w-3.5" />
+                  {article.publishedTime}
+                </span>
+              </>
+            )}
             <span>•</span>
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" />
@@ -343,6 +352,23 @@ export default async function ArticleDetailPage({
               )}
             </section>
           ))}
+        </div>
+
+        {/* Nostalgic Archival Record Stamp */}
+        <div className="rounded-xl border border-[#232832] bg-[#14171d]/60 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs text-[#8b949e]">
+          <div className="flex items-center gap-2.5">
+            <span className="h-2 w-2 rounded-full bg-[#e1523d] animate-pulse" />
+            <span className="text-[#f2eee6] font-semibold uppercase tracking-wider">
+              MEMOIR ARCHIVAL RECORD
+            </span>
+            <span>//</span>
+            <span>
+              LOGGED ON {article.date.toUpperCase()}{article.publishedTime ? ` • ${article.publishedTime}` : ''}
+            </span>
+          </div>
+          <div className="text-[11px] text-[#6b7280]">
+            PERMANENT CHRONICLE // VEDANT GARUD
+          </div>
         </div>
 
         {/* Author Bio Box */}

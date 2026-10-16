@@ -207,6 +207,12 @@ export default function WritingPage() {
                   <span>{featuredArticle.readTime}</span>
                   <span>•</span>
                   <span>{featuredArticle.date}</span>
+                  {featuredArticle.publishedTime && (
+                    <>
+                      <span>•</span>
+                      <span className="text-[#e1523d]/90 font-mono">{featuredArticle.publishedTime}</span>
+                    </>
+                  )}
                 </div>
 
                 <h2 className="text-2xl sm:text-4xl font-bold text-[#f2eee6] leading-tight">
@@ -298,10 +304,16 @@ export default function WritingPage() {
                 className="py-8 group flex flex-col md:flex-row md:items-baseline justify-between gap-6"
               >
                 <div className="max-w-2xl space-y-2">
-                  <div className="flex items-center gap-2 font-mono text-xs text-[#8b949e]">
+                  <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-[#8b949e]">
                     <span className="text-[#e1523d] font-semibold">{article.category}</span>
                     <span>•</span>
                     <span>{article.date}</span>
+                    {article.publishedTime && (
+                      <>
+                        <span className="text-[#4b5563]">•</span>
+                        <span className="text-[#e1523d]/90 font-mono">{article.publishedTime}</span>
+                      </>
+                    )}
                     <span>•</span>
                     <span>{article.readTime}</span>
                   </div>

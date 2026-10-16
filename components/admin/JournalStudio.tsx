@@ -55,7 +55,8 @@ const DEFAULT_CODE_TEMPLATE = `{
   slug: 'my-new-reflection',
   title: 'Title of My Article',
   subtitle: 'A thoughtful subtitle or secondary topic line',
-  date: 'Personal Journal',
+  date: '16 October 2026',
+  publishedTime: '11:45 AM IST',
   readTime: '5 min read',
   category: 'Being Human',
   tags: ['Faith', 'Humanity', 'Perspective', 'Life'],
@@ -166,7 +167,10 @@ export function JournalStudio() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>('Being Human')
   const [tagsInput, setTagsInput] = useState('')
   const [date, setDate] = useState(() =>
-    new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date())
+    new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date())
+  )
+  const [publishedTime, setPublishedTime] = useState(() =>
+    new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).format(new Date()) + ' IST'
   )
   const [customReadTime, setCustomReadTime] = useState('')
   const [featured, setFeatured] = useState(false)
@@ -353,6 +357,7 @@ export function JournalStudio() {
         category,
         tags: tagsInput.split(',').map((t) => t.trim()).filter(Boolean),
         date: date.trim(),
+        publishedTime: publishedTime.trim() || undefined,
         readTime: customReadTime.trim() || calculatedReadTime,
         featured,
         excerpt: excerpt.trim() || lead.slice(0, 160) + '...',
@@ -666,8 +671,23 @@ export function JournalStudio() {
                       {parsedResult.article.category || 'Being Human'}
                     </span>
                     <span className="text-[#8b949e]">
-                      {parsedResult.article.date || 'Personal Journal'}
+                      {parsedResult.article.date || '(Auto date on publish)'}
                     </span>
+                    {parsedResult.article.publishedTime ? (
+                      <>
+                        <span className="text-[#6b7280]">&bull;</span>
+                        <span className="text-[#e1523d]/90 font-mono">
+                          {parsedResult.article.publishedTime}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-[#6b7280]">&bull;</span>
+                        <span className="text-[#8b949e]/70 italic">
+                          (Time auto-logged on publish)
+                        </span>
+                      </>
+                    )}
                     <span className="text-[#6b7280]">&bull;</span>
                     <span className="text-[#8b949e]">
                       {parsedResult.article.readTime || `${Math.ceil(parsedStats.words / 200)} min read`}
@@ -817,13 +837,26 @@ export function JournalStudio() {
 
               <div className="space-y-2">
                 <label className="block font-mono text-xs text-[#a3abb6]">
-                  Date Display
+                  Publication Date (Auto-Logged)
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. October 2026 or Personal Journal"
+                  placeholder="e.g. 16 October 2026"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                  className="w-full rounded border border-[#232832] bg-[#0d0f12] p-3 text-xs font-mono text-[#f2eee6] placeholder-[#4b5563] focus:border-[#e1523d] focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block font-mono text-xs text-[#a3abb6]">
+                  Exact Published Time (Auto-Logged IST)
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 11:45 AM IST"
+                  value={publishedTime}
+                  onChange={(e) => setPublishedTime(e.target.value)}
                   className="w-full rounded border border-[#232832] bg-[#0d0f12] p-3 text-xs font-mono text-[#f2eee6] placeholder-[#4b5563] focus:border-[#e1523d] focus:outline-none"
                 />
               </div>
