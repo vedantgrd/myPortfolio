@@ -18,7 +18,9 @@ import {
   User,
   Inbox,
   AlertCircle,
+  BookOpen,
 } from 'lucide-react'
+import { JournalStudio } from '@/components/admin/JournalStudio'
 
 interface Transmission {
   id: string
@@ -38,9 +40,17 @@ export default function AdminInboxPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all')
   const [actionMessage, setActionMessage] = useState('')
+  const [activeTab, setActiveTab] = useState<'transmissions' | 'studio'>('transmissions')
 
-  // Check sessionStorage for persisted session
+  // Check URL search params and sessionStorage
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('tab') === 'studio') {
+        setActiveTab('studio')
+      }
+    }
+
     const savedKey = sessionStorage.getItem('vedant_admin_key')
     if (savedKey) {
       setPasskey(savedKey)
@@ -268,6 +278,47 @@ export default function AdminInboxPage() {
               </div>
             </div>
 
+            {/* Subsystem Navigation Tabs */}
+            <div className="flex flex-wrap items-center gap-3 border-b border-[#232832] pb-4 font-mono text-xs">
+              <button
+                onClick={() => setActiveTab('transmissions')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all ${
+                  activeTab === 'transmissions'
+                    ? 'bg-[#14171d] text-[#f2eee6] border border-[#38404f] shadow-md'
+                    : 'text-[#8b949e] hover:text-[#f2eee6] hover:bg-[#14171d]/60'
+                }`}
+              >
+                <Mail className="h-4 w-4 text-[#10b981]" />
+                <span>Transmissions Inbox</span>
+                <span className="rounded bg-[#1a1e26] px-1.5 py-0.5 text-[10px] text-[#8b949e] border border-[#232832]">
+                  {transmissions.length}
+                </span>
+                {unreadCount > 0 && (
+                  <span className="h-2 w-2 rounded-full bg-[#e1523d] animate-ping" />
+                )}
+              </button>
+
+              <button
+                onClick={() => setActiveTab('studio')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all ${
+                  activeTab === 'studio'
+                    ? 'bg-[#14171d] text-[#f2eee6] border border-[#e1523d]/60 shadow-md ring-1 ring-[#e1523d]/20'
+                    : 'text-[#8b949e] hover:text-[#f2eee6] hover:bg-[#14171d]/60'
+                }`}
+              >
+                <BookOpen className="h-4 w-4 text-[#e1523d]" />
+                <span>Journal Studio (Publish Article)</span>
+                <span className="rounded bg-[#e1523d]/15 text-[#e1523d] px-1.5 py-0.5 text-[9px] uppercase tracking-wider font-bold border border-[#e1523d]/30">
+                  New Entry
+                </span>
+              </button>
+            </div>
+
+            {activeTab === 'studio' ? (
+              <JournalStudio />
+            ) : (
+              <>
+
             {/* Notification Toast */}
             {actionMessage && (
               <div className="rounded border border-[#10b981]/40 bg-[#10b981]/10 px-4 py-2 font-mono text-xs text-[#a7f3d0]">
@@ -441,6 +492,8 @@ export default function AdminInboxPage() {
                   </div>
                 ))}
               </div>
+            )}
+              </>
             )}
           </div>
         )}

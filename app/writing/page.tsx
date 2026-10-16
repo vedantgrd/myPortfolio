@@ -13,8 +13,10 @@ import {
   Film,
   Sparkles,
   Star,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
-import { articles, Article } from '@/data/writing'
+import { articles, Article, getFeaturedArticle } from '@/data/writing'
 
 const categories = [
   'All',
@@ -25,11 +27,15 @@ const categories = [
   'Systems & Engineering',
 ]
 
+const ARTICLES_PER_PAGE = 5
+
 export default function WritingPage() {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
   const [highlightDrawn, setHighlightDrawn] = useState(false)
   const highlightRef = useRef<HTMLSpanElement>(null)
+  const archiveRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const el = highlightRef.current
@@ -52,9 +58,28 @@ export default function WritingPage() {
     return () => observer.disconnect()
   }, [])
 
-  const featuredArticle = articles.find((a) => a.featured) || articles[0]
+  const [allArticles, setAllArticles] = useState<Article[]>(articles)
+  const [pinnedSlug, setPinnedSlug] = useState<string>('so-suicide')
 
-  const filteredArticles = articles.filter((article) => {
+  useEffect(() => {
+    fetch('/api/articles')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.articles && Array.isArray(data.articles)) {
+          setAllArticles(data.articles)
+        }
+        if (data?.featuredSlug) {
+          setPinnedSlug(data.featuredSlug)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  const featuredArticle =
+    allArticles.find((a) => a.slug === pinnedSlug) ||
+    getFeaturedArticle(allArticles)
+
+  const filteredArticles = allArticles.filter((article) => {
     const matchesCategory =
       selectedCategory === 'All' || article.category === selectedCategory
     const matchesSearch =
@@ -67,15 +92,31 @@ export default function WritingPage() {
     return matchesCategory && matchesSearch
   })
 
+  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE))
+  const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE
+  const paginatedArticles = filteredArticles.slice(
+    startIndex,
+    startIndex + ARTICLES_PER_PAGE
+  )
+
+  const goToPage = (pageNumber: number) => {
+    setCurrentPage(pageNumber)
+    if (archiveRef.current) {
+      archiveRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#0d0f12] pt-6 pb-20 sm:pt-8 sm:pb-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Page Header */}
         <div className="pb-12 border-b border-[#232832]">
-          <div className="flex items-center gap-3 font-mono text-xs text-[#e1523d]">
-            <span>// CHAPTER 03</span>
-            <span>•</span>
-            <span>PERSONAL JOURNAL & LIVING MEMOIR</span>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3 font-mono text-xs text-[#e1523d]">
+              <span>// CHAPTER 03</span>
+              <span>•</span>
+              <span>PERSONAL JOURNAL & LIVING MEMOIR</span>
+            </div>
           </div>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#f2eee6] mt-3">
             The Journal &amp; Living Memoir
@@ -98,7 +139,10 @@ export default function WritingPage() {
                 return (
                   <button
                     key={cat}
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={() => {
+                      setSelectedCategory(cat)
+                      setCurrentPage(1)
+                    }}
                     className={`rounded px-3 py-1.5 font-mono text-xs transition-colors ${
                       isSelected
                         ? 'bg-[#e1523d] text-white font-medium shadow-sm'
@@ -118,7 +162,10 @@ export default function WritingPage() {
                 type="text"
                 placeholder="Search memoirs, cinema, essays..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  setCurrentPage(1)
+                }}
                 className="w-full rounded border border-[#232832] bg-[#14171d] py-1.5 pl-9 pr-3 text-xs font-mono text-[#f2eee6] placeholder-[#6b7280] focus:border-[#e1523d] focus:outline-none"
               />
             </div>
@@ -229,14 +276,23 @@ export default function WritingPage() {
         )}
 
         {/* Articles Archive List */}
-        <section className="space-y-6">
-          <div className="flex items-center justify-between font-mono text-xs text-[#8b949e] pb-4 border-b border-[#232832]">
-            <span>JOURNAL ENTRIES &amp; ESSAYS // {filteredArticles.length} PIECES</span>
+        <section ref={archiveRef} className="space-y-6 pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs text-[#8b949e] pb-4 border-b border-[#232832]">
+            <div className="flex items-center gap-2.5">
+              <span className="text-[#f2eee6] font-semibold">JOURNAL ENTRIES &amp; ESSAYS</span>
+              <span>//</span>
+              <span>{filteredArticles.length} PIECES</span>
+              {totalPages > 1 && (
+                <span className="rounded bg-[#1a1e26] text-[#e1523d] px-2 py-0.5 text-[11px] font-bold border border-[#232832]">
+                  PAGE {currentPage} OF {totalPages}
+                </span>
+              )}
+            </div>
             <span>SORT: CHRONOLOGICAL</span>
           </div>
 
           <div className="divide-y divide-[#1f242e]">
-            {filteredArticles.map((article) => (
+            {paginatedArticles.map((article) => (
               <article
                 key={article.slug}
                 className="py-8 group flex flex-col md:flex-row md:items-baseline justify-between gap-6"
@@ -294,6 +350,54 @@ export default function WritingPage() {
               </div>
             )}
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#1f242e] font-mono text-xs">
+              <span className="text-[#8b949e]">
+                Showing <span className="text-[#f2eee6] font-semibold">{startIndex + 1}</span>–
+                <span className="text-[#f2eee6] font-semibold">
+                  {Math.min(startIndex + ARTICLES_PER_PAGE, filteredArticles.length)}
+                </span> of <span className="text-[#f2eee6] font-semibold">{filteredArticles.length}</span> entries
+              </span>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[#232832] bg-[#14171d] text-[#cfd6e0] hover:text-[#f2eee6] hover:border-[#38404f] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="h-3.5 w-3.5" />
+                  <span>Previous</span>
+                </button>
+
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => goToPage(page)}
+                      className={`h-8 w-8 rounded text-xs font-mono font-medium transition-colors ${
+                        currentPage === page
+                          ? 'bg-[#e1523d] text-white shadow-sm font-bold'
+                          : 'border border-[#232832] bg-[#14171d] text-[#8b949e] hover:text-[#f2eee6] hover:border-[#38404f]'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[#232832] bg-[#14171d] text-[#cfd6e0] hover:text-[#f2eee6] hover:border-[#38404f] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
         </section>
       </div>
     </div>

@@ -19,7 +19,7 @@ import {
   Compass,
 } from 'lucide-react'
 import { projects } from '@/data/projects'
-import { articles } from '@/data/writing'
+import { articles, getFeaturedArticle } from '@/data/writing'
 import { tasteData } from '@/data/taste'
 import { nowData } from '@/data/now'
 import { ProjectConstellation } from '@/components/visualizations/ProjectConstellation'
@@ -29,7 +29,7 @@ import { HomeTechStack } from '@/components/sections/HomeTechStack'
 export default function HomePage() {
   // Canonical derivations
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 4)
-  const featuredArticle = articles.find((a) => a.featured) || articles[0]
+  const featuredArticle = getFeaturedArticle(articles)
   const recentArticles = articles.filter((a) => a.slug !== featuredArticle.slug).slice(0, 2)
   const featuredFilm = tasteData.films[0] // The Truman Show
   const featuredBook = tasteData.books[0] // Steve Jobs by Walter Isaacson

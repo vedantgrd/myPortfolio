@@ -1,0 +1,45 @@
+{
+  "title": "A Walk Through the Fog",
+  "subtitle": "On Late-Night Engineering, Stillness, and Finding Clarity When the Noise Dies Down",
+  "category": "Being Human",
+  "tags": ["Perspective", "Solitude", "Life", "Memoir"],
+  "date": "October 2026",
+  "featured": false,
+  "excerpt": "Sometimes the most productive thing an engineer can do is step away from the keyboard and listen to the city breathe.",
+  "photoFrame": {
+    "url": "/images/night-walk.jpg",
+    "caption": "MIDNIGHT CLARITY // MUMBAI",
+    "aspect": "aspect-[4/3]",
+    "tilt": "left"
+  },
+  "content": {
+    "lead": "When you spend entire days wrestling with asynchronous race conditions and memory allocations, it is remarkably easy to forget that the real world runs on a completely different clock.",
+    "sections": [
+      {
+        "heading": "The Silence at 3 AM",
+        "paragraphs": [
+          "There is a unique stillness to working when the rest of the city is asleep. The notifications stop buzzing. The demands of tomorrow haven't arrived yet.",
+          "In that quiet space, programming stops feeling like a mechanical exercise in hitting sprint deadlines and starts feeling like what it was always supposed to be: an art of patience and thought."
+        ],
+        "callout": {
+          "type": "insight",
+          "title": "The Art of Slowing Down",
+          "body": "Speed is only useful if you are heading in a direction you actually care about."
+        }
+      },
+      {
+        "heading": "Carrying Perspective Forward",
+        "paragraphs": [
+          "We measure so much of our self-worth by output: how many lines of code, how many pull requests, how many certifications.",
+          "Yet the thoughts that matter most rarely fit into a quarterly performance review."
+        ],
+        "photoFrame": {
+          "url": "/images/desk-night.jpg",
+          "caption": "WHERE THE IDEAS GET RECORDED",
+          "aspect": "aspect-[4/3]",
+          "tilt": "right"
+        }
+      }
+    ]
+  }
+}

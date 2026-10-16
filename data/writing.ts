@@ -1,3 +1,6 @@
+import customArticles from './custom-articles.json'
+import featuredMemoirConfig from './featured-memoir.json'
+
 export interface Article {
   slug: string
   title: string
@@ -52,7 +55,7 @@ export interface Article {
   }
 }
 
-export const articles: Article[] = [
+export const baseArticles: Article[] = [
   {
     slug: 'so-suicide',
     title: 'So, Suicide.',
@@ -594,3 +597,29 @@ export const articles: Article[] = [
     }
   }
 ];
+
+// Merged articles: Any new articles added via the Studio or API appear first (on top),
+// while all original articles preserve their exact current order.
+export const articles: Article[] = [
+  ...(customArticles as Article[]),
+  ...baseArticles,
+];
+
+export function getPinnedFeaturedSlug(): string {
+  try {
+    return (featuredMemoirConfig as { slug?: string }).slug || 'so-suicide'
+  } catch {
+    return 'so-suicide'
+  }
+}
+
+export function getFeaturedArticle(articlesList: Article[] = articles): Article {
+  const targetSlug = getPinnedFeaturedSlug()
+  const found = articlesList.find((a) => a.slug === targetSlug)
+  if (found) return found
+  return (
+    articlesList.find((a) => a.slug === 'so-suicide') ||
+    articlesList.find((a) => a.featured) ||
+    articlesList[0]
+  )
+}

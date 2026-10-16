@@ -13,10 +13,25 @@ import {
   Quote,
   Heart,
 } from 'lucide-react'
-import { articles } from '@/data/writing'
+import fs from 'fs'
+import path from 'path'
+import { articles as staticArticles, baseArticles, Article } from '@/data/writing'
+
+function getArticles(): Article[] {
+  try {
+    const customPath = path.join(process.cwd(), 'data', 'custom-articles.json')
+    if (fs.existsSync(customPath)) {
+      const data = JSON.parse(fs.readFileSync(customPath, 'utf8'))
+      return [...data, ...baseArticles]
+    }
+  } catch (e) {
+    // fallback
+  }
+  return staticArticles
+}
 
 export async function generateStaticParams() {
-  return articles.map((article) => ({
+  return getArticles().map((article) => ({
     slug: article.slug,
   }))
 }
@@ -66,12 +81,34 @@ function renderParagraphWithLinks(text: string) {
   return parts
 }
 
+export const dynamicParams = true
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  const articles = getArticles()
+  const article = articles.find((a) => a.slug === slug)
+  if (!article) {
+    return {
+      title: 'Article Not Found // Vedant Garud',
+    }
+  }
+  return {
+    title: `${article.title} // Vedant Garud`,
+    description: article.excerpt || article.subtitle,
+  }
+}
+
 export default async function ArticleDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
+  const articles = getArticles()
   const article = articles.find((a) => a.slug === slug)
 
   if (!article) {
