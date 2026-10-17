@@ -36,6 +36,38 @@ export async function generateStaticParams() {
   }))
 }
 
+function renderTextWithBareUrls(plainText: string, baseKey: number | string) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g
+  const segments: (string | React.ReactNode)[] = []
+  let last = 0
+  let uMatch: RegExpExecArray | null
+
+  while ((uMatch = urlRegex.exec(plainText)) !== null) {
+    if (uMatch.index > last) {
+      segments.push(plainText.slice(last, uMatch.index))
+    }
+    const rawUrl = uMatch[0]
+    segments.push(
+      <a
+        key={`${baseKey}-url-${uMatch.index}`}
+        href={rawUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-[#e1523d] underline decoration-[#e1523d]/50 underline-offset-4 hover:decoration-[#ef634f] hover:text-[#ef634f] transition-colors font-medium break-all"
+      >
+        {rawUrl}
+      </a>
+    )
+    last = uMatch.index + rawUrl.length
+  }
+
+  if (last === 0) return plainText
+  if (last < plainText.length) {
+    segments.push(plainText.slice(last))
+  }
+  return segments
+}
+
 function renderParagraphWithLinks(text: string) {
   const regex = /\[([^\]]+)\]\(([^)]+)\)/g
   const parts: (string | React.ReactNode)[] = []
@@ -44,14 +76,20 @@ function renderParagraphWithLinks(text: string) {
 
   while ((match = regex.exec(text)) !== null) {
     if (match.index > lastIndex) {
-      parts.push(text.slice(lastIndex, match.index))
+      const beforeText = text.slice(lastIndex, match.index)
+      const parsedBefore = renderTextWithBareUrls(beforeText, match.index)
+      if (Array.isArray(parsedBefore)) {
+        parts.push(...parsedBefore)
+      } else {
+        parts.push(parsedBefore)
+      }
     }
     const [fullMatch, linkText, url] = match
     const isInternal = url.startsWith('/')
     if (isInternal) {
       parts.push(
         <Link
-          key={match.index}
+          key={`md-${match.index}`}
           href={url}
           className="text-[#e1523d] underline decoration-[#e1523d]/50 underline-offset-4 hover:decoration-[#ef634f] hover:text-[#ef634f] transition-colors font-medium"
         >
@@ -61,11 +99,11 @@ function renderParagraphWithLinks(text: string) {
     } else {
       parts.push(
         <a
-          key={match.index}
+          key={`md-${match.index}`}
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#e1523d] underline decoration-[#e1523d]/50 underline-offset-4 hover:decoration-[#ef634f] hover:text-[#ef634f] transition-colors font-medium"
+          className="text-[#e1523d] underline decoration-[#e1523d]/50 underline-offset-4 hover:decoration-[#ef634f] hover:text-[#ef634f] transition-colors font-medium break-all"
         >
           {linkText}
         </a>
@@ -74,9 +112,17 @@ function renderParagraphWithLinks(text: string) {
     lastIndex = match.index + fullMatch.length
   }
 
-  if (lastIndex === 0) return text
+  if (lastIndex === 0) {
+    return renderTextWithBareUrls(text, 0)
+  }
   if (lastIndex < text.length) {
-    parts.push(text.slice(lastIndex))
+    const afterText = text.slice(lastIndex)
+    const parsedAfter = renderTextWithBareUrls(afterText, lastIndex)
+    if (Array.isArray(parsedAfter)) {
+      parts.push(...parsedAfter)
+    } else {
+      parts.push(parsedAfter)
+    }
   }
   return parts
 }
