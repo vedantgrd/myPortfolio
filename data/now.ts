@@ -338,9 +338,9 @@ export const nowData: NowData = {
   consuming: [
     {
       category: 'Reading',
-      title: 'Steve Jobs',
-      creator: 'Walter Isaacson',
-      note: 'Studying the intersection of liberal arts, industrial design, and uncompromising engineering standards.',
+      title: 'Friends, Lovers, and the Big Terrible Thing',
+      creator: 'Matthew Perry',
+      note: 'Reading Matthew Perry\'s raw and deeply human memoir on addiction, vulnerability, and finding peace behind the humor.',
       canonicalLink: '/taste',
     },
     {
@@ -352,9 +352,9 @@ export const nowData: NowData = {
     },
     {
       category: 'Watching',
-      title: 'The Truman Show & Christopher Nolan Films',
-      creator: 'Peter Weir & Christopher Nolan',
-      note: 'Analyzing how moral courage and existential autonomy are framed visually in cinema.',
+      title: 'Friends (Season 6)',
+      creator: 'David Crane & Marta Kauffman',
+      note: 'Revisiting Season 6 — Chandler and Monica\'s evolving dynamic, timeless ensemble comedic timing, and comforting late-night watching.',
       canonicalLink: '/taste',
     },
   ],

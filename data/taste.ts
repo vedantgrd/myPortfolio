@@ -116,7 +116,7 @@ export const tasteData: TasteCollection = {
       name: 'One Direction',
       era: '2010 — 2016',
       genre: 'Pop / Pop Rock',
-      notableWorks: ['Night Changes', 'Story of My Life', 'History', 'Midnight Memories'],
+      notableWorks: ['18', 'Night Changes', 'Story of My Life', 'History', 'Midnight Memories', 'You & I'],
       whyTheyMatter: 'One Direction was the soundtrack to growing up. Their music carries an unmistakable nostalgia of school afternoons, friendship, and the bittersweet passage of time before adult responsibilities set in.',
       musicalImpact: 'Defined a global generation with acoustic-driven vocal harmonies and stadium anthems that aged surprisingly well.',
       personalNote: 'Songs like "Night Changes" hit differently as you enter your twenties and realize how quickly people and chapters drift apart.',
