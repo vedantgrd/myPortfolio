@@ -19,6 +19,11 @@
     ],
     "featured": false,
     "excerpt": "I joke about everything. People laugh, people judge, and sometimes nobody takes me seriously. But what happens when the personality you built to make people comfortable becomes the very thing that stops them from seeing you?",
+    "photoFrame": {
+      "url": "/images/chandler.png",
+      "caption": "I AM HIM, HE IS ME.",
+      "aspect": "aspect-[16/9]"
+    },
     "content": {
       "lead": "Everyone knows me as the funny guy. The unserious guy. The guy who can turn a perfectly normal conversation into an unnecessary comedy show, who has a sarcastic response ready before you have even finished your sentence, and who apparently considers being serious for more than thirty seconds a personal attack. And honestly? Fair enough. I have given people plenty of reasons to see me that way. But lately, I have been wondering whether I have made being funny such a big part of my personality that people have forgotten there is an actual person behind all the nonsense. Worse, I wonder whether I have made them forget it because, somewhere along the way, I have started forgetting it myself.",
       "sections": [
