@@ -163,7 +163,7 @@ export default function AboutPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-xs font-mono text-[#8b949e] border-b border-[#1f242e] pb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-[#e1523d] font-semibold">// CHAPTER 04</span>
+                    <span className="text-[#e1523d] font-semibold">// CHAPTER 07</span>
                     <span>SECTION A: THE INTRODUCTION</span>
                   </div>
                   <span className="text-[#6b7280]">PERSONAL NARRATIVE</span>
