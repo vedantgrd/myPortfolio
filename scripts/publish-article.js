@@ -112,14 +112,36 @@ function run() {
     tags: Array.isArray(inputData.tags) ? inputData.tags : ['Journal', 'Memoir'],
     featured: Boolean(inputData.featured),
     excerpt: inputData.excerpt ? inputData.excerpt.trim() : inputData.content.lead.slice(0, 160) + '...',
-    ...(inputData.photoFrame ? { photoFrame: inputData.photoFrame } : {}),
+    ...(Array.isArray(inputData.references) && inputData.references.length > 0
+      ? {
+          references: inputData.references
+            .filter((r) => r && (r.title || r.url))
+            .map((r) => ({
+              title: (r.title || r.url || '').trim(),
+              url: (r.url || '').trim(),
+            })),
+        }
+      : {}),
     content: {
       lead: inputData.content.lead.trim(),
       sections: (inputData.content.sections || []).map((sec) => ({
         heading: sec.heading ? sec.heading.trim() : undefined,
         paragraphs: Array.isArray(sec.paragraphs) ? sec.paragraphs : [sec.paragraphs],
         ...(sec.photoFrame ? { photoFrame: sec.photoFrame } : {}),
+        ...(sec.photoFrames ? { photoFrames: sec.photoFrames } : {}),
+        ...(sec.image ? { image: sec.image } : {}),
+        ...(sec.codeBlock ? { codeBlock: sec.codeBlock } : {}),
         ...(sec.callout ? { callout: sec.callout } : {}),
+        ...(Array.isArray(sec.references) && sec.references.length > 0
+          ? {
+              references: sec.references
+                .filter((r) => r && (r.title || r.url))
+                .map((r) => ({
+                  title: (r.title || r.url || '').trim(),
+                  url: (r.url || '').trim(),
+                })),
+            }
+          : {}),
       })),
     },
   }

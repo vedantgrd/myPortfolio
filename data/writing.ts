@@ -22,6 +22,10 @@ export interface Article {
     caption: string
     aspect?: string
   }
+  references?: {
+    title: string
+    url: string
+  }[]
   content: {
     lead: string
     sections: {
@@ -53,6 +57,10 @@ export interface Article {
         title: string
         body: string
       }
+      references?: {
+        title: string
+        url: string
+      }[]
     }[]
   }
 }

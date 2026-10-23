@@ -12,6 +12,7 @@ import {
   Info,
   Quote,
   Heart,
+  ExternalLink,
 } from 'lucide-react'
 import fs from 'fs'
 import path from 'path'
@@ -241,15 +242,19 @@ export default async function ArticleDetailPage({
                   <div
                     className={`relative ${
                       article.photoFrame?.aspect || 'aspect-[3/4]'
-                    } w-48 sm:w-56 overflow-hidden rounded-[2px] bg-[#0d0f12]`}
+                    } ${
+                      article.photoFrame?.aspect?.includes('16/9')
+                        ? 'w-56 sm:w-64'
+                        : 'w-48 sm:w-56'
+                    } overflow-hidden rounded-[2px] bg-[#0d0f12]`}
                   >
                     <img
                       src={article.photoFrame?.url || '/images/rj-mitte.png'}
                       alt={article.photoFrame?.caption || 'Photo'}
-                      className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="pt-2 text-center font-mono text-[10px] sm:text-[10.5px] text-[#2b2b2b] tracking-wider select-none font-semibold uppercase">
+                  <div className="pt-2.5 text-center font-mono text-[10px] sm:text-[10.5px] text-[#2b2b2b] tracking-wider select-none font-semibold uppercase leading-tight max-w-[250px] mx-auto">
                     {article.photoFrame?.caption || 'you will be missed, bro.'}
                   </div>
                 </div>
@@ -396,9 +401,79 @@ export default async function ArticleDetailPage({
                   </p>
                 </div>
               )}
+
+              {/* Optional Section References / Sources */}
+              {section.references && section.references.length > 0 && (
+                <div className="my-8 rounded-xl border border-[#232832] bg-[#14171d]/70 backdrop-blur-sm p-5 sm:p-6 space-y-4">
+                  <div className="flex items-center gap-2 font-mono text-xs font-semibold text-[#8b949e] uppercase tracking-wider border-b border-[#232832] pb-3">
+                    <ExternalLink className="h-4 w-4 text-[#e1523d]" />
+                    <span>References & Cited Sources</span>
+                    <span className="ml-auto text-[11px] text-[#6b7280]">
+                      {section.references.length} {section.references.length === 1 ? 'Source' : 'Sources'}
+                    </span>
+                  </div>
+                  <ul className="space-y-2.5 pt-1">
+                    {section.references.map((ref, rIdx) => (
+                      <li key={rIdx}>
+                        <a
+                          href={ref.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-start justify-between gap-4 p-3 rounded-lg border border-[#1f242e] bg-[#0d0f12]/60 hover:bg-[#1a1e26] hover:border-[#e1523d]/40 transition-all duration-200"
+                        >
+                          <div className="space-y-1 min-w-0 flex-1">
+                            <span className="text-sm sm:text-base font-medium text-[#f2eee6] group-hover:text-[#ef634f] transition-colors leading-snug line-clamp-2 block">
+                              {ref.title}
+                            </span>
+                            <span className="block font-mono text-xs text-[#6b7280] group-hover:text-[#8b949e] transition-colors truncate">
+                              {ref.url}
+                            </span>
+                          </div>
+                          <ExternalLink className="h-4 w-4 text-[#6b7280] group-hover:text-[#e1523d] shrink-0 mt-1 transition-colors" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </section>
           ))}
         </div>
+
+        {/* Optional Article-Level References */}
+        {article.references && article.references.length > 0 && (
+          <div className="my-8 rounded-xl border border-[#232832] bg-[#14171d]/70 backdrop-blur-sm p-5 sm:p-6 space-y-4">
+            <div className="flex items-center gap-2 font-mono text-xs font-semibold text-[#8b949e] uppercase tracking-wider border-b border-[#232832] pb-3">
+              <ExternalLink className="h-4 w-4 text-[#e1523d]" />
+              <span>References & Cited Sources</span>
+              <span className="ml-auto text-[11px] text-[#6b7280]">
+                {article.references.length} Sources
+              </span>
+            </div>
+            <ul className="space-y-2.5 pt-1">
+              {article.references.map((ref, rIdx) => (
+                <li key={rIdx}>
+                  <a
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-start justify-between gap-4 p-3 rounded-lg border border-[#1f242e] bg-[#0d0f12]/60 hover:bg-[#1a1e26] hover:border-[#e1523d]/40 transition-all duration-200"
+                  >
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <span className="text-sm sm:text-base font-medium text-[#f2eee6] group-hover:text-[#ef634f] transition-colors leading-snug line-clamp-2 block">
+                        {ref.title}
+                      </span>
+                      <span className="block font-mono text-xs text-[#6b7280] group-hover:text-[#8b949e] transition-colors truncate">
+                        {ref.url}
+                      </span>
+                    </div>
+                    <ExternalLink className="h-4 w-4 text-[#6b7280] group-hover:text-[#e1523d] shrink-0 mt-1 transition-colors" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Nostalgic Archival Record Stamp */}
         <div className="rounded-xl border border-[#232832] bg-[#14171d]/60 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs text-[#8b949e]">

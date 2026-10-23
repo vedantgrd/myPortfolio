@@ -297,6 +297,16 @@ export async function POST(req: NextRequest) {
       featured: Boolean(featured),
       excerpt: excerpt.trim() || content.lead.slice(0, 160) + '...',
       ...(photoFrame && photoFrame.url ? { photoFrame } : {}),
+      ...(Array.isArray(body.references) && body.references.length > 0
+        ? {
+            references: body.references
+              .filter((r: any) => r && (r.title || r.url))
+              .map((r: any) => ({
+                title: (r.title || r.url || '').trim(),
+                url: (r.url || '').trim(),
+              })),
+          }
+        : {}),
       content: {
         lead: content.lead.trim(),
         sections: (content.sections || []).map((sec: any) => ({
@@ -307,7 +317,20 @@ export async function POST(req: NextRequest) {
             ? sec.paragraphs.split('\n\n').map((p: string) => p.trim()).filter(Boolean)
             : [],
           ...(sec.photoFrame && sec.photoFrame.url ? { photoFrame: sec.photoFrame } : {}),
+          ...(sec.photoFrames && Array.isArray(sec.photoFrames) ? { photoFrames: sec.photoFrames } : {}),
+          ...(sec.image && sec.image.url ? { image: sec.image } : {}),
+          ...(sec.codeBlock && sec.codeBlock.code ? { codeBlock: sec.codeBlock } : {}),
           ...(sec.callout && sec.callout.body ? { callout: sec.callout } : {}),
+          ...(Array.isArray(sec.references) && sec.references.length > 0
+            ? {
+                references: sec.references
+                  .filter((r: any) => r && (r.title || r.url))
+                  .map((r: any) => ({
+                    title: (r.title || r.url || '').trim(),
+                    url: (r.url || '').trim(),
+                  })),
+              }
+            : {}),
         })),
       },
     }

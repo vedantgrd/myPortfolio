@@ -20,6 +20,11 @@
     ],
     "featured": true,
     "excerpt": "From fictional AI lovers to virtual girlfriends with premium subscriptions, technology is finding increasingly creative ways to monetise human connection. But beneath the absurdity lies a serious question: what happens when even the feeling of being loved comes with a price tag?",
+    "photoFrame": {
+      "url": "/images/blade-runner-joi.png",
+      "caption": "“You're special. Your born, not made.”",
+      "aspect": "aspect-[16/9]"
+    },
     "content": {
       "lead": "We have reached a point where even loneliness has a product page. Somewhere between dating apps, algorithmically recommended partners, and AI companions that promise to listen without ever getting tired of us, technology has discovered a rather extraordinary business opportunity: human connection. And apparently, there is a subscription plan for that, too.",
       "sections": [
@@ -198,6 +203,36 @@
           "heading": "A Few Things I Read Along the Way",
           "paragraphs": [
             "This article is commentary, not a claim that every AI companion works the same way or that every person who uses one is lonely. The research on these products is developing quickly, and the findings need to be read in context. These sources informed the discussion of loneliness, social connection, teenage use of AI companions, and online dating."
+          ],
+          "references": [
+            {
+              "title": "World Health Organization — Commission on Social Connection",
+              "url": "https://www.who.int/groups/commission-on-social-connection"
+            },
+            {
+              "title": "Survey Center on American Life — Why Men’s Social Circles Are Shrinking",
+              "url": "https://www.americansurveycenter.org/why-mens-social-circles-are-shrinking/"
+            },
+            {
+              "title": "Pew Research Center — Men, Women and Social Connections (2025)",
+              "url": "https://www.pewresearch.org/social-trends/2025/01/16/men-women-and-social-connections/"
+            },
+            {
+              "title": "Common Sense Media — Talk, Trust, and Trade-Offs: How and Why Teens Use AI Companions (2025)",
+              "url": "https://www.commonsensemedia.org/research/talk-trust-and-trade-offs-how-and-why-teens-use-ai-companions"
+            },
+            {
+              "title": "Computers in Human Behavior Reports — Systematic Review of Romantic AI Companions (2025)",
+              "url": "https://doi.org/10.1016/j.chbr.2025.100715"
+            },
+            {
+              "title": "New Media & Society — Cruel Companionship: How AI Companions Exploit Loneliness and Commodify Intimacy (2025)",
+              "url": "https://journals.sagepub.com/doi/10.1177/14614448251395192"
+            },
+            {
+              "title": "Pew Research Center — From Looking for Love to Swiping the Field: Online Dating in the U.S. (2023)",
+              "url": "https://www.pewresearch.org/internet/2023/02/02/from-looking-for-love-to-swiping-the-field-online-dating-in-the-u-s/"
+            }
           ]
         }
       ]
