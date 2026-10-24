@@ -16,8 +16,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm i --no-save playwright && npx playwright install --with-deps chromium
-      - run: node scripts/screenshots.mjs
+      - name: Install Playwright (isolated, outside the project)
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y
+          npm install playwright
+          npx playwright install --with-deps chromium
+      - name: Take screenshots
+        run: |
+          cp scripts/screenshots.mjs /tmp/pw/screenshots.mjs
+          cd /tmp/pw
+          OUT_DIR="$GITHUB_WORKSPACE/docs/screenshots" node screenshots.mjs
       - name: Commit screenshots
         run: |
           git config user.name "github-actions[bot]"
