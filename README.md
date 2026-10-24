@@ -27,18 +27,17 @@
 <br/>
 
 <!--
-  SCREENSHOT NOTES
-  Every screenshot below is fetched live by GitHub's image proxy from Microlink.
-  - waitUntil=networkidle2 + waitForTimeout lets animations (Framer Motion) finish before capture.
-  - The homepage gets a longer wait because it is the heaviest page.
-  - If an image still breaks, add &force=true once to bypass a cached failure, then remove it.
-  - Most reliable option: commit static PNGs to docs/screenshots/ and use <img src="docs/screenshots/cover.png">.
+  SCREENSHOT NOTES (temporary live screenshots)
+  Served by WordPress mshots (free, no API key, cached server-side).
+  Microlink's free quota is shared by every GitHub reader, so it breaks often.
+  Permanent fix: run the "Update screenshots" GitHub Action, then point each <img src>
+  to docs/screenshots/<name>.png
 -->
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>garudvedantportfolio.vercel.app</code></td></tr>
 <tr><td>
-<a href="https://garudvedantportfolio.vercel.app"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2F&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=3000" alt="Cover page of the live portfolio" width="100%"/></a>
+<a href="https://garudvedantportfolio.vercel.app"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2F?w=1440&h=900" alt="Cover page of the live portfolio" width="100%"/></a>
 </td></tr>
 </table>
 
@@ -100,7 +99,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2F&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=3000" alt="Cover" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2F?w=1440&h=900" alt="Cover" width="100%"/></a></td></tr>
 </table>
 
 ---
@@ -110,7 +109,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/work</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app/work"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fwork&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=2000" alt="Work" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app/work"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fwork?w=1440&h=900" alt="Work" width="100%"/></a></td></tr>
 </table>
 
 ---
@@ -120,7 +119,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/writing</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app/writing"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fwriting&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=2000" alt="Notebook" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app/writing"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fwriting?w=1440&h=900" alt="Notebook" width="100%"/></a></td></tr>
 </table>
 
 ---
@@ -130,7 +129,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/taste</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app/taste"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Ftaste&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=2000" alt="Taste" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app/taste"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Ftaste?w=1440&h=900" alt="Taste" width="100%"/></a></td></tr>
 </table>
 
 ---
@@ -140,7 +139,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/about</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app/about"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fabout&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=2000" alt="About" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app/about"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fabout?w=1440&h=900" alt="About" width="100%"/></a></td></tr>
 </table>
 
 ---
@@ -150,7 +149,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/archive</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app/archive"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Farchive&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=2000" alt="Archive" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app/archive"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Farchive?w=1440&h=900" alt="Archive" width="100%"/></a></td></tr>
 </table>
 
 ---
@@ -160,7 +159,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/now</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app/now"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fnow&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=2000" alt="Now" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app/now"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fnow?w=1440&h=900" alt="Now" width="100%"/></a></td></tr>
 </table>
 
 ---
@@ -170,7 +169,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/lab</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app/lab"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Flab&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=2000" alt="Lab" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app/lab"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Flab?w=1440&h=900" alt="Lab" width="100%"/></a></td></tr>
 </table>
 
 ---
@@ -180,7 +179,7 @@ Traditional portfolios say: *"Here are my skills, here are my projects, here is 
 
 <table>
 <tr><td>🔴 🟡 🟢 &nbsp;&nbsp;<code>/contact</code></td></tr>
-<tr><td><a href="https://garudvedantportfolio.vercel.app/contact"><img src="https://api.microlink.io/?url=https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fcontact&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1440&viewport.height=900&waitUntil=networkidle2&waitForTimeout=2000" alt="Contact" width="100%"/></a></td></tr>
+<tr><td><a href="https://garudvedantportfolio.vercel.app/contact"><img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Fgarudvedantportfolio.vercel.app%2Fcontact?w=1440&h=900" alt="Contact" width="100%"/></a></td></tr>
 </table>
 
 ---
